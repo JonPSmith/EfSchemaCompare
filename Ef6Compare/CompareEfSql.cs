@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: CompareEfAndSql.cs
+// Filename: CompareEfSql.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -19,18 +19,18 @@ using GenericLibsBase.Core;
 
 namespace Ef6Compare
 {
-    public class CompareEfAndSql
+    public class CompareEfSql
     {
         private string _sqlDbRefString;
         private readonly string _sqlTableNamesToIgnore;
 
         /// <summary>
-        /// Creates the CompareEfAndSql comparer.
+        /// Creates the CompareEfSql comparer.
         /// </summary>
         /// <param name="sqlTableNamesToIgnore">You can supply a comma delimited list of table 
         /// names in the SQL database that you do not want reported as not used. 
         /// The default is EF's __MigrationHistory table and DbUp's SchemaVersions table</param>
-        public CompareEfAndSql(string sqlTableNamesToIgnore = "__MigrationHistory,SchemaVersions")
+        public CompareEfSql(string sqlTableNamesToIgnore = "__MigrationHistory,SchemaVersions")
         {
             _sqlTableNamesToIgnore = sqlTableNamesToIgnore;
         }

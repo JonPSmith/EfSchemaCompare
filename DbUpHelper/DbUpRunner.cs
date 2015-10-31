@@ -23,18 +23,17 @@ namespace DbUpHelper
         public ISuccessOrErrors ApplyMigrations(string dbConnectionString)
         {
             var status = new SuccessOrErrors();
-            var upgrader =
-                DeployChanges.To
-                    .SqlDatabase(dbConnectionString)
-                    .WithScriptsAndCodeEmbeddedInAssembly(Assembly.GetExecutingAssembly())
-                    .WithTransaction()
-                    .LogToConsole()
-                    .Build();
+var upgrader = DeployChanges.To
+        .SqlDatabase(dbConnectionString)
+        .WithScriptsAndCodeEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+        .WithTransaction()
+        .LogToConsole()
+        .Build();
 
-            var result = upgrader.PerformUpgrade();
+var result = upgrader.PerformUpgrade();
 
-            if (result.Successful)
-            {
+if (result.Successful)
+{
                 var msg = result.Scripts.Any()
                     ? "Successfully applied the last " + result.Scripts.Count() + " script(s) to the database."
                     : "No updates done to database.";

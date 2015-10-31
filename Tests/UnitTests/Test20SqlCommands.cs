@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test20SqlAccess.cs
+// Filename: Test20SqlCommands.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -15,7 +15,7 @@ using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test20SqlAccess
+    public class Test20SqlCommands
     {
 
         [Test]
@@ -31,8 +31,6 @@ namespace Tests.UnitTests
             result.Count.ShouldBeGreaterThan(3);
         }
 
-
-
         [Test]
         public void Test10GetForeignKeysOk()
         {
@@ -45,7 +43,6 @@ namespace Tests.UnitTests
             //VERIFY
             result.Count.ShouldBeGreaterThan(3);
         }
-
 
         [Test]
         public void Test20GetPrimaryKeysNamesOk()

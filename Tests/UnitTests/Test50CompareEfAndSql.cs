@@ -25,10 +25,11 @@ namespace Tests.UnitTests
             using (var db = new EfSchemaCompareDb())
             {
                 //SETUP
-                var comparer = new CompareEfAndSql();
+                var comparer = new CompareEfSql();
 
                 //EXECUTE
                 var status = comparer.CompareEfWithDb(db);
+
 
                 //VERIFY
                 status.ShouldBeValid();
@@ -42,7 +43,7 @@ namespace Tests.UnitTests
             using (var db = new EfSchemaCompareDb())
             {
                 //SETUP
-                var comparer = new CompareEfAndSql();
+                var comparer = new CompareEfSql();
 
                 //EXECUTE
                 var status = comparer.CompareEfWithDb(db, DatabaseHelpers.DbUpDatabaseConfigName);

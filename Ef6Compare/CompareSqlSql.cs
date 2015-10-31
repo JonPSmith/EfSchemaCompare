@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: CompareSqlAndSql.cs
+// Filename: CompareSqlSql.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -15,7 +15,7 @@ using GenericLibsBase.Core;
 
 namespace Ef6Compare
 {
-    public class CompareSqlAndSql
+    public class CompareSqlSql
     {
         private string _refDatabaseName;
         private string _toBeCheckDatabaseName;

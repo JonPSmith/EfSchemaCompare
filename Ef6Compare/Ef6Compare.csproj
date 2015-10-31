@@ -53,8 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompareEfAndSql.cs" />
-    <Compile Include="CompareSqlAndSql.cs" />
+    <Compile Include="CompareEfSql.cs" />
+    <Compile Include="CompareSqlSql.cs" />
     <Compile Include="Internal\EfRelationshipChecker.cs" />
     <Compile Include="Internal\EfRelationshipInfo.cs" />
     <Compile Include="Internal\EfTableInfo.cs" />

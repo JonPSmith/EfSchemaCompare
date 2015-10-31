@@ -70,9 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlCommands\BasicSqlCommands.cs" />
     <Compile Include="UnitTests\Test10DatabasesExist.cs" />
-    <Compile Include="UnitTests\Test20SqlAccess.cs" />
-    <Compile Include="UnitTests\Test30EfTableInfo.cs" />
-    <Compile Include="UnitTests\Test40SqlTableInfo.cs" />
+    <Compile Include="UnitTests\Test20SqlCommands.cs" />
+    <Compile Include="UnitTests\Test45EfTableInfo.cs" />
+    <Compile Include="UnitTests\Test30SqlTableInfo.cs" />
     <Compile Include="UnitTests\Test60CompareSqlAndSql.cs" />
     <Compile Include="UnitTests\Test50CompareEfAndSql.cs" />
   </ItemGroup>
