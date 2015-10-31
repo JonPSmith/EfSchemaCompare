@@ -17,11 +17,12 @@ namespace Ef6Compare
 {
     public class CompareSqlAndSql
     {
-        private string _database1Name;
-        private string _database2Name;
+        private string _refDatabaseName;
+        private string _toBeCheckDatabaseName;
 
         /// <summary>
-        /// This compares two SQL databases looking at each table, its columns, its keys and its foreign keys
+        /// This compares two SQL databases looking at each table, its columns, its keys and its foreign keys.
+        /// It assumes the first database connection is the reference and the second is the one that should match the reference
         /// </summary>
         /// <param name="refDbConnectionOrConfig">Either a full connection string or the name of a connection string in Config file</param>
         /// <param name="toBeCheckDbConnectionOrConfig">Either a full connection string or the name of a to connection string in Config file</param>
@@ -32,8 +33,8 @@ namespace Ef6Compare
 
             var refDbConnection = refDbConnectionOrConfig.GetConfigurationOrActualString();
             var toBeCheckDbConnection = toBeCheckDbConnectionOrConfig.GetConfigurationOrActualString();
-            _database1Name = refDbConnection.GetDatabaseNameFromConnectionString();
-            _database2Name = toBeCheckDbConnection.GetDatabaseNameFromConnectionString();
+            _refDatabaseName = refDbConnection.GetDatabaseNameFromConnectionString();
+            _toBeCheckDatabaseName = toBeCheckDbConnection.GetDatabaseNameFromConnectionString();
 
             var sqlInfo1 = SqlTableInfo.GetAllSqlTablesWithColInfo(refDbConnection);
             var sqlInfo2 = SqlTableInfo.GetAllSqlTablesWithColInfo(toBeCheckDbConnection);
@@ -44,8 +45,8 @@ namespace Ef6Compare
             {
                 if (!sqlTable2Dict.ContainsKey(sqlTable.CombinedName))
                     status.AddSingleError(
-                        "Missing Table: The '{0}' SQL database has a table called {1}, which is missing in the second database.",
-                        _database1Name, sqlTable.CombinedName);
+                        "Missing Table: The '{0}' SQL database has a table called {1}, which is missing in the '{2}' database.",
+                        _refDatabaseName, sqlTable.CombinedName, _toBeCheckDatabaseName);
                 else
                 {
                     //has table, so compare the columns/properties
@@ -76,7 +77,7 @@ namespace Ef6Compare
                         foreach (var missingCol in sqlColsDict.Values)
                         {
                             status.AddWarning("The '{0}' database SQL table {1} has a column called {2} (type {3}), which database '{4}' did not have.",
-                                 _database2Name, sqlTable.CombinedName, missingCol.ColumnName, missingCol.ColumnSqlType, _database1Name);
+                                 _toBeCheckDatabaseName, sqlTable.CombinedName, missingCol.ColumnName, missingCol.ColumnSqlType, _refDatabaseName);
                         }
                     }
 
@@ -89,7 +90,7 @@ namespace Ef6Compare
                         if (!foreignKeyDict.ContainsKey(foreignKey.ToString()))
                             status.AddSingleError(
                                 "Missing Foreign key: The '{0}' SQL database has a foreign key {1}, which is missing in the '{2}' database.",
-                                _database1Name, foreignKey.ToString(), _database2Name);
+                                _refDatabaseName, foreignKey.ToString(), _toBeCheckDatabaseName);
                         else
                         {
                             var foreignKey2 = foreignKeyDict[foreignKey.ToString()];
@@ -97,7 +98,7 @@ namespace Ef6Compare
                             if (foreignKey.DeleteAction != foreignKey2.DeleteAction)
                                 status.AddSingleError(
                                     "Foreign Key Delete Action: The {{0}] database has a foreign key {1} that has delete action of {2}. Second database was '{3}'.",
-                                    _database1Name, foreignKey.ToString(), foreignKey.DeleteAction, foreignKey2.DeleteAction, _database2Name);
+                                    _refDatabaseName, foreignKey.ToString(), foreignKey.DeleteAction, foreignKey2.DeleteAction, _toBeCheckDatabaseName);
                         }
                     }
                     if (foreignKeyDict.Any())
@@ -105,7 +106,7 @@ namespace Ef6Compare
                         foreach (var missingFKey in foreignKeyDict.Values)
                         {
                             status.AddWarning("The '{0}' database SQL table {1} has a foreign key {2}, which the '{3}' database did not have.",
-                                _database2Name, sqlTable.CombinedName, missingFKey.ToString(), _database1Name);
+                                _toBeCheckDatabaseName, sqlTable.CombinedName, missingFKey.ToString(), _refDatabaseName);
                         }
                     }
                 }
@@ -116,7 +117,7 @@ namespace Ef6Compare
             {
                 foreach (var unusedTable in sqlTable2Dict.Values)
                 {
-                    status.AddWarning("SQL database '{0}', table {1} table contained an extra table, {1}", _database1Name, unusedTable.CombinedName);
+                    status.AddWarning("SQL database '{0}', table {1} table contained an extra table, {1}", _refDatabaseName, unusedTable.CombinedName);
                 }
             }
             
@@ -133,35 +134,35 @@ namespace Ef6Compare
                 status.AddSingleError(
                     "Column Type: SQL column {0}.{1} type does not match EF. '{2}' db type = {3}, '{4}' db type = {5}.",
                     combinedName, sqlCol.ColumnName, 
-                    _database1Name, sqlCol.ColumnSqlType, 
-                    _database2Name, colToCheck.ColumnSqlType);
+                    _refDatabaseName, sqlCol.ColumnSqlType, 
+                    _toBeCheckDatabaseName, colToCheck.ColumnSqlType);
             
             if (sqlCol.IsNullable != colToCheck.IsNullable)
                 status.AddSingleError(
                     "Column Nullable: SQL column {0}.{1} nullablity does not match. '{2}' db is {3}NULL, '{4}' db is {5}NULL.",
                     combinedName, sqlCol.ColumnName,
-                    _database1Name, sqlCol.IsNullable ? "" : "NOT ",
-                    _database2Name, colToCheck.IsNullable ? "" : "NOT ");
+                    _refDatabaseName, sqlCol.IsNullable ? "" : "NOT ",
+                    _toBeCheckDatabaseName, colToCheck.IsNullable ? "" : "NOT ");
             
             if (sqlCol.MaxLength != colToCheck.MaxLength)
                 status.AddSingleError(
                     "Column MaxLength: SQL column {0}.{1} MaxLength does not match. '{2}' db MaxLength = {2}, '{4}' db MaxLength = {5}.",
                     combinedName, sqlCol.ColumnName,
-                    _database1Name, sqlCol.MaxLength,
-                    _database2Name, colToCheck.MaxLength);
+                    _refDatabaseName, sqlCol.MaxLength,
+                    _toBeCheckDatabaseName, colToCheck.MaxLength);
 
             if (sqlCol.IsPrimaryKey != colToCheck.IsPrimaryKey)
                 status.AddSingleError(
                     "Primary Key: The SQL column {0}.{1} primary key settings don't match. '{2}' db says is {3}a key, '{4}' db says it is {5}a key.",
                     combinedName, sqlCol.ColumnName,
-                    _database1Name, sqlCol.IsPrimaryKey ? "" : "NOT ",
-                    _database2Name, colToCheck.IsPrimaryKey ? "" : "NOT ");
+                    _refDatabaseName, sqlCol.IsPrimaryKey ? "" : "NOT ",
+                    _toBeCheckDatabaseName, colToCheck.IsPrimaryKey ? "" : "NOT ");
             else if (sqlCol.IsPrimaryKey && sqlCol.PrimaryKeyOrder != colToCheck.PrimaryKeyOrder)
                 status.AddSingleError(
                     "Key Order: The SQL column {0}.{1} primary key order does not match. '{2}' db order = {3}, '{4}' db order = {5}.",
                     combinedName, sqlCol.ColumnName,
-                    _database1Name, sqlCol.PrimaryKeyOrder,
-                    _database2Name, colToCheck.PrimaryKeyOrder);
+                    _refDatabaseName, sqlCol.PrimaryKeyOrder,
+                    _toBeCheckDatabaseName, colToCheck.PrimaryKeyOrder);
 
             return status;
         }

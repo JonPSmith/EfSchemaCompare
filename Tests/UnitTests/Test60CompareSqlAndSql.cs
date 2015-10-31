@@ -47,7 +47,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid(false);
-            status.GetAllErrors().ShouldEqual("Missing Table: The 'TestEfSchemaCompareDb' SQL database has a table called [dbo].[__MigrationHistory], which is missing in the second database.");
+            status.GetAllErrors().ShouldEqual("Missing Table: The 'TestEfSchemaCompareDb' SQL database has a table called [dbo].[__MigrationHistory], which is missing in the 'TestDbUpSchemaCompareDb' database.");
             Console.WriteLine("ERRORS:\n {0}", status.GetAllErrors());
             Console.WriteLine("WARNINGS:\n {0}", string.Join("\n", status.Warnings));
         }
@@ -64,7 +64,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid(false);
-            status.GetAllErrors().ShouldEqual("Missing Table: The 'TestEfSchemaCompareDb' SQL database has a table called [dbo].[__MigrationHistory], which is missing in the second database.");
+            status.GetAllErrors().ShouldEqual("Missing Table: The 'TestEfSchemaCompareDb' SQL database has a table called [dbo].[__MigrationHistory], which is missing in the 'TestDbUpSchemaCompareDb' database.");
             Console.WriteLine("ERRORS:\n {0}", status.GetAllErrors());
             Console.WriteLine("WARNINGS:\n {0}", string.Join("\n", status.Warnings));
         }
