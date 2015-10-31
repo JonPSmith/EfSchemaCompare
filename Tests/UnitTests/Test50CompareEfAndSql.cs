@@ -23,7 +23,7 @@ namespace Tests.UnitTests
         //EF to SQL
 
         [Test]
-        public void Test01CompareEfWithDbOk()
+        public void Test01CompareEfWithSelfSqlOk()
         {
             using (var db = new EfSchemaCompareDb())
             {
@@ -45,7 +45,7 @@ namespace Tests.UnitTests
         public void Test50CompareSqlToSqlSelfOk()
         {
             //SETUP
-            var connection = ConfigurationManager.ConnectionStrings["EfSchemaCompareDb"].ConnectionString;
+            var connection = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
 
             //EXECUTE
             var status = connection.CompareSqlToSql(connection);
@@ -61,7 +61,7 @@ namespace Tests.UnitTests
             //SETUP
 
             //EXECUTE
-            var status = "EfSchemaCompareDb".CompareSqlToSql("EfSchemaCompareDb");
+            var status = DatabaseHelpers.EfDatabaseConfigName.CompareSqlToSql(DatabaseHelpers.EfDatabaseConfigName);
 
             //VERIFY
             status.ShouldBeValid();
@@ -72,8 +72,8 @@ namespace Tests.UnitTests
         public void Test60CompareSqlToSqlDbUpOk()
         {
             //SETUP
-            var connection1 = ConfigurationManager.ConnectionStrings["EfSchemaCompareDb"].ConnectionString;
-            var connection2 = ConfigurationManager.ConnectionStrings["TestDbUp"].ConnectionString;
+            var connection1 = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
+            var connection2 = ConfigurationManager.ConnectionStrings[DatabaseHelpers.DbUpDatabaseConfigName].ConnectionString;
 
             //EXECUTE
             var status = connection1.CompareSqlToSql(connection2);
@@ -91,7 +91,7 @@ namespace Tests.UnitTests
             //SETUP
 
             //EXECUTE
-            var status = "EfSchemaCompareDb".CompareSqlToSql("TestDbUp");
+            var status = DatabaseHelpers.EfDatabaseConfigName.CompareSqlToSql(DatabaseHelpers.DbUpDatabaseConfigName);
 
             //VERIFY
             status.ShouldBeValid(false);

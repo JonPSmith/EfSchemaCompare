@@ -19,7 +19,7 @@ namespace Tests.EfClasses
 
         //public string MyString { get; set; }
 
-        public int EfOnlyProperty { get; set; }
+        //public int EfOnlyProperty { get; set; }
 
         //---------------------------------------------
         //relationships

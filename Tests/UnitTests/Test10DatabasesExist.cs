@@ -34,6 +34,7 @@ namespace Tests.UnitTests
             DatabaseHelpers.DbUpWipeCreateDatabase();
 
             //VERIFY
-        } 
+        }
+
     }
 }

@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tests.EfClasses
 {
@@ -25,6 +26,9 @@ namespace Tests.EfClasses
         //---------------------------------------------
         //relationships
 
+        public int? DataSingletonId { get; set; }
+
+        [ForeignKey("DataSingletonId")]
         public DataSingleton SingletonNullable { get; set; }
 
         public ICollection<DataChild> Children { get; set; }

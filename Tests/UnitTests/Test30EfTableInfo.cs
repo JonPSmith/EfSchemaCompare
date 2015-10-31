@@ -38,7 +38,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(6);
+            _efInfos.Count.ShouldEqual(5);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "DataTopId", "MyString" }, efInfo.NormalCols.Select(x => x.ClrColumName));
+            CollectionAssert.AreEquivalent(new[] { "DataTopId", "MyString", "DataSingletonId" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataTopId");
         }
 
@@ -138,7 +138,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "DataSingletonId", "MyDateTime"}, efInfo.NormalCols.Select(x => x.ClrColumName));
+            CollectionAssert.AreEquivalent(new[] { "DataSingletonId", "MyDateTime", "DataTopId" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataSingletonId");
         }
 
@@ -152,7 +152,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            efInfo.RelationshipCols.Count.ShouldEqual(0);
+            CollectionAssert.AreEquivalent(new[] { "Parent" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
+            CollectionAssert.AreEquivalent(new[] { typeof(DataTop) }, efInfo.RelationshipCols.Select(x => x.ClrColumnType));
         }
 
         [Test]

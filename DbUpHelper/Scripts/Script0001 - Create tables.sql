@@ -1,14 +1,7 @@
-﻿create table $schema$.[EfViewData](
-	[EfViewDataId] [int] IDENTITY(1,1) PRIMARY KEY,
-	[MappingHash] [nvarchar](max) NULL,
-	[ViewsData] [nvarchar](max) NULL,
-	[DateCreatedUtc] [datetime] NOT NULL 
-)
-go
-
-create table $schema$.[DataTop](
+﻿create table $schema$.[DataTop](
 	[DataTopId] [int] IDENTITY(1,1) PRIMARY KEY,
-	[MyString] [nvarchar](25) NULL
+	[MyString] [nvarchar](25) NULL,
+	[DataSingletonId] [int] NULL,
 )
 go
 
@@ -23,6 +16,21 @@ go
 create table $schema$.[DataManyChildren](
 	[DataManyChildrenId] [int] IDENTITY(1,1) PRIMARY KEY,
 	[MyInt] [int] NOT NULL 
+)
+go
+
+create table $schema$.[DataCompKey](
+	[Key1] [int] NOT NULL,
+	[Key2] [uniqueidentifier] NOT NULL,
+	[MyEnum] [int] NOT NULL,
+	PRIMARY KEY(Key1, Key2)
+)
+go
+
+CREATE TABLE $schema$.[DataSingleton](
+	[DataSingletonId] [int] IDENTITY(1,1) PRIMARY KEY,
+	[MyDateTime] [datetime] NOT NULL,
+	[DataTopId] [int] NULL
 )
 go
 

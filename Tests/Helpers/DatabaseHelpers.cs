@@ -8,7 +8,6 @@
 #endregion
 
 using System.Configuration;
-using System.Data.Entity;
 using System.Data.SqlClient;
 using DbUpHelper;
 using Tests.EfClasses;

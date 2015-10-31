@@ -35,14 +35,13 @@ namespace Tests.EfClasses
 
             modelBuilder.Entity<DataTop>()
                 .HasOptional(x => x.SingletonNullable)
-                .WithOptionalPrincipal()
+                .WithRequired(x => x.Parent)
                 .WillCascadeOnDelete(false);
 
-
-            //modelBuilder.Entity<DataSingleton>()
-            //    .HasRequired(x => x.OnlyParent)
-            //    .WithOptional(x => x.SingletonNullable)
-            //    .WillCascadeOnDelete(false);
+            modelBuilder.Entity<DataSingleton>()
+                .HasRequired(x => x.Parent)
+                .WithOptional(x => x.SingletonNullable)
+                .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }
