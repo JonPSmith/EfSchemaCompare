@@ -9,6 +9,7 @@
 
 using System.Data;
 using System.Data.SqlClient;
+using CompareCore.Utils;
 using GenericLibsBase;
 using GenericLibsBase.Core;
 

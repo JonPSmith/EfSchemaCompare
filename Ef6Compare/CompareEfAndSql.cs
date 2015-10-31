@@ -17,16 +17,55 @@ using Ef6Compare.Internal;
 using GenericLibsBase;
 using GenericLibsBase.Core;
 
-namespace CompareEfSql
+namespace Ef6Compare
 {
-    public static class CompareEfAndSql
+    public class CompareEfAndSql
     {
-        public static ISuccessOrErrors CompareEfWithDb(this DbContext db, string sqlTableNamesToIgnore = "__MigrationHistory")
+        private string _sqlDbRefString;
+        private readonly string _sqlTableNamesToIgnore;
+
+        public CompareEfAndSql(string sqlTableNamesToIgnore = "__MigrationHistory")
         {
+            _sqlTableNamesToIgnore = sqlTableNamesToIgnore;
+        }
+
+        /// <summary>
+        /// This will compare the EF schema definition with the database it is linked to
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public ISuccessOrErrors CompareEfWithDb(DbContext db)
+        {
+            _sqlDbRefString = "database";
+            return CompareEfWithSql(db, db.Database.Connection.ConnectionString);
+        }
+
+        /// <summary>
+        /// This will compare the EF schema definition with another SQL database
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="configOrConnectionString">Either a full connection string or the name of a connection string in Config file</param>
+        /// <returns></returns>
+        public ISuccessOrErrors CompareEfWithDb(DbContext db, string configOrConnectionString)
+        {
+            var sqlConnectionString = configOrConnectionString.GetConfigurationOrActualString();
+            _sqlDbRefString = string.Format("database '{0}',", sqlConnectionString.GetDatabaseNameFromConnectionString());
+
+            return CompareEfWithSql(db, db.Database.Connection.ConnectionString);
+        }
+
+        /// <returns></returns>
+        private ISuccessOrErrors CompareEfWithSql(DbContext db, string sqlConnectionString)
+        {
+            if (db == null)
+                throw new ArgumentNullException("db");
+            if (sqlConnectionString == null)
+                throw new ArgumentNullException("sqlConnectionString");
+
             var status = SuccessOrErrors.Success("All Ok");
 
             var efInfos = EfTableInfo.GetAllEfTablesWithColInfo(db);
-            var sqlInfo = SqlTableInfo.GetAllSqlTablesWithColInfo(db.Database.Connection.ConnectionString);
+            var sqlInfo = SqlTableInfo.GetAllSqlTablesWithColInfo(sqlConnectionString);
             var relChecker = new EfRelationshipChecker(efInfos, sqlInfo);
 
             var sqlInfoDict = sqlInfo.ToDictionary(x => x.CombinedName);
@@ -37,8 +76,8 @@ namespace CompareEfSql
 
                 if (!sqlInfoDict.ContainsKey(efInfo.CombinedName))
                     status.AddSingleError(
-                        "The SQL database does not contain a table called {0}. Needed by EF class {1}",
-                        efInfo.CombinedName, efInfo.ClrClassType.Name);
+                        "Missing Table: The SQL {0} does not contain a table called {1}. Needed by EF class {2}.",
+                        _sqlDbRefString, efInfo.CombinedName, efInfo.ClrClassType.Name);
                 else
                 {
                     //has table, so compare the columns/properties
@@ -52,8 +91,8 @@ namespace CompareEfSql
                     {
                         if (!sqlColsDict.ContainsKey(clrCol.SqlColumnName))
                             status.AddSingleError(
-                                "The SQL table {0} does not contain a column called {1}. Needed by EF class {2}",
-                                efInfo.CombinedName, clrCol.SqlColumnName, efInfo.ClrClassType.Name);
+                                "Missing Column: The SQL {0} table {1} does not contain a column called {2}. Needed by EF class {3}.",
+                                _sqlDbRefString, efInfo.CombinedName, clrCol.SqlColumnName, efInfo.ClrClassType.Name);
                         else
                         {
                             //check the columns match
@@ -68,8 +107,8 @@ namespace CompareEfSql
                     {
                         foreach (var missingCol in sqlColsDict.Values)
                         {
-                            status.AddWarning(" SQL table {0} has a column called {1} (.NET type {2}) that EF does not access",
-                                efInfo.CombinedName, missingCol.ColumnName, missingCol.ColumnSqlType.SqlToClrType(missingCol.IsNullable));
+                            status.AddWarning("SQL {0} table {1} has a column called {2} (.NET type {3}) that EF does not access.",
+                                _sqlDbRefString, efInfo.CombinedName, missingCol.ColumnName, missingCol.ColumnSqlType.SqlToClrType(missingCol.IsNullable));
                         }
                     }
 
@@ -89,10 +128,10 @@ namespace CompareEfSql
             //now see what SQL tables haven't been mentioned
             if (sqlInfoDict.Any())
             {
-                var tablesToIgnore = sqlTableNamesToIgnore.Split(',').Select(x => x.Trim()).ToList();
+                var tablesToIgnore = _sqlTableNamesToIgnore.Split(',').Select(x => x.Trim()).ToList();
                 foreach (var unusedTable in sqlInfoDict.Values.Where(x => !tablesToIgnore.Contains(x.TableName)))
                 {
-                    status.AddWarning(" SQL table {0} was not used by EF", unusedTable.CombinedName);
+                    status.AddWarning("SQL {0} table {1} was not used by EF", _sqlDbRefString, unusedTable.CombinedName);
                 }
             }
 
@@ -103,25 +142,25 @@ namespace CompareEfSql
         //-------------------------------------------------------------------------------
         //private helpers
 
-        private static ISuccessOrErrors CheckColumn(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
+        private ISuccessOrErrors CheckColumn(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
         {
             var status = new SuccessOrErrors();
             if (SqlAndEfTypesDontMatch(sqlCol, clrCol))
                 status.AddSingleError(
-                    "The SQL column {0}.{1} type does not match EF. SQL type = {2}, EF type = {3}",
-                    combinedName, clrCol.SqlColumnName, sqlCol.ColumnSqlType.SqlToClrType(sqlCol.IsNullable),
+                    "Column Type: The SQL {0} column {1}.{2} type does not match EF. SQL type = {3}, EF type = {4}.",
+                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, sqlCol.ColumnSqlType.SqlToClrType(sqlCol.IsNullable),
                     clrCol.ClrColumnType);
 
             if (sqlCol.IsPrimaryKey != clrCol.IsPrimaryKey)
                 status.AddSingleError(
-                    "The SQL column {0}.{1} primary key settings don't match. SQL says it is {2}a key, EF says it is {3}a key",
-                    combinedName, clrCol.SqlColumnName,
+                    "The SQL {0}  column {1}.{2} primary key settings don't match. SQL says it is {3}a key, EF says it is {4}a key.",
+                    _sqlDbRefString, combinedName, clrCol.SqlColumnName,
                     sqlCol.IsPrimaryKey ? "" : "NOT ",
                     clrCol.IsPrimaryKey ? "" : "NOT ");
             else if (sqlCol.IsPrimaryKey && sqlCol.PrimaryKeyOrder != clrCol.PrimaryKeyOrder)
                 status.AddSingleError(
-                    "The SQL column {0}.{1} primary key order does not match. SQL order = {2}, EF order = {3}",
-                    combinedName, clrCol.SqlColumnName,
+                    "The SQL {0}  column {1}.{2} primary key order does not match. SQL order = {3}, EF order = {4}.",
+                    _sqlDbRefString, combinedName, clrCol.SqlColumnName,
                     sqlCol.PrimaryKeyOrder, clrCol.PrimaryKeyOrder);
 
             return status.Combine(CheckMaxLength(sqlCol, clrCol, combinedName));
@@ -139,15 +178,15 @@ namespace CompareEfSql
 
         }
 
-        private static ISuccessOrErrors CheckMaxLength(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
+        private ISuccessOrErrors CheckMaxLength(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
         {
             var status = new SuccessOrErrors();
             if (sqlCol.MaxLength == -1 && clrCol.MaxLength != -1)
             {
                 //SQL is at max length, but EF isn't
                 return status.AddSingleError(
-                    "The SQL column {0}.{1}, type {2}, is at max length, but EF length is at {3}",
-                    combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType, clrCol.MaxLength);
+                    "The  SQL {0}   column {1}.{2}, type {3}, is at max length, but EF length is at {4}.",
+                    _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType, clrCol.MaxLength);
             }
 
             //GetClrMaxLength will return -2 if we should not check things
@@ -156,8 +195,8 @@ namespace CompareEfSql
             {
                 //
                 return status.AddSingleError(
-                    "The SQL column {0}.{1}, type {2}, length does not match EF. SQL length = {3}, EF length = {4}",
-                    combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,
+                    "The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}",
+                    _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,
                     sqlCol.ColumnSqlType.GetClrMaxLength(sqlCol.MaxLength), clrCol.MaxLength);
             }
 

@@ -35,6 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +52,7 @@
     <Compile Include="SqlInfo\SqlPrimaryKey.cs" />
     <Compile Include="SqlInfo\SqlTableAndColumnData.cs" />
     <Compile Include="SqlInfo\SqlTableInfo.cs" />
+    <Compile Include="Utils\ConnectionHelper.cs" />
     <Compile Include="Utils\FormatHelpers.cs" />
     <Compile Include="Utils\TypeConverter.cs" />
   </ItemGroup>
