@@ -24,13 +24,19 @@ namespace Ef6Compare
         private string _sqlDbRefString;
         private readonly string _sqlTableNamesToIgnore;
 
-        public CompareEfAndSql(string sqlTableNamesToIgnore = "__MigrationHistory")
+        /// <summary>
+        /// Creates the CompareEfAndSql comparer.
+        /// </summary>
+        /// <param name="sqlTableNamesToIgnore">You can supply a comma delimited list of table 
+        /// names in the SQL database that you do not want reported as not used. 
+        /// The default is EF's __MigrationHistory table and DbUp's SchemaVersions table</param>
+        public CompareEfAndSql(string sqlTableNamesToIgnore = "__MigrationHistory,SchemaVersions")
         {
             _sqlTableNamesToIgnore = sqlTableNamesToIgnore;
         }
 
         /// <summary>
-        /// This will compare the EF schema definition with the database it is linked to
+        /// This will compare the EF schema definition with the database schema it is linked to
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
@@ -41,7 +47,7 @@ namespace Ef6Compare
         }
 
         /// <summary>
-        /// This will compare the EF schema definition with another SQL database
+        /// This will compare the EF schema definition with another SQL database schema
         /// </summary>
         /// <param name="db"></param>
         /// <param name="configOrConnectionString">Either a full connection string or the name of a connection string in Config file</param>
@@ -54,7 +60,9 @@ namespace Ef6Compare
             return CompareEfWithSql(db, db.Database.Connection.ConnectionString);
         }
 
-        /// <returns></returns>
+        //---------------------------------------------------------------------------
+        //private methods
+
         private ISuccessOrErrors CompareEfWithSql(DbContext db, string sqlConnectionString)
         {
             if (db == null)
@@ -137,10 +145,6 @@ namespace Ef6Compare
 
             return status;
         }
-
-
-        //-------------------------------------------------------------------------------
-        //private helpers
 
         private ISuccessOrErrors CheckColumn(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
         {
