@@ -6,13 +6,21 @@
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
 #endregion
+
+using System;
+
 namespace CompareCore.Utils
 {
     public static class FormatHelpers
     {
-        public static string FormCombinedName(string schemaName, string tableName)
+        public static string FormCombinedSchemaTableName(string schemaName, string tableName)
         {
-            return string.Format("[{0}].[{1}]", schemaName, tableName);
+            return String.Format("[{0}].[{1}]", schemaName, tableName);
+        }
+
+        public static string CombineTableAndColumnNames(string tableName, string columnName)
+        {
+            return tableName + "." + columnName;
         }
     }
 }

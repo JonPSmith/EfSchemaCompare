@@ -30,8 +30,8 @@ namespace Tests.UnitTests
             using (var db = new EfSchemaCompareDb())
             {
                 _efInfos = EfTableInfo.GetAllEfTablesWithColInfo(db);
-                var sqlInfos = SqlTableInfo.GetAllSqlTablesWithColInfo(db.Database.Connection.ConnectionString);
-                _checker = new EfRelationshipChecker(_efInfos, sqlInfos);
+                var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(db.Database.Connection.ConnectionString);
+                _checker = new EfRelationshipChecker(_efInfos, allSqlInfo, allSqlInfo.TableInfos);     //NOTE: we aren't able to filter potentialManyToManyTables
             }
         }
 
@@ -90,7 +90,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid();
-            status.Result.ShouldEqual("[dbo].[DataManyChildrenDataTop]");
+            status.Result.ShouldEqual("[dbo].[NonStandardManyToManyTableName]");
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid();
-            status.Result.ShouldEqual("[dbo].[DataManyChildrenDataTop]");
+            status.Result.ShouldEqual("[dbo].[NonStandardManyToManyTableName]");
         }
 
         [Test]

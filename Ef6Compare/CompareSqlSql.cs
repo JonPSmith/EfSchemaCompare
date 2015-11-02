@@ -36,12 +36,12 @@ namespace Ef6Compare
             _refDatabaseName = refDbConnection.GetDatabaseNameFromConnectionString();
             _toBeCheckDatabaseName = toBeCheckDbConnection.GetDatabaseNameFromConnectionString();
 
-            var sqlInfo1 = SqlTableInfo.GetAllSqlTablesWithColInfo(refDbConnection);
-            var sqlInfo2 = SqlTableInfo.GetAllSqlTablesWithColInfo(toBeCheckDbConnection);
+            var allSqlInfo1 = SqlAllInfo.SqlAllInfoFactory(refDbConnection);
+            var allSqlInfo2 = SqlAllInfo.SqlAllInfoFactory(toBeCheckDbConnection);
 
-            var sqlTable2Dict = sqlInfo2.ToDictionary(x => x.CombinedName);
+            var sqlTable2Dict = allSqlInfo2.TableInfos.ToDictionary(x => x.CombinedName);
 
-            foreach (var sqlTable in sqlInfo1)
+            foreach (var sqlTable in allSqlInfo1.TableInfos)
             {
                 if (!sqlTable2Dict.ContainsKey(sqlTable.CombinedName))
                     status.AddSingleError(
@@ -80,35 +80,35 @@ namespace Ef6Compare
                                  _toBeCheckDatabaseName, sqlTable.CombinedName, missingCol.ColumnName, missingCol.ColumnSqlType, _refDatabaseName);
                         }
                     }
+                }
+            }
 
-                    var foreignKeyDict =
-                        sqlTable2Info.ForeignKeys.ToDictionary(x => x.ToString());
-                    //now we check the foreign keys
-                    foreach (var foreignKey in sqlTable.ForeignKeys)
-                    {
+            //Now check the foreign keys
+            var foreignKeyDict = allSqlInfo2.ForeignKeys.ToDictionary(x => x.ToString());
+            //now we check the foreign keys
+            foreach (var foreignKey in allSqlInfo1.ForeignKeys)
+            {
 
-                        if (!foreignKeyDict.ContainsKey(foreignKey.ToString()))
-                            status.AddSingleError(
-                                "Missing Foreign key: The '{0}' SQL database has a foreign key {1}, which is missing in the '{2}' database.",
-                                _refDatabaseName, foreignKey.ToString(), _toBeCheckDatabaseName);
-                        else
-                        {
-                            var foreignKey2 = foreignKeyDict[foreignKey.ToString()];
-                            foreignKeyDict.Remove(foreignKey.ToString());
-                            if (foreignKey.DeleteAction != foreignKey2.DeleteAction)
-                                status.AddSingleError(
-                                    "Foreign Key Delete Action: The {{0}] database has a foreign key {1} that has delete action of {2}. Second database was '{3}'.",
-                                    _refDatabaseName, foreignKey.ToString(), foreignKey.DeleteAction, foreignKey2.DeleteAction, _toBeCheckDatabaseName);
-                        }
-                    }
-                    if (foreignKeyDict.Any())
-                    {
-                        foreach (var missingFKey in foreignKeyDict.Values)
-                        {
-                            status.AddWarning("The '{0}' database SQL table {1} has a foreign key {2}, which the '{3}' database did not have.",
-                                _toBeCheckDatabaseName, sqlTable.CombinedName, missingFKey.ToString(), _refDatabaseName);
-                        }
-                    }
+                if (!foreignKeyDict.ContainsKey(foreignKey.ToString()))
+                    status.AddSingleError(
+                        "Missing Foreign key: The '{0}' SQL database has a foreign key {1}, which is missing in the '{2}' database.",
+                        _refDatabaseName, foreignKey.ToString(), _toBeCheckDatabaseName);
+                else
+                {
+                    var foreignKey2 = foreignKeyDict[foreignKey.ToString()];
+                    foreignKeyDict.Remove(foreignKey.ToString());
+                    if (foreignKey.DeleteAction != foreignKey2.DeleteAction)
+                        status.AddSingleError(
+                            "Foreign Key Delete Action: The {{0}] database has a foreign key {1} that has delete action of {2}. Second database was '{3}'.",
+                            _refDatabaseName, foreignKey.ToString(), foreignKey.DeleteAction, foreignKey2.DeleteAction, _toBeCheckDatabaseName);
+                }
+            }
+            if (foreignKeyDict.Any())
+            {
+                foreach (var missingFKey in foreignKeyDict.Values)
+                {
+                    status.AddWarning("The '{0}' database has a foreign key {1}, which the '{2}' database did not have.",
+                        _toBeCheckDatabaseName, missingFKey.ToString(), _refDatabaseName);
                 }
             }
 

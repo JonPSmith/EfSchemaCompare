@@ -43,6 +43,16 @@ namespace Tests.EfClasses
                 .WithOptional(x => x.SingletonNullable)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<DataTop>()
+                .HasMany(r => r.ManyChildren)
+                .WithMany(r => r.ManyParents)
+                .Map(m =>
+                {
+                    m.MapLeftKey("DataTopId");
+                    m.MapRightKey("DataManyChildrenId");
+                    m.ToTable("NonStandardManyToManyTableName");
+                });
+
             base.OnModelCreating(modelBuilder);
         }
     }

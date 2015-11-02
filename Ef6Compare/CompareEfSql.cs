@@ -73,15 +73,13 @@ namespace Ef6Compare
             var status = SuccessOrErrors.Success("All Ok");
 
             var efInfos = EfTableInfo.GetAllEfTablesWithColInfo(db);
-            var sqlInfo = SqlTableInfo.GetAllSqlTablesWithColInfo(sqlConnectionString);
-            var relChecker = new EfRelationshipChecker(efInfos, sqlInfo);
+            var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(sqlConnectionString);
 
-            var sqlInfoDict = sqlInfo.ToDictionary(x => x.CombinedName);
+            var sqlInfoDict = allSqlInfo.TableInfos.ToDictionary(x => x.CombinedName);
 
-            //first we compare the ef table columns with the SQL table
+            //first we compare the ef table columns with the SQL table columns
             foreach (var efInfo in efInfos)
             {
-
                 if (!sqlInfoDict.ContainsKey(efInfo.CombinedName))
                     status.AddSingleError(
                         "Missing Table: The SQL {0} does not contain a table called {1}. Needed by EF class {2}.",
@@ -119,16 +117,23 @@ namespace Ef6Compare
                                 _sqlDbRefString, efInfo.CombinedName, missingCol.ColumnName, missingCol.ColumnSqlType.SqlToClrType(missingCol.IsNullable));
                         }
                     }
+                }
+            }
 
-                    //now we check the relationships
-                    foreach (var relationCol in efInfo.RelationshipCols)
-                    {
-                        var relStatus = relChecker.CheckEfRelationshipToSql(efInfo, relationCol);
-                        status.Combine(relStatus);
-                        if (relStatus.IsValid && relStatus.Result != null)
-                            //It has found a many-to-many table which we need to remove so that it does not show a warning at the end
-                            sqlInfoDict.Remove(relStatus.Result);
-                    }
+            //now we compare the EF relationships with the SQL foreign keys
+            //we do this here because we now have the tables that wren't mentioned in EF,
+            //which are the tables that EF will automatically add to handle many-many relationships.
+            var relChecker = new EfRelationshipChecker(efInfos, allSqlInfo, sqlInfoDict.Values);
+            foreach (var efInfo in efInfos)
+            {      
+                //now we check the relationships
+                foreach (var relationCol in efInfo.RelationshipCols)
+                {
+                    var relStatus = relChecker.CheckEfRelationshipToSql(efInfo, relationCol);
+                    status.Combine(relStatus);
+                    if (relStatus.IsValid && relStatus.Result != null)
+                        //It has found a many-to-many table which we need to remove so that it does not show a warning at the end
+                        sqlInfoDict.Remove(relStatus.Result);
                 }
             }
 

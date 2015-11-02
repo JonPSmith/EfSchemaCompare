@@ -7,6 +7,7 @@
 // =====================================================
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -20,12 +21,16 @@ namespace Tests.UnitTests
     {
 
         private ICollection<SqlTableInfo> _sqlInfos;
-
+        private ICollection<SqlForeignKeys> _sqlForeignKeys;
+            
+            
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
             var connection = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
-            _sqlInfos = SqlTableInfo.GetAllSqlTablesWithColInfo(connection);
+            var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(connection);
+            _sqlInfos = allSqlInfo.TableInfos;
+            _sqlForeignKeys = allSqlInfo.ForeignKeys;
         }
 
         [Test]
@@ -58,19 +63,6 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test11DataTopForeignKeysOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var sqlInfo = _sqlInfos.SingleOrDefault(x => x.TableName == "DataTop");
-
-            //VERIFY
-            sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ForeignKeys.Count.ShouldEqual(0);
-        }
-
-        [Test]
         public void Test20DataChildNormalColsOk()
         {
             //SETUP
@@ -89,20 +81,6 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test21DataChildRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var sqlInfo = _sqlInfos.SingleOrDefault(x => x.TableName == "DataChild");
-
-            //VERIFY
-            sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ForeignKeys.Count.ShouldEqual(1);
-            sqlInfo.ForeignKeys.First().ToString().ShouldEqual("Parent: DataChild.DataTopId, Referenced: DataTop.DataTopId");
-        }
-
-        [Test]
         public void Test30DataManyChildrenNormalColsOk()
         {
             //SETUP
@@ -116,21 +94,6 @@ namespace Tests.UnitTests
             sqlInfo.ColumnInfo.First().ToString().ShouldEqual("ColumnName: DataManyChildrenId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
             sqlInfo.ColumnInfo.Last().ToString().ShouldEqual("ColumnName: MyInt, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
         }
-
-        [Test]
-        public void Test31DataManyChildrenRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var sqlInfo = _sqlInfos.SingleOrDefault(x => x.TableName == "DataManyChildren");
-
-            //VERIFY
-            sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ForeignKeys.Count.ShouldEqual(0);
-        }
-
-
 
         [Test]
         public void Test40DataSingletonNormalColsOk()
@@ -151,16 +114,24 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test41DataSingletonRelationshipsOk()
+        public void Test50ForeignKeysOk()
         {
             //SETUP
 
             //EXECUTE
-            var sqlInfo = _sqlInfos.SingleOrDefault(x => x.TableName == "DataManyChildren");
 
             //VERIFY
-            sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ForeignKeys.Count.ShouldEqual(0);
+            _sqlForeignKeys.Count.ShouldEqual(7);
+            var list = _sqlForeignKeys.Select(x => x.ToString()).ToList();
+            var i = 0;
+            list[i++].ShouldEqual("Parent: DataChild.DataTopId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: DataSingleton.DataSingletonId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataTopId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: DataCompKeyDataTop.DataTop_DataTopId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataManyChildrenId, Referenced: DataManyChildren.DataManyChildrenId");
+            list[i++].ShouldEqual("Parent: DataCompKeyDataTop.DataCompKey_Key1, Referenced: DataCompKey.Key1");
+            list[i++].ShouldEqual("Parent: DataCompKeyDataTop.DataCompKey_Key2, Referenced: DataCompKey.Key2");
+
         }
     }
 }

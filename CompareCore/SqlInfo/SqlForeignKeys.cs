@@ -10,12 +10,20 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using CompareCore.Utils;
 
 namespace CompareCore.SqlInfo
 {
     public class SqlForeignKeys
     {
+        public string SchemaName { get; set; }
+
         public string ParentTableName { get; set; }
+
+        public string ParentTableNameWithScheme 
+        {
+            get { return FormatHelpers.FormCombinedSchemaTableName(SchemaName, ParentTableName); }
+        }
 
         public string ParentColName { get; set; }
 
@@ -44,7 +52,8 @@ namespace CompareCore.SqlInfo
 
                 //see https://msdn.microsoft.com/en-us/library/ms190196.aspx
                 command.CommandText = @"SELECT 
-   OBJECT_NAME(f.parent_object_id) AS ParentTableName
+    OBJECT_SCHEMA_NAME(f.parent_object_id) AS SchemaName
+   ,OBJECT_NAME(f.parent_object_id) AS ParentTableName
    ,COL_NAME(fc.parent_object_id, fc.parent_column_id) AS ParentColName
    ,OBJECT_NAME (f.referenced_object_id) AS ReferencedTableName
    ,COL_NAME(fc.referenced_object_id, fc.referenced_column_id) AS ReferencedColName
@@ -67,6 +76,7 @@ INNER JOIN sys.foreign_key_columns AS fc
                     //    object col = reader[j];
                     //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
                     //}
+                    row.SchemaName = reader.GetString(i++);
                     row.ParentTableName = reader.GetString(i++);
                     row.ParentColName = reader.GetString(i++);
                     row.ReferencedTableName = reader.GetString(i++);

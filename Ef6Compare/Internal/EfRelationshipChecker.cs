@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
+using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
 using CompareCore.Utils;
 using GenericLibsBase;
@@ -20,13 +21,25 @@ namespace Ef6Compare.Internal
 {
     internal class EfRelationshipChecker
     {
-        private readonly ICollection<EfTableInfo> _efInfos;
+        private readonly Dictionary<Type, EfTableInfo> _efInfosDict;
         private readonly Dictionary<string, SqlTableInfo> _sqlInfoDict;
+        private readonly SqlAllInfo _allSqlInfo;
+        private readonly ICollection<SqlTableInfo> _potentialManyToManyTables;
+        private readonly List<Tuple<string, List<string>>> _foreignKeysGroupByParentTableName;
 
-        public EfRelationshipChecker(ICollection<EfTableInfo> efInfos, ICollection<SqlTableInfo> sqlInfo)
+        public EfRelationshipChecker(IEnumerable<EfTableInfo> efInfos, 
+            SqlAllInfo allSqlInfo,
+            ICollection<SqlTableInfo> potentialManyToManyTables)
         {
-            _efInfos = efInfos;
-            _sqlInfoDict = sqlInfo.ToDictionary(x => x.CombinedName);
+            _efInfosDict = efInfos.ToDictionary(x => x.ClrClassType);
+            _allSqlInfo = allSqlInfo;
+            _sqlInfoDict = allSqlInfo.TableInfos.ToDictionary(x => x.CombinedName);
+            _potentialManyToManyTables = potentialManyToManyTables;
+            //This dictionary allows us to backtrack the foreign keys to the correct many-to-many table
+            _foreignKeysGroupByParentTableName = allSqlInfo.ForeignKeys
+                .GroupBy(key => key.ParentTableNameWithScheme)
+                .Select(x => new Tuple<string, List<string>>(x.Key, 
+                    x.Select(y => FormatHelpers.CombineTableAndColumnNames(y.ReferencedTableName, y.ReferencedColName)).OrderBy(y => y).ToList())).ToList();
         }
 
         /// <summary>
@@ -45,19 +58,28 @@ namespace Ef6Compare.Internal
 
                 if (relEfCol.FromToMultiplicities.ToMultiplicity == RelationshipMultiplicity.Many)
                 {
-                    //many to many - look for a linking table
+                    //many to many - look for a linking table in the list of _potentialManyToManyTables that has the right foreignKeys
 
-                    var toSqlTable = GetSqlTableDataFromCollection(relEfCol);
+                    var fromEfTable = GetEfTableDataFromClass(tableInfo.ClrClassType);
+                    var toEfTable = GetEfTableDataFromCollection(relEfCol);
 
-                    var linkTableStatus = FindLinkingTable(tableInfo, relEfCol, toSqlTable, out manyToManyTableName);
-                    status.Combine(linkTableStatus);
+                    var linkCombinedNames =
+                        AllManyToManyTablesThatHaveTheRightForeignKeys(fromEfTable, toEfTable).ToList();
 
-                    if (linkTableStatus.Result != null && !linkTableStatus.Result.ForeignKeys.Any(x => x.ParentTableName == manyToManyTableName
-                                                             && x.ReferencedTableName == toSqlTable.TableName))
+                    if (!linkCombinedNames.Any())
                         status.AddSingleError(
                             "EF has a {0} relationship between {1}.{2} and {3} and we found the linking table but it did not have the right foreign keys in SQL",
-                            relEfCol.FromToMultiplicities, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTable.TableName);
-                    //todo: check cascade deletes
+                            relEfCol.FromToMultiplicities, tableInfo.TableName, relEfCol.ClrColumnName, toEfTable.TableName);
+                    else
+                    {
+                        //now we check the entries in the linking tab
+                        if (linkCombinedNames.Count > 1)
+                        status.AddWarning("EF has a {0} relationship between {1}.{2} and {3}. This was ambigous so we may not have fully checked this.",
+                            relEfCol.FromToMultiplicities, tableInfo.TableName, relEfCol.ClrColumnName, toEfTable.TableName);
+
+                        manyToManyTableName = linkCombinedNames.First();
+                        //todo: check cascade deletes
+                    }
                 }
                 else
                 {
@@ -65,7 +87,7 @@ namespace Ef6Compare.Internal
                     var fromSqlTable = _sqlInfoDict[tableInfo.CombinedName];
                     var toSqlTable = GetSqlTableDataFromClass(relEfCol.ClrColumnType);
 
-                    if (!fromSqlTable.ForeignKeys.Any(x => x.ParentTableName == tableInfo.TableName
+                    if (!_allSqlInfo.ForeignKeys.Any(x => x.ParentTableName == tableInfo.TableName
                                                              && x.ReferencedTableName == toSqlTable.TableName))
                         status.AddSingleError(
                             "EF has a {0} relationship between {1}.{2} and {3} but we don't find that in SQL",
@@ -84,7 +106,7 @@ namespace Ef6Compare.Internal
                     var fromSqlTable = GetSqlTableDataFromCollection(relEfCol);
 
                     //we match just the table parts sql relational data. We could add the name of the parent primary key, but left out for now
-                    if (!fromSqlTable.ForeignKeys.Any(x => x.ParentTableName == fromSqlTable.TableName
+                    if (!_allSqlInfo.ForeignKeys.Any(x => x.ParentTableName == fromSqlTable.TableName
                                                              && x.ReferencedTableName == tableInfo.TableName))
                         status.AddSingleError(
                             "EF has a {0} relationship between {1} and {2}.{3} but we don't find that in SQL",
@@ -100,9 +122,9 @@ namespace Ef6Compare.Internal
 
                     //There is one foreign key for both directions. Therefore we need to check both 
 
-                    if (!toSqlTable.ForeignKeys.Any(x => x.ParentTableName == toSqlTable.TableName
+                    if (!_allSqlInfo.ForeignKeys.Any(x => x.ParentTableName == toSqlTable.TableName
                                          && x.ReferencedTableName == tableInfo.TableName)
-                        && !fromSqlTable.ForeignKeys.Any(x => x.ParentTableName == tableInfo.TableName
+                        && !_allSqlInfo.ForeignKeys.Any(x => x.ParentTableName == tableInfo.TableName
                                          && x.ReferencedTableName == toSqlTable.TableName))
                         status.AddSingleError(
                             "EF has a {0} relationship between {1}.{2} and {3} but we don't find that in SQL",
@@ -110,43 +132,31 @@ namespace Ef6Compare.Internal
                 }
             }
 
-            return status.HasErrors ? status : status.SetSuccessWithResult(
-                manyToManyTableName == null ? null : FormatHelpers.FormCombinedName(tableInfo.SchemaName, manyToManyTableName), 
-                "All Ok");
+            return status.HasErrors ? status : status.SetSuccessWithResult(manyToManyTableName, "All Ok");
         }
 
         //------------------------------------------------------------------------------------------
         //private helpers
 
         /// <summary>
-        /// This nasty method tries two names for the linking table, either TableA+TableB or TableB+TableA
+        /// This returns the names of tables that have a set of foreign keys which map to all of the primary keys of the from/to tables
         /// </summary>
-        /// <param name="tableInfo"></param>
-        /// <param name="relEfCol"></param>
-        /// <param name="toSqlTable"></param>
-        /// <param name="manyToManyTableName"></param>
+        /// <param name="fromEfTable"></param>
+        /// <param name="toEfTable"></param>
         /// <returns></returns>
-        private ISuccessOrErrors<SqlTableInfo> FindLinkingTable(EfTableInfo tableInfo, EfRelationshipInfo relEfCol, 
-                        SqlTableInfo toSqlTable, out string manyToManyTableName)
+        private IEnumerable<string> AllManyToManyTablesThatHaveTheRightForeignKeys(
+            EfTableInfo fromEfTable, EfTableInfo toEfTable)
         {
-            var status = new SuccessOrErrors<SqlTableInfo>();
+            //we form all the keys that we expect to see in the ReferencedTable/Col part of the many-to-many table
+            var allKeys =
+                fromEfTable.NormalCols.Where(x => x.IsPrimaryKey)
+                    .Select(x => FormatHelpers.CombineTableAndColumnNames(fromEfTable.TableName, x.SqlColumnName)).ToList();
+            allKeys.AddRange(toEfTable.NormalCols.Where(x => x.IsPrimaryKey)
+                    .Select(x => FormatHelpers.CombineTableAndColumnNames(toEfTable.TableName, x.SqlColumnName)));
 
-            SqlTableInfo linkingTable;
-            manyToManyTableName = toSqlTable.TableName + tableInfo.TableName;
-            var parentTableCombinedName1 = FormatHelpers.FormCombinedName(tableInfo.SchemaName, manyToManyTableName);
-            if (!_sqlInfoDict.TryGetValue(parentTableCombinedName1, out linkingTable))
-            {
-                manyToManyTableName = tableInfo.TableName + toSqlTable.TableName;
-                var parentTableCombinedName2 = FormatHelpers.FormCombinedName(tableInfo.SchemaName, manyToManyTableName);
-                if (!_sqlInfoDict.TryGetValue(parentTableCombinedName2, out linkingTable))
-                    return status.AddSingleError(
-                        "EF has a {0} relationship between {1}.{2} and {3} but we could not find the special EF linking table {4} in the SQL",
-                        relEfCol.FromToMultiplicities, tableInfo.TableName, relEfCol.ClrColumnName,
-                        toSqlTable.TableName, manyToManyTableName);
-            }
-
-            return status.SetSuccessWithResult(linkingTable, "All Ok");
+            return _foreignKeysGroupByParentTableName.Where(x => x.Item2.SequenceEqual(allKeys.OrderBy(y => y))).Select(x => x.Item1);
         }
+
 
 
         private SqlTableInfo GetSqlTableDataFromCollection(EfRelationshipInfo relEfCol)
@@ -160,10 +170,27 @@ namespace Ef6Compare.Internal
 
         private SqlTableInfo GetSqlTableDataFromClass(Type efClassType)
         {
-            var childEfData = _efInfos.SingleOrDefault(x => x.ClrClassType == efClassType);
-            if (childEfData == null)
+            EfTableInfo efData;
+            if (!_efInfosDict.TryGetValue(efClassType, out efData))
                 throw new InvalidOperationException("I could not find a EF class of the type " + efClassType.Name);
-            return _sqlInfoDict[childEfData.CombinedName];
+            return _sqlInfoDict[efData.CombinedName];
+        }
+
+        private EfTableInfo GetEfTableDataFromCollection(EfRelationshipInfo relEfCol)
+        {
+            if (!relEfCol.ClrColumnType.IsGenericType)
+                throw new InvalidOperationException("I expected a generic list etc. here");
+            var genArgs = relEfCol.ClrColumnType.GetGenericArguments();
+
+            return GetEfTableDataFromClass(genArgs[0]);
+        }
+
+        private EfTableInfo GetEfTableDataFromClass(Type efClassType)
+        {
+            EfTableInfo efData;
+            if (!_efInfosDict.TryGetValue(efClassType, out efData))
+                throw new InvalidOperationException("I could not find a EF class of the type " + efClassType.Name);
+            return efData;
         }
     }
 }

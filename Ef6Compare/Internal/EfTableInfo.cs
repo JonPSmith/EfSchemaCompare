@@ -29,7 +29,7 @@ namespace Ef6Compare.Internal
 
         public string SchemaName { get; set; }
 
-        public string CombinedName { get { return FormatHelpers.FormCombinedName(SchemaName, TableName); } }
+        public string CombinedName { get { return FormatHelpers.FormCombinedSchemaTableName(SchemaName, TableName); } }
 
         public Type ClrClassType { get; set; }
 
