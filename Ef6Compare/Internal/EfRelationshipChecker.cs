@@ -123,7 +123,6 @@ namespace Ef6Compare.Internal
         /// </summary>
         /// <param name="tableInfo"></param>
         /// <param name="relEfCol"></param>
-        /// <param name="toEfTable"></param>
         /// <param name="toSqlTable"></param>
         /// <param name="manyToManyTableName"></param>
         /// <returns></returns>

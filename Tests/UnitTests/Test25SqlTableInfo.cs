@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test30SqlTableInfo.cs
+// Filename: Test25SqlTableInfo.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -16,7 +16,7 @@ using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test30SqlTableInfo
+    public class Test25SqlTableInfo
     {
 
         private ICollection<SqlTableInfo> _sqlInfos;

@@ -120,16 +120,15 @@ namespace Ef6Compare
                         }
                     }
 
-                    //----------------- Had to turn off as really complicated! ------------------------------
-                    ////now we check the relationships
-                    //foreach (var relationCol in efInfo.RelationshipCols)
-                    //{
-                    //    var relStatus = relChecker.CheckEfRelationshipToSql(efInfo, relationCol);
-                    //    status.Combine(relStatus);
-                    //    if (relStatus.IsValid && relStatus.Result != null)
-                    //        //It has found a many-to-many table which we need to remove so that it does not show a warning at the end
-                    //        sqlInfoDict.Remove(relStatus.Result);
-                    //}
+                    //now we check the relationships
+                    foreach (var relationCol in efInfo.RelationshipCols)
+                    {
+                        var relStatus = relChecker.CheckEfRelationshipToSql(efInfo, relationCol);
+                        status.Combine(relStatus);
+                        if (relStatus.IsValid && relStatus.Result != null)
+                            //It has found a many-to-many table which we need to remove so that it does not show a warning at the end
+                            sqlInfoDict.Remove(relStatus.Result);
+                    }
                 }
             }
 

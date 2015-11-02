@@ -30,7 +30,6 @@ namespace Tests.UnitTests
                 //EXECUTE
                 var status = comparer.CompareEfWithDb(db);
 
-
                 //VERIFY
                 status.ShouldBeValid();
                 Console.WriteLine("WARNINGS:\n {0}", string.Join("\n", status.Warnings));

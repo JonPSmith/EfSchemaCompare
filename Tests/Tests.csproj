@@ -71,8 +71,10 @@
     <Compile Include="SqlCommands\BasicSqlCommands.cs" />
     <Compile Include="UnitTests\Test10DatabasesExist.cs" />
     <Compile Include="UnitTests\Test20SqlCommands.cs" />
-    <Compile Include="UnitTests\Test45EfTableInfo.cs" />
-    <Compile Include="UnitTests\Test30SqlTableInfo.cs" />
+    <Compile Include="UnitTests\Test32EfRelationships.cs" />
+    <Compile Include="UnitTests\Test35EfRelationshipChecker.cs" />
+    <Compile Include="UnitTests\Test30EfTableInfo.cs" />
+    <Compile Include="UnitTests\Test25SqlTableInfo.cs" />
     <Compile Include="UnitTests\Test60CompareSqlAndSql.cs" />
     <Compile Include="UnitTests\Test50CompareEfAndSql.cs" />
   </ItemGroup>
