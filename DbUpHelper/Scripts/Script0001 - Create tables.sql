@@ -34,10 +34,10 @@ CREATE TABLE $schema$.[DataSingleton](
 )
 go
 
-create table $schema$.[DataManyChildrenDataTop](
-	[DataManyChildren_DataManyChildrenId] [int] NOT NULL,
-	[DataTop_DataTopId] [int] NOT NULL,
-	primary key (DataManyChildren_DataManyChildrenId, DataTop_DataTopId)
+create table $schema$.[NonStandardManyToManyTableName](
+	[DataTopId] [int] NOT NULL,
+	[DataManyChildrenId] [int] NOT NULL,
+	primary key ([DataTopId], [DataManyChildrenId])
 )
 go
 

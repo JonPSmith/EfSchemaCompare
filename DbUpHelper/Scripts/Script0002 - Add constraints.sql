@@ -1,13 +1,11 @@
-﻿ALTER TABLE $schema$.[DataManyChildrenDataTop]  
-ADD  CONSTRAINT [FK_dbo.DataManyChildrenDataTop_dbo.DataManyChildrens_DataManyChildren_DataManyChildrenId] 
-FOREIGN KEY([DataManyChildren_DataManyChildrenId])
+﻿ALTER TABLE $schema$.[NonStandardManyToManyTableName]  
+ADD  CONSTRAINT [FK_dbo.NonStandardManyToManyTableName_dbo.DataManyChildren_DataManyChildrenId] FOREIGN KEY([DataManyChildrenId])
 REFERENCES $schema$.[DataManyChildren] ([DataManyChildrenId])
 ON DELETE CASCADE
 GO
 
-ALTER TABLE $schema$.[DataManyChildrenDataTop]  
-ADD CONSTRAINT [FK_dbo.DataManyChildrenDataTop_dbo.DataTop_DataTop_DataTopId] 
-FOREIGN KEY([DataTop_DataTopId])
+ALTER TABLE $schema$.[NonStandardManyToManyTableName]  
+ADD  CONSTRAINT [FK_dbo.NonStandardManyToManyTableName_dbo.DataTop_DataTopId] FOREIGN KEY([DataTopId])
 REFERENCES $schema$.[DataTop] ([DataTopId])
 ON DELETE CASCADE
 GO
