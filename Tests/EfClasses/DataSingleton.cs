@@ -24,9 +24,9 @@ namespace Tests.EfClasses
         //---------------------------------------------------------
         //relationships
 
-        public int? DataTopId { get; set; }
+        public int? NonStandardForeignKeyName { get; set; }
 
-        [ForeignKey("DataTopId")]
+        [ForeignKey("NonStandardForeignKeyName")]
         public DataTop Parent { get; set; }
 
         public DataSingleton()

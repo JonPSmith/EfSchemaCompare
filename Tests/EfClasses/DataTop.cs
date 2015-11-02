@@ -34,5 +34,7 @@ namespace Tests.EfClasses
         public ICollection<DataChild> Children { get; set; }
 
         public ICollection<DataManyChildren> ManyChildren { get; set; }
+
+        public ICollection<DataCompKey> ManyCompKeys { get; set; } 
     }
 }

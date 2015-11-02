@@ -8,6 +8,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,6 +27,11 @@ namespace Tests.EfClasses
         public Guid Key2 { get; set; }
 
         public EnumTests MyEnum { get; set; }
+
+        //------------------------------------------
+        //relationships
+
+        public ICollection<DataTop> ManyParents { get; set; }
 
     }
 }

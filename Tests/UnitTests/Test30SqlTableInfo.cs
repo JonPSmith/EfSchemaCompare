@@ -147,7 +147,7 @@ namespace Tests.UnitTests
             var i = 0;
             list[i++].ToString().ShouldEqual("ColumnName: DataSingletonId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("ColumnName: MyDateTime, ColumnSqlType: datetime, IsPrimaryKey: False, IsNullable: False, MaxLength: 8");
-            list[i++].ToString().ShouldEqual("ColumnName: DataTopId, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: NonStandardForeignKeyName, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
         }
 
         [Test]

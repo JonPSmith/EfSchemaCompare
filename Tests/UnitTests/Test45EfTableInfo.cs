@@ -65,8 +65,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "Children", "ManyChildren", "SingletonNullable" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
-            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataChild>), typeof(ICollection<DataManyChildren>), typeof(DataSingleton) }, 
+            CollectionAssert.AreEquivalent(new[] { "Children", "ManyChildren", "ManyCompKeys", "SingletonNullable" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
+            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataChild>), typeof(ICollection<DataManyChildren>), typeof(ICollection<DataCompKey>), typeof(DataSingleton) }, 
                 efInfo.RelationshipCols.Select(x => x.ClrColumnType));
         }
 
@@ -138,7 +138,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "DataSingletonId", "MyDateTime", "DataTopId" }, efInfo.NormalCols.Select(x => x.ClrColumName));
+            CollectionAssert.AreEquivalent(new[] { "DataSingletonId", "MyDateTime", "NonStandardForeignKeyName" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataSingletonId");
         }
 
@@ -181,7 +181,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            efInfo.RelationshipCols.Count.ShouldEqual(0);
+            CollectionAssert.AreEquivalent(new[] { "ManyParents" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
+            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataTop>) }, efInfo.RelationshipCols.Select(x => x.ClrColumnType));
         }
     }
 }

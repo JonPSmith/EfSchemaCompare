@@ -30,7 +30,7 @@ go
 CREATE TABLE $schema$.[DataSingleton](
 	[DataSingletonId] [int] IDENTITY(1,1) PRIMARY KEY,
 	[MyDateTime] [datetime] NOT NULL,
-	[DataTopId] [int] NULL
+	[NonStandardForeignKeyName] [int] NULL
 )
 go
 
@@ -38,6 +38,14 @@ create table $schema$.[DataManyChildrenDataTop](
 	[DataManyChildren_DataManyChildrenId] [int] NOT NULL,
 	[DataTop_DataTopId] [int] NOT NULL,
 	primary key (DataManyChildren_DataManyChildrenId, DataTop_DataTopId)
+)
+go
+
+create table $schema$.[DataCompKeyDataTop](
+	[DataCompKey_Key1] [int] NOT NULL,
+	[DataCompKey_Key2] [uniqueidentifier] NOT NULL,
+	[DataTop_DataTopId] [int] NOT NULL,
+    PRIMARY KEY ([DataCompKey_Key1], [DataCompKey_Key2], [DataTop_DataTopId])
 )
 go
 
