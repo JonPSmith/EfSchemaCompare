@@ -57,7 +57,7 @@ namespace Ef6Compare
             var sqlConnectionString = configOrConnectionString.GetConfigurationOrActualString();
             _sqlDbRefString = string.Format("database '{0}',", sqlConnectionString.GetDatabaseNameFromConnectionString());
 
-            return CompareEfWithSql(db, db.Database.Connection.ConnectionString);
+            return CompareEfWithSql(db, sqlConnectionString);
         }
 
         //---------------------------------------------------------------------------

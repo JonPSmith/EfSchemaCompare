@@ -9,6 +9,7 @@
 
 using System;
 using System.Configuration;
+using System.Linq;
 using Ef6Compare;
 using NUnit.Framework;
 using Tests.EfClasses;
@@ -49,7 +50,10 @@ namespace Tests.UnitTests
 
                 //VERIFY
                 status.ShouldBeValid();
-                Console.WriteLine("WARNINGS:\n {0}", string.Join("\n", status.Warnings));
+                status.Warnings.Count.ShouldEqual(1);
+                status.Warnings.First()
+                    .ShouldEqual(
+                        "Warning: SQL database 'TestDbUpSchemaCompareDb', table [dbo].[DataChild] has a column called MyString (.NET type System.String) that EF does not access.");
             }
         }
 
