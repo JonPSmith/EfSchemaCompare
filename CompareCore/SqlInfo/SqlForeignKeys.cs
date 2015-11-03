@@ -16,22 +16,22 @@ namespace CompareCore.SqlInfo
 {
     public class SqlForeignKeys
     {
-        public string SchemaName { get; set; }
+        public string SchemaName { get; private set; }
 
-        public string ParentTableName { get; set; }
+        public string ParentTableName { get; private set; }
 
         public string ParentTableNameWithScheme 
         {
             get { return FormatHelpers.FormCombinedSchemaTableName(SchemaName, ParentTableName); }
         }
 
-        public string ParentColName { get; set; }
+        public string ParentColName { get; private set; }
 
-        public string ReferencedTableName { get; set; }
+        public string ReferencedTableName { get; private set; }
 
-        public string ReferencedColName { get; set; }
+        public string ReferencedColName { get; private set; }
 
-        public string DeleteAction { get; set; }
+        public string DeleteAction { get; private set; }
 
         public override string ToString()
         {

@@ -19,12 +19,12 @@ namespace CompareCore.SqlInfo
 {
     public class SqlPrimaryKey
     {
-        public string TABLE_QUALIFIER { get; set; } 
-        public string TABLE_OWNER	 { get; set; } 
-        public string TABLE_NAME	 { get; set; } 
-        public string COLUMN_NAME { get; set; }
-        public Int16 KEY_SEQ { get; set; } 
-        public string PK_NAME { get; set; } 
+        public string TABLE_QUALIFIER { get; private set; } 
+        public string TABLE_OWNER	 { get; private set; } 
+        public string TABLE_NAME	 { get; private set; } 
+        public string COLUMN_NAME { get; private set; }
+        public Int16 KEY_SEQ { get; private set; } 
+        public string PK_NAME { get; private set; } 
         
         public static ICollection<SqlPrimaryKey> GetPrimaryKeysNames(string connectionString, string tableName)
         {

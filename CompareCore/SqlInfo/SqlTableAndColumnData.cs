@@ -17,17 +17,17 @@ namespace CompareCore.SqlInfo
     public class SqlTableAndColumnData
     {
 
-        public string TableName { get; set; }
+        public string TableName { get; private set; }
 
-        public string SchemaName { get; set; }
+        public string SchemaName { get; private set; }
 
-        public string ColumnName { get; set; }
+        public string ColumnName { get; private set; }
 
-        public string ColumnSqlType { get; set; }
+        public string ColumnSqlType { get; private set; }
 
-        public bool IsNullable { get; set; }
+        public bool IsNullable { get; private set; }
 
-        public Int16 MaxLength { get; set; }
+        public Int16 MaxLength { get; private set; }
 
         public override string ToString()
         {

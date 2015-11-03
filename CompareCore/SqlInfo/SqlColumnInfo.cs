@@ -10,17 +10,17 @@ namespace CompareCore.SqlInfo
 {
     public class SqlColumnInfo
     {
-        public string ColumnName { get; set; }
+        public string ColumnName { get; private set; }
 
-        public string ColumnSqlType { get; set; }
+        public string ColumnSqlType { get; private set; }
 
-        public bool IsPrimaryKey { get; set; }
+        public bool IsPrimaryKey { get; private set; }
 
-        public int PrimaryKeyOrder { get; set; }
+        public int PrimaryKeyOrder { get; private set; }
 
-        public bool IsNullable { get; set; }
+        public bool IsNullable { get; private set; }
 
-        public int MaxLength { get; set; }
+        public int MaxLength { get; private set; }
 
         public SqlColumnInfo(string columnName, string columnSqlType, SqlPrimaryKey sqlKeyInfo, bool isNullable, int maxLength)
         {

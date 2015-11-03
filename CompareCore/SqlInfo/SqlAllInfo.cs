@@ -14,9 +14,9 @@ namespace CompareCore.SqlInfo
 {
     public class SqlAllInfo
     {
-        public ICollection<SqlTableInfo> TableInfos { get; set; } 
+        public ICollection<SqlTableInfo> TableInfos { get; private set; } 
 
-        public ICollection<SqlForeignKeys> ForeignKeys { get; set; }
+        public ICollection<SqlForeignKeys> ForeignKeys { get; private set; }
 
         private SqlAllInfo(ICollection<SqlTableInfo> tableInfos, ICollection<SqlForeignKeys> foreignKeys)
         {

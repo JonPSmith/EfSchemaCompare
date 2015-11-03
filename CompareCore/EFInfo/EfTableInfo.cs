@@ -16,17 +16,17 @@ namespace CompareCore.EFInfo
 {
     public class EfTableInfo
     {
-        public string TableName { get; set; }
+        public string TableName { get; private set; }
 
-        public string SchemaName { get; set; }
+        public string SchemaName { get; private set; }
 
         public string CombinedName { get { return FormatHelpers.FormCombinedSchemaTableName(SchemaName, TableName); } }
 
-        public Type ClrClassType { get; set; }
+        public Type ClrClassType { get; private set; }
 
-        public ICollection<EfColumnInfo> NormalCols { get; set; }
+        public ICollection<EfColumnInfo> NormalCols { get; private set; }
 
-        public ICollection<EfRelationshipInfo> RelationshipCols { get; set; }
+        public ICollection<EfRelationshipInfo> RelationshipCols { get; private set; }
 
         public EfTableInfo(string tableName, string schemaName, Type clrClassType, ICollection<EfColumnInfo> normalCols, ICollection<EfRelationshipInfo> relationshipCols)
         {

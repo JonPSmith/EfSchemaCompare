@@ -15,13 +15,13 @@ namespace CompareCore.SqlInfo
 {
     public class SqlTableInfo
     {
-        public string TableName { get; set; }
+        public string TableName { get; private set; }
 
-        public string SchemaName { get; set; }
+        public string SchemaName { get; private set; }
 
         public string CombinedName { get { return FormatHelpers.FormCombinedSchemaTableName(SchemaName, TableName); } }
 
-        public ICollection<SqlColumnInfo> ColumnInfo { get; set; }
+        public ICollection<SqlColumnInfo> ColumnInfo { get; private set; }
 
         public SqlTableInfo(string tableName, string schemaName, ICollection<SqlColumnInfo> columnInfo)
         {

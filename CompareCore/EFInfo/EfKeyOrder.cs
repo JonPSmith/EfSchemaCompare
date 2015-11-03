@@ -10,9 +10,9 @@ namespace CompareCore.EFInfo
 {
     public class EfKeyOrder
     {
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
-        public int PrimaryKeyOrder { get; set; }
+        public int PrimaryKeyOrder { get; private set; }
 
         public EfKeyOrder(string name, int primaryKeyOrder)
         {

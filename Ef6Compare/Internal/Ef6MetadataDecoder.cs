@@ -94,6 +94,12 @@ namespace Ef6Compare.Internal
         //--------------------------------------------------------------------------
         //private method
 
+        /// <summary>
+        /// We convert the EF6 metadata RelationshipMultiplicity to an local copy to insulate against changes in the metadata format
+        /// </summary>
+        /// <param name="metaDataFrom"></param>
+        /// <param name="metaDataTo"></param>
+        /// <returns></returns>
         private static FromToMultiplicity ConvertMetadataToInternalTypes(RelationshipMultiplicity metaDataFrom, RelationshipMultiplicity metaDataTo)
         {
             var efFrom = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), metaDataFrom.ToString());

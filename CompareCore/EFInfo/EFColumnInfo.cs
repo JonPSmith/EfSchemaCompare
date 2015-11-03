@@ -16,22 +16,22 @@ namespace CompareCore.EFInfo
     {
         private readonly PropertyInfo _clrProperty;
 
-        public string SqlColumnName { get; set; }
+        public string SqlColumnName { get; private set; }
 
         public string ClrColumName { get { return _clrProperty.Name; } }
 
         public Type ClrColumnType { get { return _clrProperty.PropertyType; } }
 
-        public bool IsPrimaryKey { get; set; }
+        public bool IsPrimaryKey { get; private set; }
 
-        public int PrimaryKeyOrder { get; set; }
+        public int PrimaryKeyOrder { get; private set; }
 
-        public bool IsNullable { get; set; }
+        public bool IsNullable { get; private set; }
 
         /// <summary>
         /// This holds the maxlength, or -1 if not set or invalid
         /// </summary>
-        public int MaxLength { get; set; }
+        public int MaxLength { get; private set; }
 
         public EfColumnInfo(string sqlColumnName, bool isNullable, int? maxLength, EfKeyOrder primaryKeyOrder, PropertyInfo clrProperty)
         {
