@@ -42,7 +42,7 @@ namespace CompareCore.EFInfo
                 PrimaryKeyOrder = primaryKeyOrder.PrimaryKeyOrder;
             }
             IsNullable = isNullable;
-            MaxLength = maxLength ?? -1;
+            MaxLength = maxLength ?? -2;        //-2 means don't check it
             _clrProperty = clrProperty;
         }
 

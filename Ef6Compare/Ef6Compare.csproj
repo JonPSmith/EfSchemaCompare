@@ -55,10 +55,7 @@
   <ItemGroup>
     <Compile Include="CompareEfSql.cs" />
     <Compile Include="CompareSqlSql.cs" />
-    <Compile Include="Internal\EfRelationshipChecker.cs" />
-    <Compile Include="Internal\EfRelationshipInfo.cs" />
-    <Compile Include="Internal\EfTableInfo.cs" />
-    <Compile Include="Internal\FromToMultiplicity.cs" />
+    <Compile Include="Internal\Ef6MetadataDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

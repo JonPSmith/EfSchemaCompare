@@ -27,6 +27,7 @@ namespace Tests.EfClasses
         public int? NonStandardForeignKeyName { get; set; }
 
         [ForeignKey("NonStandardForeignKeyName")]
+        [Column("NonStandardParent")]
         public DataTop Parent { get; set; }
 
         public DataSingleton()

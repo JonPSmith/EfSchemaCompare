@@ -72,7 +72,7 @@ namespace Ef6Compare
 
             var status = SuccessOrErrors.Success("All Ok");
 
-            var efInfos = EfTableInfo.GetAllEfTablesWithColInfo(db);
+            var efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db);
             var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(sqlConnectionString);
 
             var sqlInfoDict = allSqlInfo.TableInfos.ToDictionary(x => x.CombinedName);
@@ -188,7 +188,11 @@ namespace Ef6Compare
 
         private ISuccessOrErrors CheckMaxLength(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
         {
-            var status = new SuccessOrErrors();
+            var status = SuccessOrErrors.Success("All ok");
+
+            //if clrCol.MaxLength == -2 if we should not check the max length because it is a base class and EF does not hold the MaxLength
+            if (clrCol.MaxLength == -2) return status;
+
             if (sqlCol.MaxLength == -1 && clrCol.MaxLength != -1)
             {
                 //SQL is at max length, but EF isn't
@@ -197,11 +201,9 @@ namespace Ef6Compare
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType, clrCol.MaxLength);
             }
 
-            //GetClrMaxLength will return -2 if we should not check things
             var sqlModifiedMaxLength = sqlCol.ColumnSqlType.GetClrMaxLength(sqlCol.MaxLength);
-            if (sqlModifiedMaxLength != -2 && sqlModifiedMaxLength != clrCol.MaxLength)
+            if (sqlModifiedMaxLength != clrCol.MaxLength)
             {
-                //
                 return status.AddSingleError(
                     "The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,

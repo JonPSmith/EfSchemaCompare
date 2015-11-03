@@ -1,58 +1,27 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: EfTableInfo.cs
-// Date Created: 2015/10/31
+// Filename: Ef6MetadataDecoder.cs
+// Date Created: 2015/11/03
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
 #endregion
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using CompareCore.EFInfo;
-using CompareCore.Utils;
-
-[assembly: InternalsVisibleTo("Tests")]
 
 namespace Ef6Compare.Internal
 {
-    internal class EfTableInfo
+    public static class Ef6MetadataDecoder
     {
-        public string TableName { get; set; }
-
-        public string SchemaName { get; set; }
-
-        public string CombinedName { get { return FormatHelpers.FormCombinedSchemaTableName(SchemaName, TableName); } }
-
-        public Type ClrClassType { get; set; }
-
-        public ICollection<EfColumnInfo> NormalCols { get; set; }
-
-        public ICollection<EfRelationshipInfo> RelationshipCols { get; set; }
-
-        public EfTableInfo(string tableName, string schemaName, Type clrClassType, ICollection<EfColumnInfo> normalCols, ICollection<EfRelationshipInfo> relationshipCols)
-        {
-            TableName = tableName;
-            SchemaName = schemaName;
-            ClrClassType = clrClassType;
-            NormalCols = normalCols;
-            RelationshipCols = relationshipCols;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("Name: {0}.{1}, NormalCols: {2}, Relationships: {3}", SchemaName, TableName, NormalCols.Count, RelationshipCols.Count);
-        }
-
-        //----------------------------------------------------
-
         /// <summary>
         /// This returns information on all the Ef classes that are mapped to the database
         /// </summary>
@@ -60,10 +29,10 @@ namespace Ef6Compare.Internal
         /// <returns></returns>
         public static ICollection<EfTableInfo> GetAllEfTablesWithColInfo(DbContext context)
         {
-            var metadata = ((IObjectContextAdapter) context).ObjectContext.MetadataWorkspace;
+            var metadata = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
 
             // Get the part of the model that contains info about the actual CLR types
-            var objectItemCollection = ((ObjectItemCollection) metadata.GetItemCollection(DataSpace.OSpace));
+            var objectItemCollection = ((ObjectItemCollection)metadata.GetItemCollection(DataSpace.OSpace));
             var efClassesAssembly = Assembly.GetAssembly(context.GetType());
 
             // Get all the classes included in this Ef Context
@@ -111,12 +80,25 @@ namespace Ef6Compare.Internal
 
                 var relationshipInfos = (from navProperty in entitySet.ElementType.NavigationProperties
                                          let clrProperty = clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(x => x.Name == navProperty.Name)
-                                         select new EfRelationshipInfo(navProperty, clrProperty)).ToList();
+                                         let relationship = ConvertMetadataToInternalTypes
+                                                (navProperty.FromEndMember.RelationshipMultiplicity, navProperty.ToEndMember.RelationshipMultiplicity)
+                                         let columnArr = clrProperty.GetCustomAttribute<ColumnAttribute>()
+                                         select new EfRelationshipInfo(relationship, clrProperty, columnArr == null ? clrProperty.Name : columnArr.Name)).ToList();
 
                 result.Add(new EfTableInfo(tableName, tableSchema, clrClassType, columnInfos, relationshipInfos));
             }
 
             return result;
         }
+
+        //--------------------------------------------------------------------------
+        //private method
+
+        private static FromToMultiplicity ConvertMetadataToInternalTypes(RelationshipMultiplicity metaDataFrom, RelationshipMultiplicity metaDataTo)
+        {
+            var efFrom = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), metaDataFrom.ToString());
+            var efTo = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), metaDataTo.ToString());
+            return new FromToMultiplicity(efFrom, efTo);
+        } 
     }
 }

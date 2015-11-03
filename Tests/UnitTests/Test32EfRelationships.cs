@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CompareCore.EFInfo;
 using Ef6Compare.Internal;
 using NUnit.Framework;
 using Tests.EfClasses;
@@ -26,7 +27,7 @@ namespace Tests.UnitTests
         {
             using (var db = new EfSchemaCompareDb())
             {
-                _efInfos = EfTableInfo.GetAllEfTablesWithColInfo(db);
+                _efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db);
             }
         }
 

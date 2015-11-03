@@ -19,6 +19,7 @@ namespace Tests.EfClasses
         public int DataTopId { get; set; }
 
         [MaxLength(25)]
+        [Column(TypeName = "varchar")]
         public string MyString { get; set; }
 
         public int LengthMyString { get { return MyString == null ? -1 : MyString.Length; } }

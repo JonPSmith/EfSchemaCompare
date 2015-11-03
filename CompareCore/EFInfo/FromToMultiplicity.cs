@@ -7,17 +7,17 @@
 // =====================================================
 #endregion
 
-using System.Data.Entity.Core.Metadata.Edm;
-
-namespace Ef6Compare.Internal
+namespace CompareCore.EFInfo
 {
 
-    internal class FromToMultiplicity
-    {
-        public RelationshipMultiplicity FromMultiplicity { get; private set; }
-        public RelationshipMultiplicity ToMultiplicity { get; private set; }
+    public enum EfRelationshipTypes { ZeroOrOne, One, Many }
 
-        public FromToMultiplicity(RelationshipMultiplicity fromMultiplicity, RelationshipMultiplicity toMultiplicity)
+    public class FromToMultiplicity
+    {
+        public EfRelationshipTypes FromMultiplicity { get; private set; }
+        public EfRelationshipTypes ToMultiplicity { get; private set; }
+
+        public FromToMultiplicity(EfRelationshipTypes fromMultiplicity, EfRelationshipTypes toMultiplicity)
         {
             FromMultiplicity = fromMultiplicity;
             ToMultiplicity = toMultiplicity;

@@ -9,17 +9,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
-using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
 using CompareCore.Utils;
 using GenericLibsBase;
 using GenericLibsBase.Core;
 
-namespace Ef6Compare.Internal
+namespace CompareCore.EFInfo
 {
-    internal class EfRelationshipChecker
+    public class EfRelationshipChecker
     {
         private readonly Dictionary<Type, EfTableInfo> _efInfosDict;
         private readonly Dictionary<string, SqlTableInfo> _sqlInfoDict;
@@ -52,11 +50,11 @@ namespace Ef6Compare.Internal
         {
             var status = new SuccessOrErrors<string>();
             string manyToManyTableName = null;
-            if (relEfCol.FromToMultiplicities.FromMultiplicity == RelationshipMultiplicity.Many)
+            if (relEfCol.FromToMultiplicities.FromMultiplicity == EfRelationshipTypes.Many)
             {
                 //handle from many
 
-                if (relEfCol.FromToMultiplicities.ToMultiplicity == RelationshipMultiplicity.Many)
+                if (relEfCol.FromToMultiplicities.ToMultiplicity == EfRelationshipTypes.Many)
                 {
                     //many to many - look for a linking table in the list of _potentialManyToManyTables that has the right foreignKeys
 
@@ -99,7 +97,7 @@ namespace Ef6Compare.Internal
             {
                 //The parent is single, which implies that the child holds the key
 
-                if (relEfCol.FromToMultiplicities.ToMultiplicity == RelationshipMultiplicity.Many)
+                if (relEfCol.FromToMultiplicities.ToMultiplicity == EfRelationshipTypes.Many)
                 {
                     //typical one to many
 
