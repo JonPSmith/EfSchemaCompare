@@ -1,6 +1,6 @@
 ﻿#region licence
 // =====================================================
-// EfSchemeCompare Project - project to compare EF schema to SQL schema
+// EfSchemeCompare Project - project-to-compare EF schema-to-SQL schema
 // Filename: Test30EfTableInfo.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
@@ -66,7 +66,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("One to ZeroOrOne");
+            refEfCol.FromToMultiplicities.ToString().ShouldEqual("One-to-ZeroOrOne");
             refEfCol.ClrColumnType.ShouldEqual(typeof(DataSingleton));
         }
 
@@ -81,7 +81,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("One to Many");
+            refEfCol.FromToMultiplicities.ToString().ShouldEqual("One-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataChild));
         }
 
@@ -97,7 +97,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many to Many");
+            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataManyChildren));
         }
 
@@ -112,7 +112,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many to Many");
+            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataCompKey));
         }
 
@@ -129,7 +129,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many to One");
+            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-One");
             refEfCol.ClrColumnType.ShouldEqual(typeof(DataTop));   
         }
 
@@ -144,7 +144,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many to Many");
+            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataTop));
         }
 
@@ -159,7 +159,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("ZeroOrOne to One");
+            refEfCol.FromToMultiplicities.ToString().ShouldEqual("ZeroOrOne-to-One");
             refEfCol.ClrColumnType.ShouldEqual(typeof(DataTop));  
         }
 
@@ -174,7 +174,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many to Many");
+            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataTop));
         }
 
