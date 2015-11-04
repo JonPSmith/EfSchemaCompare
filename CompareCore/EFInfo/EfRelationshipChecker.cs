@@ -66,13 +66,13 @@ namespace CompareCore.EFInfo
 
                     if (!linkCombinedNames.Any())
                         status.AddSingleError(
-                            "EF has a {0} relationship between {1}.{2} and {3} and we found the linking table but it did not have the right foreign keys in SQL",
+                            "Missing Link Table: EF has a {0} relationship between {1}.{2} and {3} but we could not find a linking table with the right foreign keys.",
                             relEfCol.FromToMultiplicities, tableInfo.TableName, relEfCol.ClrColumnName, toEfTable.TableName);
                     else
                     {
                         //now we check the entries in the linking tab
                         if (linkCombinedNames.Count > 1)
-                        status.AddWarning("EF has a {0} relationship between {1}.{2} and {3}. This was ambigous so we may not have fully checked this.",
+                            status.AddWarning("Ambigous Link Table: EF has a {0} relationship between {1}.{2} and {3}. This was ambigous so we may not have fully checked this.",
                             relEfCol.FromToMultiplicities, tableInfo.TableName, relEfCol.ClrColumnName, toEfTable.TableName);
 
                         manyToManyTableName = linkCombinedNames.First();
@@ -88,7 +88,7 @@ namespace CompareCore.EFInfo
                     if (!_allSqlInfo.ForeignKeys.Any(x => x.ParentTableName == tableInfo.TableName
                                                              && x.ReferencedTableName == toSqlTable.TableName))
                         status.AddSingleError(
-                            "EF has a {0} relationship between {1}.{2} and {3} but we don't find that in SQL",
+                            "Missing Foreign Key: EF has a {0} relationship between {1}.{2} and {3} but we don't find that in SQL",
                             relEfCol.FromToMultiplicities, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTable.TableName);
                     //todo: check cascade deletes
                 }
@@ -107,7 +107,7 @@ namespace CompareCore.EFInfo
                     if (!_allSqlInfo.ForeignKeys.Any(x => x.ParentTableName == fromSqlTable.TableName
                                                              && x.ReferencedTableName == tableInfo.TableName))
                         status.AddSingleError(
-                            "EF has a {0} relationship between {1} and {2}.{3} but we don't find that in SQL",
+                            "Missing Foreign Key: EF has a {0} relationship between {1} and {2}.{3} but we don't find that in SQL",
                             relEfCol.FromToMultiplicities, fromSqlTable.TableName, tableInfo.TableName,
                             relEfCol.ClrColumnName);
                     //todo: check cascade deletes
@@ -125,7 +125,7 @@ namespace CompareCore.EFInfo
                         && !_allSqlInfo.ForeignKeys.Any(x => x.ParentTableName == tableInfo.TableName
                                          && x.ReferencedTableName == toSqlTable.TableName))
                         status.AddSingleError(
-                            "EF has a {0} relationship between {1}.{2} and {3} but we don't find that in SQL",
+                            "Missing Foreign Key: EF has a {0} relationship between {1}.{2} and {3} but we don't find that in SQL",
                             relEfCol.FromToMultiplicities, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTable.TableName);
                 }
             }

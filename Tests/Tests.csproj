@@ -77,6 +77,7 @@
     <Compile Include="UnitTests\Test25SqlTableInfo.cs" />
     <Compile Include="UnitTests\Test60CompareSqlAndSql.cs" />
     <Compile Include="UnitTests\Test50CompareEfAndSql.cs" />
+    <Compile Include="UnitTests\Test99DataAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

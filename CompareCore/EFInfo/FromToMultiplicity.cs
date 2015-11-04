@@ -25,7 +25,7 @@ namespace CompareCore.EFInfo
 
         public override string ToString()
         {
-            return string.Format("{0} to {1}", FromMultiplicity, ToMultiplicity);
+            return string.Format("{0}-to-{1}", FromMultiplicity, ToMultiplicity);
         }
     }
 }
