@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EfCompare.cs" />
     <Compile Include="EFInfo\EFColumnInfo.cs" />
     <Compile Include="EFInfo\EfKeyOrder.cs" />
     <Compile Include="EFInfo\EfRelationshipChecker.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="EFInfo\EfTableInfo.cs" />
     <Compile Include="EFInfo\FromToMultiplicity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlCompare.cs" />
     <Compile Include="SqlInfo\SqlAllInfo.cs" />
     <Compile Include="SqlInfo\SqlColumnInfo.cs" />
     <Compile Include="SqlInfo\SqlForeignKeys.cs" />
