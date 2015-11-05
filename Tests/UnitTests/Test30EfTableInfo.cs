@@ -81,7 +81,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "DataChildId", "MyInt", "DataTopId" }, efInfo.NormalCols.Select(x => x.ClrColumName));
+            CollectionAssert.AreEquivalent(new[] { "DataChildId", "MyInt", "MyString", "DataTopId" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataChildId");      
         }
 

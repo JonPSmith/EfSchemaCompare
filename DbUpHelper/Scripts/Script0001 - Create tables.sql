@@ -1,6 +1,6 @@
 ﻿create table $schema$.[DataTop](
 	[DataTopId] [int] IDENTITY(1,1) PRIMARY KEY,
-	[MyString] [nvarchar](25) NULL,
+	[MyString] [varchar](25) NULL,
 	[DataSingletonId] [int] NULL,
 )
 go
@@ -8,7 +8,7 @@ go
 create table $schema$.[DataChild](
 	[DataChildId] [int] IDENTITY(1,1)PRIMARY KEY,
 	[MyInt] [int] NOT NULL,
-	[MyString] [varchar](max) NULL,
+	[MyString] [nvarchar](max) NULL,
 	[DataTopId] [int] NOT NULL
 )
 go

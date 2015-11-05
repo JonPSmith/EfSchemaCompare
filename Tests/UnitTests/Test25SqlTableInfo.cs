@@ -72,11 +72,12 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ColumnInfo.Count.ShouldEqual(3);
+            sqlInfo.ColumnInfo.Count.ShouldEqual(4);
             var list = sqlInfo.ColumnInfo.ToList();
             var i = 0;
             list[i++].ToString().ShouldEqual("ColumnName: DataChildId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("ColumnName: MyInt, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: MyString, ColumnSqlType: nvarchar, IsPrimaryKey: False, IsNullable: True, MaxLength: -1");
             list[i++].ToString().ShouldEqual("ColumnName: DataTopId, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
         }
 

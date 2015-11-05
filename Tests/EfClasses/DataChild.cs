@@ -17,7 +17,7 @@ namespace Tests.EfClasses
 
         public int MyInt { get; set; }
 
-        //public string MyString { get; set; }
+        public string MyString { get; set; }
 
         //public int EfOnlyProperty { get; set; }
 

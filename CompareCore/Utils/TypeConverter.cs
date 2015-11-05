@@ -76,6 +76,12 @@ namespace CompareCore.Utils
             throw new TypeLoadException(string.Format("Can not load CLR Type from {0}", sqlType));
         }
 
+        /// <summary>
+        /// Clr uses a MaxLength for unicode data, i.e. SQL nvarchar, nchar, ntext, which is half what is should be
+        /// </summary>
+        /// <param name="sqlType"></param>
+        /// <param name="sqlMaxLength"></param>
+        /// <returns></returns>
         public static int GetClrMaxLength(this string sqlType, int sqlMaxLength)
         {
             if (sqlMaxLength == -1) return sqlMaxLength;          //-1 means max length

@@ -68,15 +68,18 @@ namespace Ef6Compare.Internal
                     .Single(e => objectItemCollection.GetClrType(e) == clrClassType).KeyProperties
                     .Select(x => new EfKeyOrder(x.Name, i++)).ToList();
 
+
                 var columnInfos = (from edmProperty in entitySet.ElementType.DeclaredProperties
                                    let columnName = mapping.EntityTypeMappings.Single()
                                        .Fragments.Single()
                                        .PropertyMappings.OfType<ScalarPropertyMapping>()
                                        .Single(m => m.Property == edmProperty)
                                        .Column.Name
+                                   let sqlTypeName = tableEntitySet.ElementType.DeclaredMembers
+                                       .Single(x => x.Name == edmProperty.Name).TypeUsage.EdmType.Name
                                    let clrProperty = clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(x => x.Name == edmProperty.Name)
                                    let primaryKey = primaryKeys.SingleOrDefault(x => x.Name == edmProperty.Name)
-                                   select new EfColumnInfo(columnName, edmProperty.Nullable, edmProperty.MaxLength, primaryKey, clrProperty)).ToList();
+                                   select new EfColumnInfo(columnName, sqlTypeName, edmProperty.Nullable, edmProperty.MaxLength, primaryKey, clrProperty)).ToList();
 
                 var relationshipInfos = (from navProperty in entitySet.ElementType.NavigationProperties
                                          let clrProperty = clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(x => x.Name == navProperty.Name)

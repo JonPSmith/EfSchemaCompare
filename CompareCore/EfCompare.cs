@@ -111,37 +111,31 @@ namespace CompareCore
         private ISuccessOrErrors CheckColumn(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
         {
             var status = new SuccessOrErrors();
-            if (SqlAndEfTypesDontMatch(sqlCol, clrCol))
+            if (sqlCol.ColumnSqlType != clrCol.SqlTypeName)
                 status.AddSingleError(
                     "Column Type: The SQL {0} column {1}.{2} type does not match EF. SQL type = {3}, EF type = {4}.",
-                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, sqlCol.ColumnSqlType.SqlToClrType(sqlCol.IsNullable),
-                    clrCol.ClrColumnType);
+                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, sqlCol.ColumnSqlType, clrCol.SqlTypeName);
+
+            if (sqlCol.IsNullable != clrCol.IsNullable)
+                status.AddSingleError(
+                    "Column Nullable: SQL {0} column {1}.{2} nullablity does not match. SQL is {3}NULL, EF is {5}NULL.",
+                    _sqlDbRefString, combinedName, clrCol.SqlColumnName,
+                    sqlCol.IsNullable ? "" : "NOT ",
+                    clrCol.IsNullable ? "" : "NOT ");
 
             if (sqlCol.IsPrimaryKey != clrCol.IsPrimaryKey)
                 status.AddSingleError(
-                    "The SQL {0}  column {1}.{2} primary key settings don't match. SQL says it is {3}a key, EF says it is {4}a key.",
+                    "Primary Key: The SQL {0}  column {1}.{2} primary key settings don't match. SQL says it is {3}a key, EF says it is {4}a key.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName,
                     sqlCol.IsPrimaryKey ? "" : "NOT ",
                     clrCol.IsPrimaryKey ? "" : "NOT ");
             else if (sqlCol.IsPrimaryKey && sqlCol.PrimaryKeyOrder != clrCol.PrimaryKeyOrder)
                 status.AddSingleError(
-                    "The SQL {0}  column {1}.{2} primary key order does not match. SQL order = {3}, EF order = {4}.",
+                    "Primary Key Order: The SQL {0}  column {1}.{2} primary key order does not match. SQL order = {3}, EF order = {4}.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName,
                     sqlCol.PrimaryKeyOrder, clrCol.PrimaryKeyOrder);
 
             return status.Combine(CheckMaxLength(sqlCol, clrCol, combinedName));
-        }
-
-        private static bool SqlAndEfTypesDontMatch(SqlColumnInfo sqlCol, EfColumnInfo clrCol)
-        {
-            var clrTypeFromSql = sqlCol.ColumnSqlType.SqlToClrType(sqlCol.IsNullable);
-            if (clrCol.ClrColumnType.IsEnum &&
-                (clrTypeFromSql == typeof (byte) || clrTypeFromSql == typeof (Int16) || clrTypeFromSql == typeof (Int32)))
-                //enum is stored as byte, int16 or int32 
-                return false;
-
-            return clrTypeFromSql != clrCol.ClrColumnType;
-
         }
 
         private ISuccessOrErrors CheckMaxLength(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
@@ -155,7 +149,7 @@ namespace CompareCore
             {
                 //SQL is at max length, but EF isn't
                 return status.AddSingleError(
-                    "The  SQL {0}   column {1}.{2}, type {3}, is at max length, but EF length is at {4}.",
+                    "MaxLength: The  SQL {0}   column {1}.{2}, type {3}, is at max length, but EF length is at {4}.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType, clrCol.MaxLength);
             }
 
@@ -163,7 +157,7 @@ namespace CompareCore
             if (sqlModifiedMaxLength != clrCol.MaxLength)
             {
                 return status.AddSingleError(
-                    "The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}",
+                    "MaxLength: The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,
                     sqlCol.ColumnSqlType.GetClrMaxLength(sqlCol.MaxLength), clrCol.MaxLength);
             }

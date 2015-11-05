@@ -18,6 +18,8 @@ namespace CompareCore.EFInfo
 
         public string SqlColumnName { get; private set; }
 
+        public string SqlTypeName { get; private set; }
+
         public string ClrColumName { get { return _clrProperty.Name; } }
 
         public Type ClrColumnType { get { return _clrProperty.PropertyType; } }
@@ -33,9 +35,15 @@ namespace CompareCore.EFInfo
         /// </summary>
         public int MaxLength { get; private set; }
 
-        public EfColumnInfo(string sqlColumnName, bool isNullable, int? maxLength, EfKeyOrder primaryKeyOrder, PropertyInfo clrProperty)
+        public EfColumnInfo(string sqlColumnName, string sqlTypeName, bool isNullable, int? maxLength, EfKeyOrder primaryKeyOrder, PropertyInfo clrProperty)
         {
+            const string maxTypeEnding = "(max)";
+
             SqlColumnName = sqlColumnName;
+            //types with a max length need 
+            SqlTypeName = sqlTypeName.EndsWith(maxTypeEnding)
+                ? sqlTypeName.Substring(0, sqlTypeName.Length - maxTypeEnding.Length)
+                : sqlTypeName;
             if (primaryKeyOrder != null)
             {
                 IsPrimaryKey = true;
@@ -48,8 +56,8 @@ namespace CompareCore.EFInfo
 
         public override string ToString()
         {
-            return string.Format("SqlColumnName: {0}, ClrColumName: {1}, ClrColumnType: {2}, IsPrimaryKey: {3}, IsNullable: {4}, MaxLength: {5}",
-                SqlColumnName, ClrColumName, ClrColumnType, IsPrimaryKey, IsNullable, MaxLength);
+            return string.Format("SqlColumnName: {0}, SqlTypeName: {1}, ClrColumName: {2}, ClrColumnType: {3}, IsPrimaryKey: {4}, PrimaryKeyOrder: {5}, IsNullable: {6}, MaxLength: {7}", 
+                SqlColumnName, SqlTypeName, ClrColumName, ClrColumnType, IsPrimaryKey, PrimaryKeyOrder, IsNullable, MaxLength);
         }
     }
 }
