@@ -44,7 +44,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(5);
+            _efInfos.Count.ShouldEqual(6);
  
         }
 
@@ -64,7 +64,22 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test11DataTopChildrenOk()
+        public void Test11DataCompKeysOk()
+        {
+            //SETUP
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
+            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "CompositeKeyData");
+
+            //EXECUTE
+            var status = _checker.CheckEfRelationshipToSql(efInfo, refEfCol);
+
+            //VERIFY
+            status.ShouldBeValid();
+            status.Result.ShouldEqual(null);
+        }
+
+        [Test]
+        public void Test12DataTopChildrenOk()
         {
             //SETUP
             var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
@@ -80,7 +95,7 @@ namespace Tests.UnitTests
 
 
         [Test]
-        public void Test12DataTopManyChildrenOk()
+        public void Test13DataTopManyChildrenOk()
         {
             //SETUP
             var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
@@ -95,7 +110,7 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test13DataTopManyCompKeysOk()
+        public void Test14DataTopManyCompKeysOk()
         {
             //SETUP
             var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
@@ -106,9 +121,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid();
-            status.Result.ShouldEqual("[dbo].[DataCompKeyDataTop]");
+            status.Result.ShouldEqual("[dbo].[DataManyCompKeyDataTop]");
         }
-
 
 
         [Test]
@@ -157,10 +171,10 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test50DataCompKeyNormalColsOk()
+        public void Test50DataManyCompKeyManyToManyOk()
         {
             //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataCompKey));
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyCompKey));
             var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ManyParents");
 
             //EXECUTE
@@ -168,8 +182,10 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid();
-            status.Result.ShouldEqual("[dbo].[DataCompKeyDataTop]");
+            status.Result.ShouldEqual("[dbo].[DataManyCompKeyDataTop]");
         }
+
+
 
     }
 }

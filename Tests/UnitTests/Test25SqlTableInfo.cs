@@ -56,7 +56,9 @@ namespace Tests.UnitTests
             sqlInfo.ShouldNotEqualNull();
             var list = sqlInfo.ColumnInfo.ToList();
             var i = 0;
-            list.Count.ShouldEqual(3);
+            list.Count.ShouldEqual(5);
+            list[i++].ToString().ShouldEqual("ColumnName: Key1, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: Key2, ColumnSqlType: uniqueidentifier, IsPrimaryKey: False, IsNullable: False, MaxLength: 16");
             list[i++].ToString().ShouldEqual("ColumnName: DataTopId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("ColumnName: MyString, ColumnSqlType: varchar, IsPrimaryKey: False, IsNullable: True, MaxLength: 25");
             list[i++].ToString().ShouldEqual("ColumnName: DataSingletonId, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
@@ -115,23 +117,60 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test50ForeignKeysOk()
+        public void Test50NonStandardCompKeyTableNormalColsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var sqlInfo = _sqlInfos.SingleOrDefault(x => x.TableName == "NonStandardCompKeyTable");
+
+            //VERIFY
+            sqlInfo.ShouldNotEqualNull();
+            sqlInfo.ColumnInfo.Count.ShouldEqual(3);
+            var list = sqlInfo.ColumnInfo.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("ColumnName: Key1, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: Key2, ColumnSqlType: uniqueidentifier, IsPrimaryKey: True, IsNullable: False, MaxLength: 16");
+            list[i++].ToString().ShouldEqual("ColumnName: NonStandardColumnName, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+        }
+
+        [Test]
+        public void Test55DataManyCompKeyNormalColsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var sqlInfo = _sqlInfos.SingleOrDefault(x => x.TableName == "DataManyCompKey");
+
+            //VERIFY
+            sqlInfo.ShouldNotEqualNull();
+            sqlInfo.ColumnInfo.Count.ShouldEqual(2);
+            var list = sqlInfo.ColumnInfo.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("ColumnName: ManyKey1, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: ManyKey2, ColumnSqlType: uniqueidentifier, IsPrimaryKey: True, IsNullable: False, MaxLength: 16");
+        }
+
+        [Test]
+        public void Test60ForeignKeysOk()
         {
             //SETUP
 
             //EXECUTE
 
             //VERIFY
-            _sqlForeignKeys.Count.ShouldEqual(7);
+            _sqlForeignKeys.Count.ShouldEqual(9);
             var list = _sqlForeignKeys.Select(x => x.ToString()).ToList();
             var i = 0;
             list[i++].ShouldEqual("Parent: DataChild.DataTopId, Referenced: DataTop.DataTopId");
             list[i++].ShouldEqual("Parent: DataSingleton.DataSingletonId, Referenced: DataTop.DataTopId");
             list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataTopId, Referenced: DataTop.DataTopId");
-            list[i++].ShouldEqual("Parent: DataCompKeyDataTop.DataTop_DataTopId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: DataManyCompKeyDataTop.DataTop_DataTopId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: DataTop.Key1, Referenced: NonStandardCompKeyTable.Key1");
+            list[i++].ShouldEqual("Parent: DataTop.Key2, Referenced: NonStandardCompKeyTable.Key2");
             list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataManyChildrenId, Referenced: DataManyChildren.DataManyChildrenId");
-            list[i++].ShouldEqual("Parent: DataCompKeyDataTop.DataCompKey_Key1, Referenced: DataCompKey.Key1");
-            list[i++].ShouldEqual("Parent: DataCompKeyDataTop.DataCompKey_Key2, Referenced: DataCompKey.Key2");
+            list[i++].ShouldEqual("Parent: DataManyCompKeyDataTop.DataManyCompKey_ManyKey1, Referenced: DataManyCompKey.ManyKey1");
+            list[i++].ShouldEqual("Parent: DataManyCompKeyDataTop.DataManyCompKey_ManyKey2, Referenced: DataManyCompKey.ManyKey2");
 
         }
     }

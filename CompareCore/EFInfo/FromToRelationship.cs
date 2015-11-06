@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: FromToMultiplicity.cs
+// Filename: FromToRelationship.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -12,15 +12,19 @@ namespace CompareCore.EFInfo
 
     public enum EfRelationshipTypes { ZeroOrOne, One, Many }
 
-    public class FromToMultiplicity
+    public class FromToRelationship
     {
         public EfRelationshipTypes FromMultiplicity { get; private set; }
+        public bool FromIsCascadeDelete { get; private set; }
         public EfRelationshipTypes ToMultiplicity { get; private set; }
+        public bool ToIsCascadeDelete { get; private set; }
 
-        public FromToMultiplicity(EfRelationshipTypes fromMultiplicity, EfRelationshipTypes toMultiplicity)
+        public FromToRelationship(EfRelationshipTypes fromMultiplicity, bool fromIsCascadeDelete, EfRelationshipTypes toMultiplicity, bool toIsCascadeDelete)
         {
             FromMultiplicity = fromMultiplicity;
+            FromIsCascadeDelete = fromIsCascadeDelete;
             ToMultiplicity = toMultiplicity;
+            ToIsCascadeDelete = toIsCascadeDelete;
         }
 
         public override string ToString()

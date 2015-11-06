@@ -68,23 +68,40 @@ namespace Ef6Compare.Internal
                     .Single(e => objectItemCollection.GetClrType(e) == clrClassType).KeyProperties
                     .Select(x => new EfKeyOrder(x.Name, i++)).ToList();
 
+                var columnInfos = new List<EfColumnInfo>();
+                foreach (var edmProperty in entitySet.ElementType.DeclaredProperties)
+                {
+                    var columnName = mapping.EntityTypeMappings.Single()
+                        .Fragments.Single()
+                        .PropertyMappings.OfType<ScalarPropertyMapping>()
+                        .Single(m => m.Property == edmProperty)
+                        .Column.Name;
+                    var sqlTypeName = tableEntitySet.ElementType.DeclaredMembers
+                        .Single(x => x.Name == columnName).TypeUsage.EdmType.Name;
+                    var clrProperty =
+                        clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                            .Single(x => x.Name == edmProperty.Name);
+                    var primaryKey = primaryKeys.SingleOrDefault(x => x.Name == edmProperty.Name);
+                    columnInfos.Add(new EfColumnInfo(columnName, sqlTypeName, edmProperty.Nullable,
+                        edmProperty.MaxLength, primaryKey, clrProperty));
+                }
 
-                var columnInfos = (from edmProperty in entitySet.ElementType.DeclaredProperties
-                                   let columnName = mapping.EntityTypeMappings.Single()
-                                       .Fragments.Single()
-                                       .PropertyMappings.OfType<ScalarPropertyMapping>()
-                                       .Single(m => m.Property == edmProperty)
-                                       .Column.Name
-                                   let sqlTypeName = tableEntitySet.ElementType.DeclaredMembers
-                                       .Single(x => x.Name == edmProperty.Name).TypeUsage.EdmType.Name
-                                   let clrProperty = clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(x => x.Name == edmProperty.Name)
-                                   let primaryKey = primaryKeys.SingleOrDefault(x => x.Name == edmProperty.Name)
-                                   select new EfColumnInfo(columnName, sqlTypeName, edmProperty.Nullable, edmProperty.MaxLength, primaryKey, clrProperty)).ToList();
+                //var columnInfos = (from edmProperty in entitySet.ElementType.DeclaredProperties
+                //                   let columnName = mapping.EntityTypeMappings.Single()
+                //                       .Fragments.Single()
+                //                       .PropertyMappings.OfType<ScalarPropertyMapping>()
+                //                       .Single(m => m.Property == edmProperty)
+                //                       .Column.Name
+                //                   let sqlTypeName = tableEntitySet.ElementType.DeclaredMembers
+                //                       .Single(x => x.Name == columnName).TypeUsage.EdmType.Name
+                //                   let clrProperty = clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(x => x.Name == edmProperty.Name)
+                //                   let primaryKey = primaryKeys.SingleOrDefault(x => x.Name == edmProperty.Name)
+                //                   select new EfColumnInfo(columnName, sqlTypeName, edmProperty.Nullable, edmProperty.MaxLength, primaryKey, clrProperty)).ToList();
+
 
                 var relationshipInfos = (from navProperty in entitySet.ElementType.NavigationProperties
                                          let clrProperty = clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(x => x.Name == navProperty.Name)
-                                         let relationship = ConvertMetadataToInternalTypes
-                                                (navProperty.FromEndMember.RelationshipMultiplicity, navProperty.ToEndMember.RelationshipMultiplicity)
+                                         let relationship = ConvertMetadataToFromToMultpicity(navProperty.FromEndMember, navProperty.ToEndMember)
                                          let columnArr = clrProperty.GetCustomAttribute<ColumnAttribute>()
                                          select new EfRelationshipInfo(relationship, clrProperty, columnArr == null ? clrProperty.Name : columnArr.Name)).ToList();
 
@@ -100,14 +117,16 @@ namespace Ef6Compare.Internal
         /// <summary>
         /// We convert the EF6 metadata RelationshipMultiplicity to an local copy to insulate against changes in the metadata format
         /// </summary>
-        /// <param name="metaDataFrom"></param>
-        /// <param name="metaDataTo"></param>
+        /// <param name="fromRelationship"></param>
+        /// <param name="toRelationship"></param>
         /// <returns></returns>
-        private static FromToMultiplicity ConvertMetadataToInternalTypes(RelationshipMultiplicity metaDataFrom, RelationshipMultiplicity metaDataTo)
+        private static FromToRelationship ConvertMetadataToFromToMultpicity(RelationshipEndMember fromRelationship, RelationshipEndMember toRelationship)
         {
-            var efFrom = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), metaDataFrom.ToString());
-            var efTo = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), metaDataTo.ToString());
-            return new FromToMultiplicity(efFrom, efTo);
+            var efFromType = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), fromRelationship.RelationshipMultiplicity.ToString());
+            var fromCascade = fromRelationship.DeleteBehavior == OperationAction.Cascade;
+            var efToType = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), toRelationship.RelationshipMultiplicity.ToString());
+            var toCascade = toRelationship.DeleteBehavior == OperationAction.Cascade;
+            return new FromToRelationship(efFromType, fromCascade, efToType, toCascade);
         } 
     }
 }

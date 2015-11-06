@@ -7,6 +7,7 @@
 // =====================================================
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,10 +33,20 @@ namespace Tests.EfClasses
         [ForeignKey("DataSingletonId")]
         public DataSingleton SingletonNullable { get; set; }
 
+        [ForeignKey("CompositeKeyData")]
+        [Column(Order = 1)]
+        public int Key1 { get; set; }
+
+        [ForeignKey("CompositeKeyData")]
+        [Column(Order = 2)]
+        public Guid Key2 { get; set; }
+
+        public DataCompKey CompositeKeyData { get; set; }
+
         public ICollection<DataChild> Children { get; set; }
 
         public ICollection<DataManyChildren> ManyChildren { get; set; }
 
-        public ICollection<DataCompKey> ManyCompKeys { get; set; } 
+        public ICollection<DataManyCompKey> ManyCompKeys { get; set; } 
     }
 }

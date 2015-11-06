@@ -51,7 +51,7 @@ namespace Tests.UnitTests
             var connection = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
 
             //EXECUTE
-            var result = SqlPrimaryKey.GetPrimaryKeysNames(connection, typeof(DataCompKey).Name);
+            var result = SqlPrimaryKey.GetPrimaryKeysNames(connection, typeof(DataManyCompKey).Name);
 
             //VERIFY
             result.Count.ShouldEqual(2);

@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EfClasses\DataChild.cs" />
+    <Compile Include="EfClasses\DataManyCompKey.cs" />
     <Compile Include="EfClasses\DataCompKey.cs" />
     <Compile Include="EfClasses\DataManyChildren.cs" />
     <Compile Include="EfClasses\DataSingleton.cs" />

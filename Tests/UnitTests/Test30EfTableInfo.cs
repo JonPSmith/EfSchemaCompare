@@ -39,7 +39,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(5);
+            _efInfos.Count.ShouldEqual(6);
         }
 
         [Test]
@@ -52,7 +52,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "DataTopId", "MyString", "DataSingletonId" }, efInfo.NormalCols.Select(x => x.ClrColumName));
+            efInfo.TableName.ShouldEqual("DataTop");
+            CollectionAssert.AreEquivalent(new[] { "DataTopId", "MyString", "DataSingletonId", "Key1", "Key2" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataTopId");
         }
 
@@ -66,8 +67,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "Children", "ManyChildren", "ManyCompKeys", "SingletonNullable" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
-            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataChild>), typeof(ICollection<DataManyChildren>), typeof(ICollection<DataCompKey>), typeof(DataSingleton) }, 
+            CollectionAssert.AreEquivalent(new[] { "Children", "CompositeKeyData", "ManyChildren", "ManyCompKeys", "SingletonNullable" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
+            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataChild>), typeof(DataCompKey), typeof(ICollection<DataManyChildren>), typeof(ICollection<DataManyCompKey>), typeof(DataSingleton) }, 
                 efInfo.RelationshipCols.Select(x => x.ClrColumnType));
         }
 
@@ -81,6 +82,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual("DataChild");
             CollectionAssert.AreEquivalent(new[] { "DataChildId", "MyInt", "MyString", "DataTopId" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataChildId");      
         }
@@ -110,6 +112,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual("DataManyChildren");
             CollectionAssert.AreEquivalent(new[] { "DataManyChildrenId", "MyInt" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataManyChildrenId");
             
@@ -139,6 +142,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual("DataSingleton");
             CollectionAssert.AreEquivalent(new[] { "DataSingletonId", "MyDateTime", "NonStandardForeignKeyName" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataSingletonId");
         }
@@ -167,6 +171,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual("NonStandardCompKeyTable");
             CollectionAssert.AreEquivalent(new[] { "Key1", "Key2", "MyEnum" }, efInfo.NormalCols.Select(x => x.ClrColumName));
             CollectionAssert.AreEquivalent(new[] { "Key1", "Key2" }, efInfo.NormalCols.Where(x => x.IsPrimaryKey).Select(x => x.ClrColumName));
             CollectionAssert.AreEquivalent(new[] { 1,2 }, efInfo.NormalCols.Where(x => x.IsPrimaryKey).Select(x => x.PrimaryKeyOrder));
@@ -182,6 +187,36 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
+            efInfo.RelationshipCols.Count().ShouldEqual(0);
+        }
+
+        [Test]
+        public void Test60DataManyCompKeyNormalColsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyCompKey));
+
+            //VERIFY
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual("DataManyCompKey");
+            CollectionAssert.AreEquivalent(new[] { "ManyKey1", "ManyKey2"}, efInfo.NormalCols.Select(x => x.ClrColumName));
+            CollectionAssert.AreEquivalent(new[] { "ManyKey1", "ManyKey2" }, efInfo.NormalCols.Where(x => x.IsPrimaryKey).Select(x => x.ClrColumName));
+            CollectionAssert.AreEquivalent(new[] { 1, 2 }, efInfo.NormalCols.Where(x => x.IsPrimaryKey).Select(x => x.PrimaryKeyOrder));
+        }
+
+        [Test]
+        public void Test61DataCompKeyRelationshipsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyCompKey));
+
+            //VERIFY
+            efInfo.ShouldNotEqualNull();
+            efInfo.RelationshipCols.Count().ShouldEqual(1);
             CollectionAssert.AreEquivalent(new[] { "ManyParents" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
             CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataTop>) }, efInfo.RelationshipCols.Select(x => x.ClrColumnType));
         }

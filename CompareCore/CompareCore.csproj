@@ -50,7 +50,7 @@
     <Compile Include="EFInfo\EfRelationshipChecker.cs" />
     <Compile Include="EFInfo\EfRelationshipInfo.cs" />
     <Compile Include="EFInfo\EfTableInfo.cs" />
-    <Compile Include="EFInfo\FromToMultiplicity.cs" />
+    <Compile Include="EFInfo\FromToRelationship.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlCompare.cs" />
     <Compile Include="SqlInfo\SqlAllInfo.cs" />

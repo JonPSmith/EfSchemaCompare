@@ -16,6 +16,8 @@ namespace CompareCore.SqlInfo
 {
     public class SqlForeignKeys
     {
+        private const string DeleteActionCascade = "CASCADE";
+
         public string SchemaName { get; private set; }
 
         public string ParentTableName { get; private set; }
@@ -32,6 +34,8 @@ namespace CompareCore.SqlInfo
         public string ReferencedColName { get; private set; }
 
         public string DeleteAction { get; private set; }
+
+        public bool IsCascade { get { return DeleteAction == DeleteActionCascade; } }
 
         public override string ToString()
         {

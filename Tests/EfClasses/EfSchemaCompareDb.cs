@@ -38,6 +38,11 @@ namespace Tests.EfClasses
                 .WithRequired(x => x.Parent)
                 .WillCascadeOnDelete(false);
 
+            //modelBuilder.Entity<DataTop>()
+            //    .HasRequired(x => x.CompositeKeyData)
+            //    .WithRequiredPrincipal()
+            //    .WillCascadeOnDelete(true);
+
             modelBuilder.Entity<DataSingleton>()
                 .HasRequired(x => x.Parent)
                 .WithOptional(x => x.SingletonNullable)

@@ -51,7 +51,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(5);
+            _efInfos.Count.ShouldEqual(6);
  
         }
 
@@ -66,7 +66,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("One-to-ZeroOrOne");
+            refEfCol.FromToRelationships.ToString().ShouldEqual("One-to-ZeroOrOne");
             refEfCol.ClrColumnType.ShouldEqual(typeof(DataSingleton));
         }
 
@@ -81,7 +81,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("One-to-Many");
+            refEfCol.FromToRelationships.ToString().ShouldEqual("One-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataChild));
         }
 
@@ -97,7 +97,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-Many");
+            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataManyChildren));
         }
 
@@ -112,8 +112,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-Many");
-            GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataCompKey));
+            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
+            GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataManyCompKey));
         }
 
 
@@ -129,7 +129,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-One");
+            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-One");
             refEfCol.ClrColumnType.ShouldEqual(typeof(DataTop));   
         }
 
@@ -144,7 +144,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-Many");
+            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataTop));
         }
 
@@ -159,7 +159,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("ZeroOrOne-to-One");
+            refEfCol.FromToRelationships.ToString().ShouldEqual("ZeroOrOne-to-One");
             refEfCol.ClrColumnType.ShouldEqual(typeof(DataTop));  
         }
 
@@ -173,8 +173,21 @@ namespace Tests.UnitTests
             var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ManyParents");
 
             //VERIFY
+            refEfCol.ShouldEqual(null);
+        }
+
+        [Test]
+        public void Test60DataManyCompKeyNormalColsOk()
+        {
+            //SETUP
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyCompKey));
+
+            //EXECUTE
+            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ManyParents");
+
+            //VERIFY
             refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToMultiplicities.ToString().ShouldEqual("Many-to-Many");
+            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataTop));
         }
 

@@ -23,18 +23,18 @@ namespace CompareCore.EFInfo
 
         public string SqlColumnName { get; private set; }
 
-        public FromToMultiplicity FromToMultiplicities { get; private set; }
+        public FromToRelationship FromToRelationships { get; private set; }
 
-        public EfRelationshipInfo(FromToMultiplicity efRelationshipTypes, PropertyInfo clrProperty, string sqlColumnName)
+        public EfRelationshipInfo(FromToRelationship efRelationshipTypes, PropertyInfo clrProperty, string sqlColumnName)
         {
-            FromToMultiplicities = efRelationshipTypes;
+            FromToRelationships = efRelationshipTypes;
             _clrProperty = clrProperty;
             SqlColumnName = sqlColumnName;
         }
 
         public override string ToString()
         {
-            return string.Format("ClrColumnName: {0}, ClrColumnType: {1}, FromToMultiplicities: {2}", ClrColumnName, ClrColumnType, FromToMultiplicities);
+            return string.Format("ClrColumnName: {0}, ClrColumnType: {1}, FromToRelationships: {2}", ClrColumnName, ClrColumnType, FromToRelationships);
         }
     }
 }
