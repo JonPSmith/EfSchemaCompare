@@ -18,6 +18,8 @@ namespace CompareCore.SqlInfo
     {
         private const string DeleteActionCascade = "CASCADE";
 
+        public string ConstraintName { get; private set; }
+
         public string SchemaName { get; private set; }
 
         public string ParentTableName { get; private set; }
@@ -56,7 +58,8 @@ namespace CompareCore.SqlInfo
 
                 //see https://msdn.microsoft.com/en-us/library/ms190196.aspx
                 command.CommandText = @"SELECT 
-    OBJECT_SCHEMA_NAME(f.parent_object_id) AS SchemaName
+    OBJECT_NAME(constraint_object_id) AS ConstraintName
+   ,OBJECT_SCHEMA_NAME(f.parent_object_id) AS SchemaName
    ,OBJECT_NAME(f.parent_object_id) AS ParentTableName
    ,COL_NAME(fc.parent_object_id, fc.parent_column_id) AS ParentColName
    ,OBJECT_NAME (f.referenced_object_id) AS ReferencedTableName
@@ -80,6 +83,7 @@ INNER JOIN sys.foreign_key_columns AS fc
                     //    object col = reader[j];
                     //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
                     //}
+                    row.ConstraintName = reader.GetString(i++);
                     row.SchemaName = reader.GetString(i++);
                     row.ParentTableName = reader.GetString(i++);
                     row.ParentColName = reader.GetString(i++);

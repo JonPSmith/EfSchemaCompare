@@ -81,9 +81,14 @@ namespace CompareCore.EFInfo
 
                         manyToManyTableName = linkCombinedNames.First();
                         //todo: check cascade deletes
-                        foreach (var foreignKeys in _allSqlInfo.ForeignKeys.Where(x => x.ParentTableNameWithScheme == manyToManyTableName))
+                        foreach (var foreignKey in _allSqlInfo.ForeignKeys.Where(x => x.ParentTableNameWithScheme == manyToManyTableName)
+                            .Where(foreignKey => !foreignKey.IsCascade))
                         {
-                            
+                            status.AddSingleError(
+                                "Cascade Delete: The {0} relationship between {1}.{2} and {3} has a foreign key {4} that is not CASCASE DELETE." +
+                                "  All linking table foreign keys should have CASCASE DELETE.",
+                                relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName,
+                                toEfTable.TableName, foreignKey.ConstraintName);
                         }
 
                     }
