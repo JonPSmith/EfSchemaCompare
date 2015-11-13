@@ -19,11 +19,13 @@ namespace CompareCore
     {
         private readonly string _refDatabaseName;
         private readonly string _toBeCheckDatabaseName;
+        private readonly string _sqlTableNamesToIgnore;
 
-        public SqlCompare(string refDatabaseName, string toBeCheckDatabaseName)
+        public SqlCompare(string refDatabaseName, string toBeCheckDatabaseName, string sqlTableNamesToIgnore)
         {
             _refDatabaseName = refDatabaseName;
             _toBeCheckDatabaseName = toBeCheckDatabaseName;
+            _sqlTableNamesToIgnore = sqlTableNamesToIgnore;
         }
 
         /// <summary>
@@ -35,16 +37,20 @@ namespace CompareCore
         public ISuccessOrErrors CompareSqlToSql(SqlAllInfo refSqlData, SqlAllInfo toBeCheckSqlData)
         {
             var status = SuccessOrErrors.Success("All Ok");
-
+            var tablesToIgnore = _sqlTableNamesToIgnore.Split(',').Select(x => x.Trim()).ToList();
 
             var sqlTable2Dict = toBeCheckSqlData.TableInfos.ToDictionary(x => x.CombinedName);
 
             foreach (var sqlTable in refSqlData.TableInfos)
             {
                 if (!sqlTable2Dict.ContainsKey(sqlTable.CombinedName))
-                    status.AddSingleError(
-                        "Missing Table: The '{0}' SQL database has a table called {1}, which is missing in the '{2}' database.",
-                        _refDatabaseName, sqlTable.CombinedName, _toBeCheckDatabaseName);
+                {
+                    if (!tablesToIgnore.Contains(sqlTable.TableName))
+                        //only mark as an error if the table isn't in the ignore list
+                        status.AddSingleError(
+                            "Missing Table: The '{0}' SQL database has a table called {1}, which is missing in the '{2}' database.",
+                            _refDatabaseName, sqlTable.CombinedName, _toBeCheckDatabaseName);
+                }
                 else
                 {
                     //has table, so compare the columns/properties
@@ -113,7 +119,8 @@ namespace CompareCore
             //now see what SQL tables haven't been mentioned
             if (sqlTable2Dict.Any())
             {
-                foreach (var unusedTable in sqlTable2Dict.Values)
+                
+                foreach (var unusedTable in sqlTable2Dict.Values.Where(x => !tablesToIgnore.Contains(x.TableName)))
                 {
                     status.AddWarning("SQL database '{0}', table {1} table contained an extra table, {1}", _refDatabaseName, unusedTable.CombinedName);
                 }

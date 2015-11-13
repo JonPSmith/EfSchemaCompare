@@ -16,6 +16,19 @@ namespace Ef6Compare
 {
     public class CompareSqlSql
     {
+        private string _sqlDbRefString;
+        private readonly string _sqlTableNamesToIgnore;
+
+        /// <summary>
+        /// Creates the CompareEfSql comparer.
+        /// </summary>
+        /// <param name="sqlTableNamesToIgnore">You can supply a comma delimited list of table 
+        /// names in the SQL database that you do not want reported as not used. 
+        /// The default is EF's __MigrationHistory table and DbUp's SchemaVersions table</param>
+        public CompareSqlSql(string sqlTableNamesToIgnore = "__MigrationHistory,SchemaVersions")
+        {
+            _sqlTableNamesToIgnore = sqlTableNamesToIgnore;
+        }
         
         /// <summary>
         /// This compares two SQL databases looking at each table, its columns, its keys and its foreign keys.
@@ -34,7 +47,7 @@ namespace Ef6Compare
             var refSqlData = SqlAllInfo.SqlAllInfoFactory(refDbConnection);
             var toBeCheckSqlData = SqlAllInfo.SqlAllInfoFactory(toBeCheckDbConnection);
 
-            var comparer = new SqlCompare(refDatabaseName, toBeCheckDatabaseName);
+            var comparer = new SqlCompare(refDatabaseName, toBeCheckDatabaseName, _sqlTableNamesToIgnore);
             return comparer.CompareSqlToSql(refSqlData, toBeCheckSqlData);
         }
        
