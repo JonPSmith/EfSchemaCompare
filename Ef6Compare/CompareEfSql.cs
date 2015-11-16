@@ -10,6 +10,7 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
 using CompareCore;
 using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
@@ -44,7 +45,20 @@ namespace Ef6Compare
         public ISuccessOrErrors CompareEfWithDb(DbContext db)
         {
             _sqlDbRefString = "database";
-            return CompareEfWithSql(db, db.Database.Connection.ConnectionString);
+            return CompareEfWithSql(db, db.Database.Connection.ConnectionString, null);
+        }
+
+        /// <summary>
+        /// This will compare the EF schema definition with the database schema it is linked to
+        /// Use this version when data classes are in a different assembly to DbContext
+        /// </summary>
+        /// <typeparam name="T">Should be a EF data class</typeparam>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public ISuccessOrErrors CompareEfWithDb<T>(DbContext db) where T : class 
+        {
+            _sqlDbRefString = "database";
+            return CompareEfWithSql(db, db.Database.Connection.ConnectionString, typeof(T).Assembly);
         }
 
         /// <summary>
@@ -58,20 +72,36 @@ namespace Ef6Compare
             var sqlConnectionString = configOrConnectionString.GetConfigurationOrActualString();
             _sqlDbRefString = string.Format("database '{0}',", sqlConnectionString.GetDatabaseNameFromConnectionString());
 
-            return CompareEfWithSql(db, sqlConnectionString);
+            return CompareEfWithSql(db, sqlConnectionString, null);
+        }
+
+        /// <summary>
+        /// This will compare the EF schema definition with another SQL database schema
+        /// Use this version when data classes are in a different assembly to DbContext
+        /// </summary>
+        /// <typeparam name="T">Should be a EF data class</typeparam>
+        /// <param name="db"></param>
+        /// <param name="configOrConnectionString">Either a full connection string or the name of a connection string in Config file</param>
+        /// <returns></returns>
+        public ISuccessOrErrors CompareEfWithDb<T>(DbContext db, string configOrConnectionString) where T : class
+        {
+            var sqlConnectionString = configOrConnectionString.GetConfigurationOrActualString();
+            _sqlDbRefString = string.Format("database '{0}',", sqlConnectionString.GetDatabaseNameFromConnectionString());
+
+            return CompareEfWithSql(db, sqlConnectionString, typeof(T).Assembly);
         }
 
         //---------------------------------------------------------------------------
         //private methods
 
-        private ISuccessOrErrors CompareEfWithSql(DbContext db, string sqlConnectionString)
+        private ISuccessOrErrors CompareEfWithSql(DbContext db, string sqlConnectionString, Assembly classesAssembly)
         {
             if (db == null)
                 throw new ArgumentNullException("db");
             if (sqlConnectionString == null)
                 throw new ArgumentNullException("sqlConnectionString");
 
-            var efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db);
+            var efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db, classesAssembly);
             var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(sqlConnectionString);
 
             var comparer = new EfCompare(_sqlDbRefString, _sqlTableNamesToIgnore);

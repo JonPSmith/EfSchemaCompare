@@ -30,7 +30,7 @@ namespace Tests.UnitTests
         {
             using (var db = new EfSchemaCompareDb())
             {
-                _efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db);
+                _efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db, null);
                 var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(db.Database.Connection.ConnectionString);
                 _checker = new EfRelationshipChecker(_efInfos, allSqlInfo, allSqlInfo.TableInfos);     //NOTE: we aren't able to filter potentialManyToManyTables
             }

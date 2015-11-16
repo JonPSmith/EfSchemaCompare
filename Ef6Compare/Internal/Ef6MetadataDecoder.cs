@@ -26,14 +26,16 @@ namespace Ef6Compare.Internal
         /// This returns information on all the Ef classes that are mapped to the database
         /// </summary>
         /// <param name="context"></param>
+        /// <param name="dataClassesAssembly">If non-null then holds the assembly of the data classes, 
+        /// otherwise we assum they are in the same assembly as DbContext</param>
         /// <returns></returns>
-        public static ICollection<EfTableInfo> GetAllEfTablesWithColInfo(DbContext context)
+        public static ICollection<EfTableInfo> GetAllEfTablesWithColInfo(DbContext context, Assembly dataClassesAssembly)
         {
             var metadata = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
 
             // Get the part of the model that contains info about the actual CLR types
             var objectItemCollection = ((ObjectItemCollection)metadata.GetItemCollection(DataSpace.OSpace));
-            var efClassesAssembly = Assembly.GetAssembly(context.GetType());
+            var efClassesAssembly = dataClassesAssembly ?? Assembly.GetAssembly(context.GetType());
 
             // Get all the classes included in this Ef Context
             var allEfClasses = metadata
@@ -61,7 +63,10 @@ namespace Ef6Compare.Internal
                 var tableName = (string)(tableEntitySet.MetadataProperties["Table"].Value ?? tableEntitySet.Name);
                 var tableSchema = tableEntitySet.MetadataProperties["Schema"].Value.ToString();
                 var oSpaceEntity = objectItemCollection.Single(x => x.ToString().EndsWith("." + entitySet.ElementType.Name));
-                var clrClassType = efClassesAssembly.GetType(oSpaceEntity.ToString(), true);
+                var clrClassType = efClassesAssembly.GetType(oSpaceEntity.ToString(), false);
+                if (clrClassType == null)
+                    throw new InvalidOperationException("Could not find the EF data class {0} in the assembly {1}."+
+                        " If data classes are in a separate assembly to the DbContext then use the method with <T>");
 
                 int i = 1;
                 var primaryKeys = metadata.GetItems<EntityType>(DataSpace.OSpace)

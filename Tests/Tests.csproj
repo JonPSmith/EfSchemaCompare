@@ -72,6 +72,7 @@
     <Compile Include="SqlCommands\BasicSqlCommands.cs" />
     <Compile Include="UnitTests\Test10DatabasesExist.cs" />
     <Compile Include="UnitTests\Test20SqlCommands.cs" />
+    <Compile Include="UnitTests\Test31EfTableInfoGivenAssembly.cs" />
     <Compile Include="UnitTests\Test32EfRelationships.cs" />
     <Compile Include="UnitTests\Test35EfRelationshipChecker.cs" />
     <Compile Include="UnitTests\Test30EfTableInfo.cs" />
