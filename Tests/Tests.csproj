@@ -57,7 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EfClasses\ComplexClass.cs" />
     <Compile Include="EfClasses\DataChild.cs" />
+    <Compile Include="EfClasses\DataComplex.cs" />
     <Compile Include="EfClasses\DataManyCompKey.cs" />
     <Compile Include="EfClasses\DataCompKey.cs" />
     <Compile Include="EfClasses\DataManyChildren.cs" />

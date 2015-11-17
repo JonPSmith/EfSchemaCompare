@@ -41,7 +41,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _sqlInfos.Count.ShouldEqualWithTolerance(8,1);      //we allow for the __MirgartionHistory
+            _sqlInfos.Count.ShouldEqualWithTolerance(10,1);      //we allow for the __MirgartionHistory
         }
 
         [Test]
@@ -151,8 +151,26 @@ namespace Tests.UnitTests
             list[i++].ToString().ShouldEqual("ColumnName: ManyKey2, ColumnSqlType: uniqueidentifier, IsPrimaryKey: True, IsNullable: False, MaxLength: 16");
         }
 
+        //[Test]
+        //public void Test60DataComplexColsOk()
+        //{
+        //    //SETUP
+
+        //    //EXECUTE
+        //    var sqlInfo = _sqlInfos.SingleOrDefault(x => x.TableName == "DataComplex");
+
+        //    //VERIFY
+        //    sqlInfo.ShouldNotEqualNull();
+        //    sqlInfo.ColumnInfo.Count.ShouldEqual(3);
+        //    var list = sqlInfo.ColumnInfo.ToList();
+        //    var i = 0;
+        //    list[i++].ToString().ShouldEqual("ColumnName: DataComplexId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+        //    list[i++].ToString().ShouldEqual("ColumnName: ComplexData_ComplexInt, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+        //    list[i++].ToString().ShouldEqual("ColumnName: ComplexData_ComplexString, ColumnSqlType: nvarchar, IsPrimaryKey: False, IsNullable: True, MaxLength: 50");
+        //}
+
         [Test]
-        public void Test60ForeignKeysOk()
+        public void Test90ForeignKeysOk()
         {
             //SETUP
 

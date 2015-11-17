@@ -28,6 +28,7 @@ namespace Tests.EfClasses
         public DbSet<DataManyChildren> DataManyChildrens { get; set; }
         public DbSet<DataSingleton> DataSingletons { get; set; }
         public DbSet<DataCompKey> DataCompKeys { get; set; }
+        //public DbSet<DataComplex> DataComplexs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
