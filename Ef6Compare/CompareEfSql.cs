@@ -45,7 +45,7 @@ namespace Ef6Compare
         public ISuccessOrErrors CompareEfWithDb(DbContext db)
         {
             _sqlDbRefString = "database";
-            return CompareEfWithSql(db, db.Database.Connection.ConnectionString, null);
+            return CompareEfWithSql(db, db.Database.Connection.ConnectionString, Assembly.GetAssembly(db.GetType()));
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Ef6Compare
             var sqlConnectionString = configOrConnectionString.GetConfigurationOrActualString();
             _sqlDbRefString = string.Format("database '{0}',", sqlConnectionString.GetDatabaseNameFromConnectionString());
 
-            return CompareEfWithSql(db, sqlConnectionString, null);
+            return CompareEfWithSql(db, sqlConnectionString, Assembly.GetAssembly(db.GetType()));
         }
 
         /// <summary>
@@ -101,7 +101,8 @@ namespace Ef6Compare
             if (sqlConnectionString == null)
                 throw new ArgumentNullException("sqlConnectionString");
 
-            var efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db, classesAssembly);
+            var decoder = new Ef6MetadataDecoder(classesAssembly);
+            var efInfos = decoder.GetAllEfTablesWithColInfo(db);
             var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(sqlConnectionString);
 
             var comparer = new EfCompare(_sqlDbRefString, _sqlTableNamesToIgnore);

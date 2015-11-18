@@ -14,5 +14,9 @@ namespace Tests.EfClasses
 
         public ComplexClass ComplexData { get; set; }
 
+        /// <summary>
+        /// This contains a nexted complex class
+        /// </summary>
+        public ComplexComplexClass ComplexComplexData { get; set; }
     }
 }

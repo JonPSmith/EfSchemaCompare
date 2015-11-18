@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
 using Ef6Compare.Internal;
@@ -30,7 +31,8 @@ namespace Tests.UnitTests
         {
             using (var db = new EfSchemaCompareDb())
             {
-                _efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db, null);
+                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(EfSchemaCompareDb)));
+                _efInfos = decoder.GetAllEfTablesWithColInfo(db);
                 var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(db.Database.Connection.ConnectionString);
                 _checker = new EfRelationshipChecker(_efInfos, allSqlInfo, allSqlInfo.TableInfos);     //NOTE: we aren't able to filter potentialManyToManyTables
             }
@@ -44,7 +46,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(6);
+            _efInfos.Count.ShouldEqual(7);
  
         }
 

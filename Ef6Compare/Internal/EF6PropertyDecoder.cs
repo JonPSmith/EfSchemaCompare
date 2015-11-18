@@ -21,11 +21,13 @@ namespace Ef6Compare.Internal
     {
         private readonly EntitySetMapping _mapping;
         private readonly EntitySet _tableEntitySet;
+        private readonly Func<string, Type> _getClrTypeFromFullName;
 
-        public Ef6PropertyDecoder(EntitySetMapping mapping, EntitySet tableEntitySet)
+        public Ef6PropertyDecoder(EntitySetMapping mapping, EntitySet tableEntitySet, Func<string,Type> getClrTypeFromFullName)
         {
             _mapping = mapping;
             _tableEntitySet = tableEntitySet;
+            _getClrTypeFromFullName = getClrTypeFromFullName;
         }
 
         public List<EfColumnInfo> DecodeTableProperties(EntitySet entitySet, Type clrClassType, List<EfKeyOrder> primaryKeys)
@@ -37,8 +39,8 @@ namespace Ef6Compare.Internal
                 {
                     var complexColumn = _mapping.EntityTypeMappings.Single()
                         .Fragments.Single()
-                        .PropertyMappings.OfType<ComplexPropertyMapping>().Single(m => m.Property == edmProperty); 
-                    columnInfos.AddRange(DecodeComplexTypes(edmProperty, complexColumn));          
+                        .PropertyMappings.OfType<ComplexPropertyMapping>().Single(m => m.Property == edmProperty);
+                    columnInfos.AddRange(DecodeComplexTypes(complexColumn, _getClrTypeFromFullName(edmProperty.DeclaringType.FullName)));          
                 }
                 else
                 {
@@ -63,23 +65,29 @@ namespace Ef6Compare.Internal
 
         }
 
-        private static IEnumerable<EfColumnInfo> DecodeComplexTypes(EdmProperty edmProperty, ComplexPropertyMapping complexMapping, string prefix = null)
+        private IEnumerable<EfColumnInfo> DecodeComplexTypes(ComplexPropertyMapping complexMapping, Type parentClass)
         {
-            throw new NotImplementedException("We do not currently handle complex properties");
+            //throw new NotImplementedException("We do not currently handle complex properties");
             var complexCols = new List<EfColumnInfo>();
             foreach (var property in complexMapping.TypeMappings.SelectMany(x => x.PropertyMappings))
             {
-                    //var columnName = mapping.EntityTypeMappings.Single()
-                    //        .Fragments.Single()
-                    //        .PropertyMappings.OfType<ScalarPropertyMapping>()
-                    //        .Single(m => m.property == edmProperty)
-                    //        .Column.Name;
-                    //var sqlTypeName = tableEntitySet.ElementType.DeclaredMembers
-                    //    .Single(x => x.Name == columnName).TypeUsage.EdmType.Name;
-                    //var clrProperty =
-                    //    clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    //        .Single(x => x.Name == edmProperty.Name);
-
+                var complexClrType = parentClass.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Single(x => x.Name == complexMapping.Property.Name).PropertyType;
+                if (property.Property.IsComplexType)
+                {
+                    complexCols.AddRange(DecodeComplexTypes((ComplexPropertyMapping)property, complexClrType));
+                }
+                else
+                {
+                    var columnName = ((ScalarPropertyMapping)property).Column.Name;
+                    var sqlTypeName = _tableEntitySet.ElementType.DeclaredMembers
+                        .Single(x => x.Name == columnName).TypeUsage.EdmType.Name;
+                    var clrProperty = complexClrType
+                            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                            .Single(x => x.Name == property.Property.Name);
+                    complexCols.Add(new EfColumnInfo(columnName, sqlTypeName, property.Property.Nullable,
+                        property.Property.MaxLength, null, clrProperty));                 
+                }
             }
             return complexCols;
         }

@@ -28,7 +28,7 @@ namespace Tests.EfClasses
         public DbSet<DataManyChildren> DataManyChildrens { get; set; }
         public DbSet<DataSingleton> DataSingletons { get; set; }
         public DbSet<DataCompKey> DataCompKeys { get; set; }
-        //public DbSet<DataComplex> DataComplexs { get; set; }
+        public DbSet<DataComplex> DataComplexs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -38,11 +38,6 @@ namespace Tests.EfClasses
                 .HasOptional(x => x.SingletonNullable)
                 .WithRequired(x => x.Parent)
                 .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<DataTop>()
-            //    .HasRequired(x => x.CompositeKeyData)
-            //    .WithRequiredPrincipal()
-            //    .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<DataSingleton>()
                 .HasRequired(x => x.Parent)

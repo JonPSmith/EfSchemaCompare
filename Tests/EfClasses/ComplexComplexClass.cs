@@ -7,17 +7,22 @@
 // =====================================================
 #endregion
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tests.EfClasses
 {
+    /// <summary>
+    /// Nested complex class
+    /// </summary>
     [ComplexType]
-    public class ComplexClass
+    public class ComplexComplexClass
     {
-        public int ComplexInt { get; set; }
+        public DateTime ComplexDateTime { get; set; }
 
-        [MaxLength(25)]
-        public string ComplexString { get; set; }
+        public Guid ComplexGuid { get; set; }
+
+        public ComplexClass ComplexData { get; set; }
     }
 }

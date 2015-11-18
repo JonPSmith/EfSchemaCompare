@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.Internal;
 using NUnit.Framework;
@@ -27,7 +28,8 @@ namespace Tests.UnitTests
         {
             using (var db = new EfSchemaCompareDb())
             {
-                _efInfos = Ef6MetadataDecoder.GetAllEfTablesWithColInfo(db, null);
+                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(EfSchemaCompareDb)));
+                _efInfos = decoder.GetAllEfTablesWithColInfo(db);
             }
         }
 
@@ -51,7 +53,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(6);
+            _efInfos.Count.ShouldEqual(7);
  
         }
 
