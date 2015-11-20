@@ -40,3 +40,9 @@ REFERENCES [dbo].[DataTop] ([DataTopId])
 ON DELETE CASCADE
 GO
 
+ALTER TABLE [dbo].[DataZeroOrOne]
+ADD  CONSTRAINT [FK_dbo.DataZeroOrOne_dbo.DataTop_DataTopId] FOREIGN KEY([DataTopId])
+REFERENCES [dbo].[DataTop] ([DataTopId])
+ON DELETE CASCADE
+GO
+

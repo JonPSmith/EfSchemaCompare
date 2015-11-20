@@ -68,3 +68,9 @@ CREATE TABLE  $schema$.[DataComplex](
 	[ComplexComplexData_ComplexData_ComplexString] [nvarchar](25) NULL,
 )
 go
+
+CREATE TABLE [dbo].[DataZeroOrOne](
+	[DataTopId] [int] NOT NULL PRIMARY KEY,
+	[MyBool] [bit] NOT NULL
+)
+go

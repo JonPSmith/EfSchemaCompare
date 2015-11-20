@@ -42,7 +42,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(7);
+            _efInfos.Count.ShouldEqual(8);
         }
 
         [Test]
@@ -70,8 +70,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "Children", "CompositeKeyData", "ManyChildren", "ManyCompKeys", "SingletonNullable" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
-            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataChild>), typeof(DataCompKey), typeof(ICollection<DataManyChildren>), typeof(ICollection<DataManyCompKey>), typeof(DataSingleton) }, 
+            CollectionAssert.AreEquivalent(new[] { "Children", "CompositeKeyData", "ManyChildren", "ManyCompKeys", "SingletonNullable", "ZeroOrOneData" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
+            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataChild>), typeof(DataCompKey), typeof(ICollection<DataManyChildren>), typeof(ICollection<DataManyCompKey>), typeof(DataSingleton), typeof(DataZeroOrOne) }, 
                 efInfo.RelationshipCols.Select(x => x.ClrColumnType));
         }
 
@@ -258,6 +258,42 @@ namespace Tests.UnitTests
 
             //EXECUTE
             var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataComplex));
+
+            //VERIFY
+            efInfo.ShouldNotEqualNull();
+            efInfo.RelationshipCols.Count().ShouldEqual(0);
+        }
+
+        [Test]
+        public void Test80DataZeroOrOneColsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataZeroOrOne));
+
+            //VERIFY
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual("DataZeroOrOne");
+            efInfo.NormalCols.Count.ShouldEqual(2);
+            //foreach (var col in efInfo.NormalCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            var list = efInfo.NormalCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: -2");
+            list[i++].ToString().ShouldEqual("SqlColumnName: MyBool, SqlTypeName: bit, ClrColumName: MyBool, ClrColumnType: System.Boolean, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
+            
+        }
+
+        [Test]
+        public void Test81DataZeroOrOneRelationshipsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataZeroOrOne));
 
             //VERIFY
             efInfo.ShouldNotEqualNull();

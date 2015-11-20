@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using CompareCore.SqlInfo;
 using CompareCore.Utils;
 using GenericLibsBase;
@@ -96,12 +97,15 @@ namespace CompareCore.EFInfo
                 else
                 {
                     //many to one 
-                    var toSqlTable = GetSqlTableDataFromClass(relEfCol.ClrColumnType);
-                    var foreignKeys = GetForeignKeys(tableInfo.TableName, toSqlTable);
+                    var toSqlTableStatus = GetSqlTableDataFromClass(relEfCol.ClrColumnType);
+                    if (toSqlTableStatus.HasErrors)
+                        return status.Combine(toSqlTableStatus);
+
+                    var foreignKeys = GetForeignKeys(tableInfo.TableName, toSqlTableStatus.Result);
                     if (!foreignKeys.Any())
                         status.AddSingleError(
                             "Missing Foreign Key: EF has a {0} relationship between {1}.{2} and {3} but we don't find that in SQL",
-                            relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTable.TableName);
+                            relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTableStatus.Result.TableName);
                     else
                     {
                         //Look at cascase deletes
@@ -110,7 +114,7 @@ namespace CompareCore.EFInfo
                             status.AddSingleError(
                                 "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascase delete value." +
                                 " SQL foreign key say {4}, EF setting is {5}",
-                                relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTable.TableName,
+                                relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTableStatus.Result.TableName,
                                 foreignKey.DeleteAction,
                                 relEfCol.FromToRelationships.ToIsCascadeDelete ? "CASCADE" : "NO_ACTION");
                         }
@@ -125,14 +129,16 @@ namespace CompareCore.EFInfo
                 {
                     //typical one to many
 
-                    var fromSqlTable = GetSqlTableDataFromCollection(relEfCol);
+                    var fromSqlTableStatus = GetSqlTableDataFromCollection(relEfCol);
+                    if (fromSqlTableStatus.HasErrors)
+                        return status.Combine( fromSqlTableStatus);
                     var toSqlTable = _sqlInfoDict[tableInfo.CombinedName];
-                    var foreignKeys = GetForeignKeys(fromSqlTable.TableName, toSqlTable);
+                    var foreignKeys = GetForeignKeys(fromSqlTableStatus.Result.TableName, toSqlTable);
 
                     if (!foreignKeys.Any())
                         status.AddSingleError(
                             "Missing Foreign Key: EF has a {0} relationship between {1} and {2}.{3} but we don't find that in SQL",
-                            relEfCol.FromToRelationships, fromSqlTable.TableName, tableInfo.TableName,
+                            relEfCol.FromToRelationships, fromSqlTableStatus.Result.TableName, tableInfo.TableName,
                             relEfCol.ClrColumnName);
                     else
                     {
@@ -149,19 +155,22 @@ namespace CompareCore.EFInfo
                 else
                 {
                     //one to one/OneOrZero or reverse
-                    var sqlTableEnd1 = GetSqlTableDataFromClass(relEfCol.ClrColumnType);
+                    var sqlTableEnd1Status = GetSqlTableDataFromClass(relEfCol.ClrColumnType);
+                    if (sqlTableEnd1Status.HasErrors)
+                        return status.Combine(sqlTableEnd1Status);
+
                     var sqlTableEnd2 = _sqlInfoDict[tableInfo.CombinedName];
 
                     //There is one foreign key for both directions. Therefore we need to check both 
 
                     var foreignKeys =
-                        GetForeignKeys(sqlTableEnd1.TableName, sqlTableEnd2)
-                        .Union(GetForeignKeys(sqlTableEnd2.TableName, sqlTableEnd1)).ToList();
+                        GetForeignKeys(sqlTableEnd1Status.Result.TableName, sqlTableEnd2)
+                        .Union(GetForeignKeys(sqlTableEnd2.TableName, sqlTableEnd1Status.Result)).ToList();
 
                     if (!foreignKeys.Any())
                         status.AddSingleError(
                             "Missing Foreign Key: EF has a {0} relationship between {1}.{2} and {3} but we don't find that in SQL",
-                            relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, sqlTableEnd1.TableName);
+                            relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, sqlTableEnd1Status.Result.TableName);
                     else
                     {
                         //Look at cascase deletes
@@ -169,7 +178,7 @@ namespace CompareCore.EFInfo
                             status.AddSingleError(
                             "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascase delete value."+
                             " SQL foreign key say {4}, EF setting is {5}",
-                            relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, sqlTableEnd1.TableName,
+                            relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, sqlTableEnd1Status.Result.TableName,
                             foreignKey.DeleteAction ,
                             relEfCol.FromToRelationships.ToIsCascadeDelete ? "CASCADE" : "NO_ACTION");
                     }
@@ -217,7 +226,7 @@ namespace CompareCore.EFInfo
             return _foreignKeysGroupByParentTableName.Where(x => x.Item2.SequenceEqual(allKeys.OrderBy(y => y))).Select(x => x.Item1);
         }
 
-        private SqlTableInfo GetSqlTableDataFromCollection(EfRelationshipInfo relEfCol)
+        private ISuccessOrErrors<SqlTableInfo> GetSqlTableDataFromCollection(EfRelationshipInfo relEfCol)
         {
             if (!relEfCol.ClrColumnType.IsGenericType)
                 throw new InvalidOperationException("I expected a generic list etc. here");
@@ -226,12 +235,14 @@ namespace CompareCore.EFInfo
             return GetSqlTableDataFromClass(genArgs[0]);
         }
 
-        private SqlTableInfo GetSqlTableDataFromClass(Type efClassType)
+        private ISuccessOrErrors<SqlTableInfo> GetSqlTableDataFromClass(Type efClassType)
         {
-            EfTableInfo efData;
-            if (!_efInfosDict.TryGetValue(efClassType, out efData))
-                throw new InvalidOperationException("I could not find a EF class of the type " + efClassType.Name);
-            return _sqlInfoDict[efData.CombinedName];
+            ISuccessOrErrors<SqlTableInfo> status = new SuccessOrErrors<SqlTableInfo>();
+            var combinedName = GetEfTableDataFromClass(efClassType).CombinedName;
+            SqlTableInfo sqlTable;
+            if (!_sqlInfoDict.TryGetValue(combinedName, out sqlTable))
+                return status.AddSingleError("Missing SQL Table: Could not find the SQL table called {0}.", combinedName);
+            return status.SetSuccessWithResult(sqlTable, "All OK");
         }
 
         private EfTableInfo GetEfTableDataFromCollection(EfRelationshipInfo relEfCol)

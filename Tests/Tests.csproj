@@ -66,6 +66,7 @@
     <Compile Include="EfClasses\DataManyChildren.cs" />
     <Compile Include="EfClasses\DataSingleton.cs" />
     <Compile Include="EfClasses\DataTop.cs" />
+    <Compile Include="EfClasses\DataZeroOrOne.cs" />
     <Compile Include="EfClasses\EfSchemaCompareDb.cs" />
     <Compile Include="Helpers\DatabaseHelpers.cs" />
     <Compile Include="Helpers\ExtendAsserts.cs" />

@@ -43,6 +43,8 @@ namespace Tests.EfClasses
 
         public DataCompKey CompositeKeyData { get; set; }
 
+        public DataZeroOrOne ZeroOrOneData { get; set; }
+
         public ICollection<DataChild> Children { get; set; }
 
         public ICollection<DataManyChildren> ManyChildren { get; set; }
