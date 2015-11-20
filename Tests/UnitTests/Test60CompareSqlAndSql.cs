@@ -7,11 +7,9 @@
 // =====================================================
 #endregion
 
-using System;
 using System.Configuration;
 using Ef6Compare;
 using NUnit.Framework;
-using Tests.EfClasses;
 using Tests.Helpers;
 
 namespace Tests.UnitTests

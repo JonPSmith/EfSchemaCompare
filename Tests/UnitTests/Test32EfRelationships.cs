@@ -54,7 +54,10 @@ namespace Tests.UnitTests
 
             //VERIFY
             _efInfos.Count.ShouldEqual(8);
- 
+            foreach (var relCol in _efInfos.SelectMany(x => x.RelationshipCols))
+            {
+                Console.WriteLine(relCol);
+            }
         }
 
         [Test]
@@ -118,10 +121,24 @@ namespace Tests.UnitTests
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataManyCompKey));
         }
 
+        [Test]
+        public void Test14DataTopZeroOrOneDataOk()
+        {
+            //SETUP
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
+
+            //EXECUTE
+            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ZeroOrOneData");
+
+            //VERIFY
+            refEfCol.ShouldNotEqualNull();
+            refEfCol.FromToRelationships.ToString().ShouldEqual("One-to-ZeroOrOne");
+            refEfCol.ClrColumnType.ShouldEqual(typeof(DataZeroOrOne));
+        }
 
 
         [Test]
-        public void Test20DataChildNormalColsOk()
+        public void Test20DataChildOk()
         {
             //SETUP
             var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataChild));
@@ -136,7 +153,7 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test30DataManyChildrenNormalColsOk()
+        public void Test30DataManyChildrenOk()
         {
             //SETUP
             var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyChildren));
@@ -166,7 +183,7 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test50DataCompKeyNormalColsOk()
+        public void Test50DataCompKeyOk()
         {
             //SETUP
             var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataCompKey));
@@ -179,7 +196,7 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test60DataManyCompKeyNormalColsOk()
+        public void Test60DataManyCompKeyOk()
         {
             //SETUP
             var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyCompKey));
@@ -191,6 +208,20 @@ namespace Tests.UnitTests
             refEfCol.ShouldNotEqualNull();
             refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
             GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataTop));
+        }
+
+
+        [Test]
+        public void Test70DataZeroOrOneRelationshipsOk()
+        {
+            //SETUP
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataZeroOrOne));
+
+            //EXECUTE
+            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ZeroOrOneData");
+
+            //VERIFY
+            refEfCol.ShouldEqual(null);
         }
 
     }

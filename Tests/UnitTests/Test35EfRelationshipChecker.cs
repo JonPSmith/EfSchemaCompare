@@ -126,6 +126,21 @@ namespace Tests.UnitTests
             status.Result.ShouldEqual("[dbo].[DataManyCompKeyDataTop]");
         }
 
+        [Test]
+        public void Test15DataTopZeroOrOneDataOk()
+        {
+            //SETUP
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
+            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ZeroOrOneData");
+
+            //EXECUTE
+            var status = _checker.CheckEfRelationshipToSql(efInfo, refEfCol);
+
+            //VERIFY
+            status.ShouldBeValid();
+            status.Result.ShouldEqual(null);
+        }
+
 
         [Test]
         public void Test20DataChildNormalColsOk()
