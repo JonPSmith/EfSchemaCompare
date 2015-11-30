@@ -41,27 +41,27 @@ namespace CompareCore.SqlInfo
                 command.Parameters.Add(param);
 
                 sqlcon.Open();
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (var reader = command.ExecuteReader())
                 {
-                    var row = new SqlPrimaryKey();
-                    var i = 0;
-                    //for (int j = 0; j < reader.FieldCount; j++)
-                    //{
-                    //    object col = reader[j];
-                    //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
-                    //}
-                    row.TABLE_QUALIFIER = reader.GetString(i++);
-                    row.TABLE_OWNER = reader.GetString(i++);
-                    row.TABLE_NAME = reader.GetString(i++);
-                    row.COLUMN_NAME = reader.GetString(i++);
-                    row.KEY_SEQ = reader.GetInt16(i++);
-                    row.PK_NAME = reader.GetString(i++);
+                    while (reader.Read())
+                    {
+                        var row = new SqlPrimaryKey();
+                        var i = 0;
+                        //for (int j = 0; j < reader.FieldCount; j++)
+                        //{
+                        //    object col = reader[j];
+                        //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
+                        //}
+                        row.TABLE_QUALIFIER = reader.GetString(i++);
+                        row.TABLE_OWNER = reader.GetString(i++);
+                        row.TABLE_NAME = reader.GetString(i++);
+                        row.COLUMN_NAME = reader.GetString(i++);
+                        row.KEY_SEQ = reader.GetInt16(i++);
+                        row.PK_NAME = reader.GetString(i++);
 
-                    result.Add(row);
+                        result.Add(row);
+                    }
                 }
-                reader.Close();
             }
 
             return result;

@@ -72,28 +72,28 @@ INNER JOIN sys.foreign_key_columns AS fc
 --WHERE f.parent_object_id = OBJECT_ID('<schema_name.table_name>')";
 
                 sqlcon.Open();
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (var reader = command.ExecuteReader())
                 {
-                    var row = new SqlForeignKeys();
-                    var i = 0;
-                    //for (int j = 0; j < reader.FieldCount; j++)
-                    //{
-                    //    object col = reader[j];
-                    //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
-                    //}
-                    row.ConstraintName = reader.GetString(i++);
-                    row.SchemaName = reader.GetString(i++);
-                    row.ParentTableName = reader.GetString(i++);
-                    row.ParentColName = reader.GetString(i++);
-                    row.ReferencedTableName = reader.GetString(i++);
-                    row.ReferencedColName = reader.GetString(i++);
-                    row.DeleteAction = reader.GetString(i++);
+                    while (reader.Read())
+                    {
+                        var row = new SqlForeignKeys();
+                        var i = 0;
+                        //for (int j = 0; j < reader.FieldCount; j++)
+                        //{
+                        //    object col = reader[j];
+                        //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
+                        //}
+                        row.ConstraintName = reader.GetString(i++);
+                        row.SchemaName = reader.GetString(i++);
+                        row.ParentTableName = reader.GetString(i++);
+                        row.ParentColName = reader.GetString(i++);
+                        row.ReferencedTableName = reader.GetString(i++);
+                        row.ReferencedColName = reader.GetString(i++);
+                        row.DeleteAction = reader.GetString(i++);
 
-                    result.Add(row);
+                        result.Add(row);
+                    }
                 }
-                reader.Close();
             }
 
             return result;

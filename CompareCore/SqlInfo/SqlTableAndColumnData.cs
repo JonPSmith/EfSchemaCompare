@@ -55,27 +55,28 @@ INNER JOIN sys.types types ON c.system_type_id = types.system_type_id
 ORDER BY SchemaName, TableName";
 
                 sqlcon.Open();
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (var reader = command.ExecuteReader())
                 {
-                    var row = new SqlTableAndColumnData();
-                    var i = 0;
-                    //for (int j = 0; j < reader.FieldCount; j++)
-                    //{
-                    //    object col = reader[j];
-                    //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
-                    //}
-                    row.TableName = reader.GetString(i++);
-                    row.SchemaName = reader.GetString(i++);
-                    row.ColumnName = reader.GetString(i++);
-                    row.ColumnSqlType = reader.GetString(i++);
-                    row.IsNullable = reader.GetBoolean(i++);// reader[i++] as bool? ?? false;
-                    row.MaxLength = reader.GetInt16(i++);
 
-                    result.Add(row);
+                    while (reader.Read())
+                    {
+                        var row = new SqlTableAndColumnData();
+                        var i = 0;
+                        //for (int j = 0; j < reader.FieldCount; j++)
+                        //{
+                        //    object col = reader[j];
+                        //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
+                        //}
+                        row.TableName = reader.GetString(i++);
+                        row.SchemaName = reader.GetString(i++);
+                        row.ColumnName = reader.GetString(i++);
+                        row.ColumnSqlType = reader.GetString(i++);
+                        row.IsNullable = reader.GetBoolean(i++); // reader[i++] as bool? ?? false;
+                        row.MaxLength = reader.GetInt16(i++);
+
+                        result.Add(row);
+                    }
                 }
-                reader.Close();
             }
 
             return result;
