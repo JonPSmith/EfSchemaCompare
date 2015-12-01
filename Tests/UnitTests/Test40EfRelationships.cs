@@ -15,11 +15,12 @@ using CompareCore.EFInfo;
 using Ef6Compare.Internal;
 using NUnit.Framework;
 using Tests.EfClasses;
+using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test32EfRelationships
+    public class Test40EfRelationships
     {
         private ICollection<EfTableInfo> _efInfos;
             

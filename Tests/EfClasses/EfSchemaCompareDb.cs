@@ -9,6 +9,9 @@
 
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using Tests.EfClasses.ClassTypes;
+using Tests.EfClasses.DataTypes;
+using Tests.EfClasses.Relationships;
 
 namespace Tests.EfClasses
 {
@@ -29,6 +32,10 @@ namespace Tests.EfClasses
         public DbSet<DataSingleton> DataSingletons { get; set; }
         public DbSet<DataCompKey> DataCompKeys { get; set; }
         public DbSet<DataComplex> DataComplexs { get; set; }
+        public DbSet<DataIntDouble> DataIntDoubles { get; set; }
+        public DbSet<DataStringByte> DataStringBytes { get; set; }
+        public DbSet<DataDate> DataDates { get; set; }
+        public DbSet<DataGuidEnum> DataGuidEnums { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -58,6 +65,8 @@ namespace Tests.EfClasses
                     m.MapRightKey("DataManyChildrenId");
                     m.ToTable("NonStandardManyToManyTableName");
                 });
+
+            modelBuilder.Entity<DataIntDouble>().Property(x => x.DataDecimalSmallPrecision).HasPrecision(5, 3);
 
             base.OnModelCreating(modelBuilder);
         }

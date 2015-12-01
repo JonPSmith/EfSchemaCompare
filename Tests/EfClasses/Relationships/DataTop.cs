@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tests.EfClasses
+namespace Tests.EfClasses.Relationships
 {
     public class DataTop
     {

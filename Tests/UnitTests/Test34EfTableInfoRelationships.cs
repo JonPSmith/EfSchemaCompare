@@ -15,11 +15,13 @@ using CompareCore.EFInfo;
 using Ef6Compare.Internal;
 using NUnit.Framework;
 using Tests.EfClasses;
+using Tests.EfClasses.ClassTypes;
+using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test30EfTableInfo
+    public class Test34EfTableInfoRelationships
     {
 
         private ICollection<EfTableInfo> _efInfos;
@@ -42,7 +44,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(8);
+            _efInfos.Count.ShouldEqual(12);
         }
 
         [Test]
@@ -222,46 +224,6 @@ namespace Tests.UnitTests
             efInfo.RelationshipCols.Count().ShouldEqual(1);
             CollectionAssert.AreEquivalent(new[] { "ManyParents" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
             CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataTop>) }, efInfo.RelationshipCols.Select(x => x.ClrColumnType));
-        }
-
-        [Test]
-        public void Test70DataComplexColsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataComplex));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            efInfo.TableName.ShouldEqual("DataComplex");
-            efInfo.NormalCols.Count.ShouldEqual(7);
-            //foreach (var col in efInfo.NormalCols)
-            //{
-            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
-            //}
-            var list = efInfo.NormalCols.ToList();
-            var i = 0;
-            list[i++].ToString().ShouldEqual("SqlColumnName: DataComplexId, SqlTypeName: int, ClrColumName: DataComplexId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexData_ComplexInt, SqlTypeName: int, ClrColumName: ComplexInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexData_ComplexString, SqlTypeName: nvarchar, ClrColumName: ComplexString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 25");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexDateTime, SqlTypeName: datetime, ClrColumName: ComplexDateTime, ClrColumnType: System.DateTime, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexGuid, SqlTypeName: uniqueidentifier, ClrColumName: ComplexGuid, ClrColumnType: System.Guid, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexData_ComplexInt, SqlTypeName: int, ClrColumName: ComplexInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexData_ComplexString, SqlTypeName: nvarchar, ClrColumName: ComplexString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 25");
-        }
-
-        [Test]
-        public void Test71DataComplexRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataComplex));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            efInfo.RelationshipCols.Count().ShouldEqual(0);
         }
 
         [Test]

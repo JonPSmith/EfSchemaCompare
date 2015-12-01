@@ -9,7 +9,7 @@
 
 using System.Collections.Generic;
 
-namespace Tests.EfClasses
+namespace Tests.EfClasses.Relationships
 {
     public class DataManyChildren
     {

@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test20SqlCommands.cs
+// Filename: Test15SqlCommands.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -11,11 +11,12 @@ using System.Configuration;
 using CompareCore.SqlInfo;
 using NUnit.Framework;
 using Tests.EfClasses;
+using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test20SqlCommands
+    public class Test15SqlCommands
     {
 
         [Test]

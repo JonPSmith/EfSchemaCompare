@@ -6,7 +6,8 @@
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
 #endregion
-namespace Tests.EfClasses
+
+namespace Tests.EfClasses.ClassTypes
 {
     public class DataComplex
     {

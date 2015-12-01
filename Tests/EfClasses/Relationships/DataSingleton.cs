@@ -10,7 +10,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tests.EfClasses
+namespace Tests.EfClasses.Relationships
 {
     /// <summary>
     /// Thsi can only take part in a one to one or ZeroOrOne to One relationship

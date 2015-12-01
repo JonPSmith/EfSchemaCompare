@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test30EfTableInfo.cs
+// Filename: Test34EfTableInfoRelationships.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -16,11 +16,12 @@ using CompareCore.SqlInfo;
 using Ef6Compare.Internal;
 using NUnit.Framework;
 using Tests.EfClasses;
+using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test35EfRelationshipChecker
+    public class Test45EfRelationshipChecker
     {
 
         private ICollection<EfTableInfo> _efInfos;

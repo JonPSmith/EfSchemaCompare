@@ -8,10 +8,9 @@
 #endregion
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tests.EfClasses
+namespace Tests.EfClasses.ClassTypes
 {
     /// <summary>
     /// Nested complex class

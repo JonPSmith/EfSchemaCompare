@@ -9,7 +9,7 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tests.EfClasses
+namespace Tests.EfClasses.Relationships
 {
     public class DataChild
     {

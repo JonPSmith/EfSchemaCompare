@@ -14,6 +14,7 @@ using CompareCore;
 using Ef6Compare;
 using NUnit.Framework;
 using Tests.EfClasses;
+using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
