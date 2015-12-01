@@ -66,7 +66,7 @@ namespace Tests.UnitTests
             var list = efInfo.NormalCols.ToList();
             var i = 0;
             list[i++].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("SqlColumnName: MyString, SqlTypeName: varchar, ClrColumName: MyString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 50");
+            list[i++].ToString().ShouldEqual("SqlColumnName: MyString, SqlTypeName: varchar, ClrColumName: MyString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 25");
             list[i++].ToString().ShouldEqual("SqlColumnName: DataSingletonId, SqlTypeName: int, ClrColumName: DataSingletonId, ClrColumnType: System.Nullable`1[System.Int32], IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 4");
             list[i++].ToString().ShouldEqual("SqlColumnName: Key1, SqlTypeName: int, ClrColumName: Key1, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("SqlColumnName: Key2, SqlTypeName: uniqueidentifier, ClrColumName: Key2, ClrColumnType: System.Guid, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 16");

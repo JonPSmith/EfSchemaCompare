@@ -8,6 +8,7 @@
 #endregion
 
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Reflection;
 using CompareCore.Utils;
 
@@ -36,7 +37,7 @@ namespace CompareCore.EFInfo
         /// </summary>
         public int MaxLength { get; private set; }
 
-        public EfColumnInfo(string sqlColumnName, string sqlTypeName, bool isNullable, int? maxLength, EfKeyOrder primaryKeyOrder, PropertyInfo clrProperty)
+        public EfColumnInfo(string sqlColumnName, string sqlTypeName, bool isNullable, int? maxLength, byte? precision, EfKeyOrder primaryKeyOrder, PropertyInfo clrProperty)
         {
             const string maxTypeEnding = "(max)";
 
@@ -51,7 +52,10 @@ namespace CompareCore.EFInfo
                 PrimaryKeyOrder = primaryKeyOrder.PrimaryKeyOrder;
             }
             IsNullable = isNullable;
-            MaxLength = SqlTypeName.GetSqlMaxLengthFromEfMaxLength(maxLength);        //this calculates the correct sql MaxLength
+            MaxLength = precision != null
+                //if looks like presion is only set to non-null on decimal (and numeric?)
+                ? ((byte)precision).GetLengthFromPrecision()
+                : SqlTypeName.GetSqlMaxLengthFromEfMaxLength(maxLength);
             _clrProperty = clrProperty;
         }
 

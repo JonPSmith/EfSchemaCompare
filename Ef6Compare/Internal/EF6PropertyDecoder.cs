@@ -57,7 +57,7 @@ namespace Ef6Compare.Internal
                             .Single(x => x.Name == edmProperty.Name);
                     var primaryKey = primaryKeys.SingleOrDefault(x => x.Name == edmProperty.Name);
                     columnInfos.Add(new EfColumnInfo(columnName, sqlTypeName, edmProperty.Nullable,
-                        edmProperty.MaxLength, primaryKey, clrProperty));
+                         edmProperty.MaxLength, edmProperty.Precision, primaryKey, clrProperty));
                 }
             }
 
@@ -86,7 +86,7 @@ namespace Ef6Compare.Internal
                             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                             .Single(x => x.Name == property.Property.Name);
                     complexCols.Add(new EfColumnInfo(columnName, sqlTypeName, property.Property.Nullable,
-                        property.Property.MaxLength, null, clrProperty));                 
+                        property.Property.MaxLength, property.Property.Precision, null, clrProperty));                 
                 }
             }
             return complexCols;

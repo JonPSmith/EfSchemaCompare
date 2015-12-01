@@ -90,6 +90,22 @@ namespace CompareCore.Utils
         }
 
         /// <summary>
+        /// You need to work out the MaxLength of a deciman using the precision
+        /// See https://msdn.microsoft.com/en-GB/library/ms187746.aspx
+        /// </summary>
+        /// <param name="precision"></param>
+        /// <returns></returns>
+        public static int GetLengthFromPrecision(this byte precision)
+        {
+            if (precision <= 9) return 5;
+            if (precision <= 19) return 9;
+            if (precision <= 28) return 13;
+            if (precision <= 38) return 17;
+
+            throw new InvalidOperationException("The decimal precision should not exceed 38.");
+        }
+
+        /// <summary>
         /// Clr uses a MaxLength for unicode data, i.e. SQL nvarchar, nchar, ntext, which is half what is should be
         /// </summary>
         /// <param name="sqlType"></param>
