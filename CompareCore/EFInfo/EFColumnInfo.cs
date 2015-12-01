@@ -9,6 +9,7 @@
 
 using System;
 using System.Reflection;
+using CompareCore.Utils;
 
 namespace CompareCore.EFInfo
 {
@@ -50,7 +51,7 @@ namespace CompareCore.EFInfo
                 PrimaryKeyOrder = primaryKeyOrder.PrimaryKeyOrder;
             }
             IsNullable = isNullable;
-            MaxLength = maxLength ?? -2;        //-2 means don't check it
+            MaxLength = SqlTypeName.GetSqlMaxLengthFromEfMaxLength(maxLength);        //this calculates the correct sql MaxLength
             _clrProperty = clrProperty;
         }
 

@@ -7,6 +7,7 @@
 // =====================================================
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -63,13 +64,13 @@ namespace Tests.UnitTests
             //}
             var list = efInfo.NormalCols.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("SqlColumnName: DataComplexId, SqlTypeName: int, ClrColumName: DataComplexId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexData_ComplexInt, SqlTypeName: int, ClrColumName: ComplexInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexData_ComplexString, SqlTypeName: nvarchar, ClrColumName: ComplexString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 25");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexDateTime, SqlTypeName: datetime, ClrColumName: ComplexDateTime, ClrColumnType: System.DateTime, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexGuid, SqlTypeName: uniqueidentifier, ClrColumName: ComplexGuid, ClrColumnType: System.Guid, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexData_ComplexInt, SqlTypeName: int, ClrColumName: ComplexInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexData_ComplexString, SqlTypeName: nvarchar, ClrColumName: ComplexString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 25");
+            list[i++].ToString().ShouldEqual("SqlColumnName: DataComplexId, SqlTypeName: int, ClrColumName: DataComplexId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexData_ComplexInt, SqlTypeName: int, ClrColumName: ComplexInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexData_ComplexString, SqlTypeName: nvarchar, ClrColumName: ComplexString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 50");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexDateTime, SqlTypeName: datetime, ClrColumName: ComplexDateTime, ClrColumnType: System.DateTime, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 8");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexGuid, SqlTypeName: uniqueidentifier, ClrColumName: ComplexGuid, ClrColumnType: System.Guid, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 16");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexData_ComplexInt, SqlTypeName: int, ClrColumName: ComplexInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ComplexComplexData_ComplexData_ComplexString, SqlTypeName: nvarchar, ClrColumName: ComplexString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 50");
         }
 
         [Test]

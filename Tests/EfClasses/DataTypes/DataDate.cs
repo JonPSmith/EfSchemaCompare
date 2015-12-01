@@ -17,7 +17,7 @@ namespace Tests.EfClasses.DataTypes
         public int DataDateId { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime DataDateTimeDate { get; set; }
+        public DateTime DataSqlDate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DataDateTime { get; set; }
         [Column(TypeName = "datetime2")]

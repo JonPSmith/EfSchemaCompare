@@ -40,7 +40,7 @@ namespace Ef6Compare.Internal
                     var complexColumn = _mapping.EntityTypeMappings.Single()
                         .Fragments.Single()
                         .PropertyMappings.OfType<ComplexPropertyMapping>().Single(m => m.Property == edmProperty);
-                    columnInfos.AddRange(DecodeComplexTypes(complexColumn, _getClrTypeFromFullName(edmProperty.DeclaringType.FullName)));          
+                    columnInfos.AddRange(DecodeComplexTypes(complexColumn, clrClassType));          
                 }
                 else
                 {

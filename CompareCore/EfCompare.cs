@@ -142,24 +142,21 @@ namespace CompareCore
         {
             var status = SuccessOrErrors.Success("All ok");
 
-            //if clrCol.MaxLength == -2 if we should not check the max length because it is a base class and EF does not hold the MaxLength
-            if (clrCol.MaxLength == -2) return status;
-
             if (sqlCol.MaxLength == -1 && clrCol.MaxLength != -1)
             {
                 //SQL is at max length, but EF isn't
                 return status.AddSingleError(
-                    "MaxLength: The  SQL {0}   column {1}.{2}, type {3}, is at max length, but EF length is at {4}.",
+                    "MaxLength: The SQL {0} column {1}.{2}, type {3}, is at max length, but EF length is at {4}.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType, clrCol.MaxLength);
             }
 
-            var sqlModifiedMaxLength = sqlCol.ColumnSqlType.GetClrMaxLength(sqlCol.MaxLength);
-            if (sqlModifiedMaxLength != clrCol.MaxLength)
+            if (sqlCol.MaxLength != clrCol.MaxLength)
             {
                 return status.AddSingleError(
                     "MaxLength: The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,
-                    sqlCol.ColumnSqlType.GetClrMaxLength(sqlCol.MaxLength), clrCol.MaxLength);
+                    sqlCol.MaxLength, 
+                    sqlCol.ColumnSqlType.EfLengthIdHalfThis() ? clrCol.MaxLength / 2 : clrCol.MaxLength);
             }
 
             return status.SetSuccessMessage("All Ok");

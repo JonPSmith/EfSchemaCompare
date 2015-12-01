@@ -16,6 +16,7 @@ namespace Tests.EfClasses.DataTypes
     {
         public int DataStringByteId { get; set; }
 
+        [Column(TypeName = "nchar")]
         public char DataChar { get; set; }
 
         public string DataStringNvarchar { get; set; }
@@ -45,6 +46,8 @@ namespace Tests.EfClasses.DataTypes
         [Column(TypeName = "binary")]
         [MaxLength(25)]
         public byte[] DataByteBinary25 { get; set; }
+        [Column(TypeName = "varbinary")]
+        public byte[] DataByteVarbinary { get; set; }
         [Column(TypeName = "varbinary")]
         [MaxLength(25)]
         public byte[] DataByteVarbinary25 { get; set; }

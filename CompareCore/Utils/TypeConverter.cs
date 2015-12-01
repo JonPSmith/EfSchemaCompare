@@ -18,13 +18,26 @@ namespace CompareCore.Utils
 
         private class TypeLenMul
         {
+            /// <summary>
+            /// This is the type that the sql type maps to
+            /// </summary>
             public Type ClrType { get; private set; }
-            public int ClrMaxLenDiv { get; private set; }
 
-            public TypeLenMul(Type clrType, int clrMaxLenDiv)
+            /// <summary>
+            /// If EF has a length of null then this is the default length
+            /// </summary>
+            public int DefaultLength { get; private set; }
+
+            /// <summary>
+            /// If true then the EF length needs to be multipled by 2 to get the sql length
+            /// </summary>
+            public bool MultiplyBy2 { get; private set; }
+
+            public TypeLenMul(Type clrType, int defaultLength, bool multiplyBy2)
             {
                 ClrType = clrType;
-                ClrMaxLenDiv = clrMaxLenDiv;
+                DefaultLength = defaultLength;
+                MultiplyBy2 = multiplyBy2;
             }
         }
 
@@ -37,35 +50,35 @@ namespace CompareCore.Utils
         /// </summary>
         private static readonly Dictionary<string, TypeLenMul> Mappings = new Dictionary<string, TypeLenMul>
         {
-            {"bigint", new TypeLenMul( typeof (Int64), 1)},
-            {"binary", new TypeLenMul( typeof (Byte[]), 1)},
-            {"bit", new TypeLenMul( typeof (Boolean), 1)},
-            {"char", new TypeLenMul( typeof (String), 1)},
-            {"date", new TypeLenMul( typeof (DateTime), 1)},
-            {"datetime", new TypeLenMul( typeof (DateTime), 1)},
-            {"datetime2", new TypeLenMul( typeof (DateTime), 1)},
-            {"datetimeoffset", new TypeLenMul( typeof (DateTimeOffset), 1)},
-            {"decimal", new TypeLenMul( typeof (Decimal), 1)},
-            {"float", new TypeLenMul( typeof (Double), 1)},
-            {"image", new TypeLenMul( typeof (Byte[]), 1)},
-            {"int", new TypeLenMul( typeof (Int32), 1)},
-            {"money", new TypeLenMul( typeof (Decimal), 1)},
-            {"nchar", new TypeLenMul( typeof (String), 2)},
-            {"ntext", new TypeLenMul( typeof (String), 2)},
-            {"numeric", new TypeLenMul( typeof (Decimal), 1)},
-            {"nvarchar", new TypeLenMul( typeof (String), 2)},
-            {"real", new TypeLenMul( typeof (Single), 1)},
-            {"rowversion", new TypeLenMul( typeof (Byte[]), 1)},
-            {"smalldatetime", new TypeLenMul( typeof (DateTime), 1)},
-            {"smallint", new TypeLenMul( typeof (Int16), 1)},
-            {"smallmoney", new TypeLenMul( typeof (Decimal), 1)},
-            {"text", new TypeLenMul( typeof (String), 1)},
-            {"time", new TypeLenMul( typeof (TimeSpan), 1)},
-            {"timestamp", new TypeLenMul( typeof (Byte[]), 1)},
-            {"tinyint", new TypeLenMul( typeof (Byte), 1)},
-            {"uniqueidentifier", new TypeLenMul( typeof (Guid), 1)},
-            {"varbinary", new TypeLenMul( typeof (Byte[]), 1)},
-            {"varchar", new TypeLenMul( typeof (String), 1)}
+            {"bigint", new TypeLenMul( typeof (Int64), 8, false)},
+            {"binary", new TypeLenMul( typeof (Byte[]), 0, false)},
+            {"bit", new TypeLenMul( typeof (Boolean), 1, false)},
+            {"char", new TypeLenMul( typeof (String), 1, false)},
+            {"date", new TypeLenMul( typeof (DateTime), 3, false)},
+            {"datetime", new TypeLenMul( typeof (DateTime), 8, false)},
+            {"datetime2", new TypeLenMul( typeof (DateTime), 8, false)},
+            {"datetimeoffset", new TypeLenMul( typeof (DateTimeOffset), 10, false)},
+            {"decimal", new TypeLenMul( typeof (Decimal), 9, false)},
+            {"float", new TypeLenMul( typeof (Double), 8, false)},
+            //{"image", new TypeLenMul( typeof (Byte[]), 1, false)},
+            {"int", new TypeLenMul( typeof (Int32), 4, false)},
+            {"money", new TypeLenMul( typeof (Decimal), 8, false)},
+            {"nchar", new TypeLenMul( typeof (String), 2, true)},
+            //{"ntext", new TypeLenMul( typeof (String), 1, true)},
+            {"numeric", new TypeLenMul( typeof (Decimal), 9, false)},
+            {"nvarchar", new TypeLenMul( typeof (String), -1, true)},
+            {"real", new TypeLenMul( typeof (Single), 4, false)},
+            {"rowversion", new TypeLenMul( typeof (Byte[]), 8, false)},
+            {"smalldatetime", new TypeLenMul( typeof (DateTime), 4, false)},
+            {"smallint", new TypeLenMul( typeof (Int16), 2, false)},
+            {"smallmoney", new TypeLenMul( typeof (Decimal), 4, false)},
+            //{"text", new TypeLenMul( typeof (String), 1, false)},
+            {"time", new TypeLenMul( typeof (TimeSpan), 5, false)},
+            {"timestamp", new TypeLenMul( typeof (Byte[]), 1, false)},
+            {"tinyint", new TypeLenMul( typeof (Byte), 1, false)},
+            {"uniqueidentifier", new TypeLenMul( typeof (Guid), 16, false)},
+            {"varbinary", new TypeLenMul( typeof (Byte[]), 8000, false)},
+            {"varchar", new TypeLenMul( typeof (String), 1, true)}
         };
         
         public static Type SqlToClrType(this string sqlType, bool isNullable)
@@ -80,16 +93,29 @@ namespace CompareCore.Utils
         /// Clr uses a MaxLength for unicode data, i.e. SQL nvarchar, nchar, ntext, which is half what is should be
         /// </summary>
         /// <param name="sqlType"></param>
-        /// <param name="sqlMaxLength"></param>
+        /// <param name="efMaxLength"></param>
         /// <returns></returns>
-        public static int GetClrMaxLength(this string sqlType, int sqlMaxLength)
+        public static int GetSqlMaxLengthFromEfMaxLength(this string sqlType, int? efMaxLength)
         {
-            if (sqlMaxLength == -1) return sqlMaxLength;          //-1 means max length
-
             TypeLenMul dictValue = null;
-            if (Mappings.TryGetValue(sqlType, out dictValue))
-                return sqlMaxLength / dictValue.ClrMaxLenDiv;
-            throw new TypeLoadException(string.Format("Can not load CLR Type from {0}", sqlType));
+            if (!Mappings.TryGetValue(sqlType, out dictValue))
+                throw new TypeLoadException(string.Format("Can not load CLR Type from {0}", sqlType));
+
+            if (efMaxLength != null)
+                //it has a MaxLength set
+                return (int) (dictValue.MultiplyBy2 ? efMaxLength*2 : efMaxLength);
+
+            //otherwise we return the default length that EF applies for this sql type 
+            return dictValue.DefaultLength;
+        }
+
+        public static bool EfLengthIdHalfThis(this string sqlType)
+        {
+            TypeLenMul dictValue = null;
+            if (!Mappings.TryGetValue(sqlType, out dictValue))
+                throw new TypeLoadException(string.Format("Can not load CLR Type from {0}", sqlType));
+
+            return dictValue.MultiplyBy2;
         }
     }
 }

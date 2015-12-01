@@ -15,7 +15,6 @@ using CompareCore.EFInfo;
 using Ef6Compare.Internal;
 using NUnit.Framework;
 using Tests.EfClasses;
-using Tests.EfClasses.ClassTypes;
 using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
@@ -51,15 +50,26 @@ namespace Tests.UnitTests
         public void Test10DataTopNormalColsOk()
         {
             //SETUP
+            var classType = typeof (DataTop);
 
             //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            efInfo.TableName.ShouldEqual("DataTop");
-            CollectionAssert.AreEquivalent(new[] { "DataTopId", "MyString", "DataSingletonId", "Key1", "Key2" }, efInfo.NormalCols.Select(x => x.ClrColumName));
-            efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataTopId");
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.NormalCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.NormalCols.Count.ShouldEqual(5);
+            var list = efInfo.NormalCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: MyString, SqlTypeName: varchar, ClrColumName: MyString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 50");
+            list[i++].ToString().ShouldEqual("SqlColumnName: DataSingletonId, SqlTypeName: int, ClrColumName: DataSingletonId, ClrColumnType: System.Nullable`1[System.Int32], IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: Key1, SqlTypeName: int, ClrColumName: Key1, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: Key2, SqlTypeName: uniqueidentifier, ClrColumName: Key2, ClrColumnType: System.Guid, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 16");
         }
 
         [Test]
@@ -81,15 +91,25 @@ namespace Tests.UnitTests
         public void Test20DataChildNormalColsOk()
         {
             //SETUP
+            var classType = typeof(DataChild);
 
             //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataChild));
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            efInfo.TableName.ShouldEqual("DataChild");
-            CollectionAssert.AreEquivalent(new[] { "DataChildId", "MyInt", "MyString", "DataTopId" }, efInfo.NormalCols.Select(x => x.ClrColumName));
-            efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataChildId");      
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.NormalCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.NormalCols.Count.ShouldEqual(4);
+            var list = efInfo.NormalCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("SqlColumnName: DataChildId, SqlTypeName: int, ClrColumName: DataChildId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: MyInt, SqlTypeName: int, ClrColumName: MyInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: MyString, SqlTypeName: nvarchar, ClrColumName: MyString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: -1");
+            list[i++].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
         }
 
         [Test]
@@ -111,16 +131,23 @@ namespace Tests.UnitTests
         public void Test30DataManyChildrenNormalColsOk()
         {
             //SETUP
+            var classType = typeof(DataManyChildren);
 
             //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyChildren));
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            efInfo.TableName.ShouldEqual("DataManyChildren");
-            CollectionAssert.AreEquivalent(new[] { "DataManyChildrenId", "MyInt" }, efInfo.NormalCols.Select(x => x.ClrColumName));
-            efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataManyChildrenId");
-            
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.NormalCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.NormalCols.Count.ShouldEqual(2);
+            var list = efInfo.NormalCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("SqlColumnName: DataManyChildrenId, SqlTypeName: int, ClrColumName: DataManyChildrenId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: MyInt, SqlTypeName: int, ClrColumName: MyInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
         }
 
         [Test]
@@ -141,15 +168,24 @@ namespace Tests.UnitTests
         public void Test40DataSingletonNormalColsOk()
         {
             //SETUP
+            var classType = typeof(DataSingleton);
 
             //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataSingleton));
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            efInfo.TableName.ShouldEqual("DataSingleton");
-            CollectionAssert.AreEquivalent(new[] { "DataSingletonId", "MyDateTime", "NonStandardForeignKeyName" }, efInfo.NormalCols.Select(x => x.ClrColumName));
-            efInfo.NormalCols.Single(x => x.IsPrimaryKey).ClrColumName.ShouldEqual("DataSingletonId");
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.NormalCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.NormalCols.Count.ShouldEqual(3);
+            var list = efInfo.NormalCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("SqlColumnName: DataSingletonId, SqlTypeName: int, ClrColumName: DataSingletonId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: MyDateTime, SqlTypeName: datetime, ClrColumName: MyDateTime, ClrColumnType: System.DateTime, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 8");
+            list[i++].ToString().ShouldEqual("SqlColumnName: NonStandardForeignKeyName, SqlTypeName: int, ClrColumName: NonStandardForeignKeyName, ClrColumnType: System.Nullable`1[System.Int32], IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 4");
         }
 
         [Test]
@@ -170,16 +206,24 @@ namespace Tests.UnitTests
         public void Test50DataCompKeyNormalColsOk()
         {
             //SETUP
+            var classType = typeof(DataCompKey);
 
             //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataCompKey));
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
             efInfo.TableName.ShouldEqual("NonStandardCompKeyTable");
-            CollectionAssert.AreEquivalent(new[] { "Key1", "Key2", "MyEnum" }, efInfo.NormalCols.Select(x => x.ClrColumName));
-            CollectionAssert.AreEquivalent(new[] { "Key1", "Key2" }, efInfo.NormalCols.Where(x => x.IsPrimaryKey).Select(x => x.ClrColumName));
-            CollectionAssert.AreEquivalent(new[] { 1,2 }, efInfo.NormalCols.Where(x => x.IsPrimaryKey).Select(x => x.PrimaryKeyOrder));
+            //foreach (var col in efInfo.NormalCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.NormalCols.Count.ShouldEqual(3);
+            var list = efInfo.NormalCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("SqlColumnName: Key1, SqlTypeName: int, ClrColumName: Key1, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: Key2, SqlTypeName: uniqueidentifier, ClrColumName: Key2, ClrColumnType: System.Guid, IsPrimaryKey: True, PrimaryKeyOrder: 2, IsNullable: False, MaxLength: 16");
+            list[i++].ToString().ShouldEqual("SqlColumnName: NonStandardColumnName, SqlTypeName: int, ClrColumName: MyEnum, ClrColumnType: Tests.EfClasses.Relationships.EnumTests, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
         }
 
         [Test]
@@ -199,16 +243,23 @@ namespace Tests.UnitTests
         public void Test60DataManyCompKeyNormalColsOk()
         {
             //SETUP
+            var classType = typeof(DataManyCompKey);
 
             //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyCompKey));
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            efInfo.TableName.ShouldEqual("DataManyCompKey");
-            CollectionAssert.AreEquivalent(new[] { "ManyKey1", "ManyKey2"}, efInfo.NormalCols.Select(x => x.ClrColumName));
-            CollectionAssert.AreEquivalent(new[] { "ManyKey1", "ManyKey2" }, efInfo.NormalCols.Where(x => x.IsPrimaryKey).Select(x => x.ClrColumName));
-            CollectionAssert.AreEquivalent(new[] { 1, 2 }, efInfo.NormalCols.Where(x => x.IsPrimaryKey).Select(x => x.PrimaryKeyOrder));
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.NormalCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.NormalCols.Count.ShouldEqual(2);
+            var list = efInfo.NormalCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("SqlColumnName: ManyKey1, SqlTypeName: int, ClrColumName: ManyKey1, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ManyKey2, SqlTypeName: uniqueidentifier, ClrColumName: ManyKey2, ClrColumnType: System.Guid, IsPrimaryKey: True, PrimaryKeyOrder: 2, IsNullable: False, MaxLength: 16");
         }
 
         [Test]
@@ -230,22 +281,24 @@ namespace Tests.UnitTests
         public void Test80DataZeroOrOneColsOk()
         {
             //SETUP
+            //SETUP
+            var classType = typeof(DataManyCompKey);
 
             //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataZeroOrOne));
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
             efInfo.ShouldNotEqualNull();
-            efInfo.TableName.ShouldEqual("DataZeroOrOne");
-            efInfo.NormalCols.Count.ShouldEqual(2);
+            efInfo.TableName.ShouldEqual(classType.Name);
             //foreach (var col in efInfo.NormalCols)
             //{
             //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
             //}
+            efInfo.NormalCols.Count.ShouldEqual(2);
             var list = efInfo.NormalCols.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: -2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: MyBool, SqlTypeName: bit, ClrColumName: MyBool, ClrColumnType: System.Boolean, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: -2");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ManyKey1, SqlTypeName: int, ClrColumName: ManyKey1, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ManyKey2, SqlTypeName: uniqueidentifier, ClrColumName: ManyKey2, ClrColumnType: System.Guid, IsPrimaryKey: True, PrimaryKeyOrder: 2, IsNullable: False, MaxLength: 16");
             
         }
 
