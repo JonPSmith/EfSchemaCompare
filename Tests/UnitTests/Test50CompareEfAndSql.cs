@@ -67,7 +67,7 @@ namespace Tests.UnitTests
                 var comparer = new CompareEfSql();
 
                 //EXECUTE
-                var status = comparer.CompareEfWithDb(db, DatabaseHelpers.DbUpDatabaseConfigName);
+                var status = comparer.CompareEfWithDb(db, MiscConstants.DbUpDatabaseConfigName);
 
                 //VERIFY
                 status.ShouldBeValid();
@@ -84,7 +84,7 @@ namespace Tests.UnitTests
                 var comparer = new CompareEfSql();
 
                 //EXECUTE
-                var status = comparer.CompareEfWithDb<DataTop>(db, DatabaseHelpers.DbUpDatabaseConfigName);
+                var status = comparer.CompareEfWithDb<DataTop>(db, MiscConstants.DbUpDatabaseConfigName);
 
                 //VERIFY
                 status.ShouldBeValid();
@@ -107,7 +107,7 @@ namespace Tests.UnitTests
                 //EXECUTE
                 var ex =
                     Assert.Throws<InvalidOperationException>(
-                        () => comparer.CompareEfWithDb<EfCompare>(db, DatabaseHelpers.DbUpDatabaseConfigName));
+                        () => comparer.CompareEfWithDb<EfCompare>(db, MiscConstants.DbUpDatabaseConfigName));
 
                 //VERIFY
                 ex.Message.ShouldStartWith("Could not find the EF data class");

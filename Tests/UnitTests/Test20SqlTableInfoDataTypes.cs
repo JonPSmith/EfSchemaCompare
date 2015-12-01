@@ -26,7 +26,7 @@ namespace Tests.UnitTests
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            var connection = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
+            var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
             var allSqlInfo = SqlAllInfo.SqlAllInfoFactory(connection);
             _sqlInfos = allSqlInfo.TableInfos;
         }

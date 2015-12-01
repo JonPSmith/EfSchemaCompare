@@ -15,7 +15,7 @@ using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
 
-namespace Ef6Compare.Internal
+namespace Ef6Compare.InternalEf6
 {
     internal class Ef6PropertyDecoder
     {

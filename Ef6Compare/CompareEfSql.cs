@@ -16,6 +16,7 @@ using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
 using CompareCore.Utils;
 using Ef6Compare.Internal;
+using Ef6Compare.InternalEf6;
 using GenericLibsBase;
 using GenericLibsBase.Core;
 

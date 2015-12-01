@@ -90,7 +90,7 @@ namespace CompareCore.Utils
         }
 
         /// <summary>
-        /// You need to work out the MaxLength of a deciman using the precision
+        /// You need to work out the MaxLength of a decimal using the precision
         /// See https://msdn.microsoft.com/en-GB/library/ms187746.aspx
         /// </summary>
         /// <param name="precision"></param>

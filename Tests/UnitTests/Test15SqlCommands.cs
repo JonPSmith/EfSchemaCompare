@@ -23,7 +23,7 @@ namespace Tests.UnitTests
         public void Test01SqlTableAndColumnDataOk()
         {
             //SETUP
-            var connection = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
+            var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
 
             //EXECUTE
             var result = SqlTableAndColumnData.GetSqlTablesAndColumns(connection);
@@ -36,7 +36,7 @@ namespace Tests.UnitTests
         public void Test10GetForeignKeysOk()
         {
             //SETUP
-            var connection = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
+            var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
 
             //EXECUTE
             var result = SqlForeignKeys.GetForeignKeys(connection);
@@ -49,7 +49,7 @@ namespace Tests.UnitTests
         public void Test20GetPrimaryKeysNamesOk()
         {
             //SETUP
-            var connection = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
+            var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
 
             //EXECUTE
             var result = SqlPrimaryKey.GetPrimaryKeysNames(connection, typeof(DataManyCompKey).Name);

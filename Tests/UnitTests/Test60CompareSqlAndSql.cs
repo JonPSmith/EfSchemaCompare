@@ -21,7 +21,7 @@ namespace Tests.UnitTests
         public void Test01CompareSqlToSqlSelfOk()
         {
             //SETUP
-            var connection = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
+            var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
             var comparer = new CompareSqlSql();
 
             //EXECUTE
@@ -36,8 +36,8 @@ namespace Tests.UnitTests
         public void Test10CompareSqlToSqlDbUpOk()
         {
             //SETUP
-            var connection1 = ConfigurationManager.ConnectionStrings[DatabaseHelpers.EfDatabaseConfigName].ConnectionString;
-            var connection2 = ConfigurationManager.ConnectionStrings[DatabaseHelpers.DbUpDatabaseConfigName].ConnectionString;
+            var connection1 = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
+            var connection2 = ConfigurationManager.ConnectionStrings[MiscConstants.DbUpDatabaseConfigName].ConnectionString;
             var comparer = new CompareSqlSql();
 
             //EXECUTE
@@ -56,7 +56,7 @@ namespace Tests.UnitTests
             var comparer = new CompareSqlSql();
 
             //EXECUTE
-            var status = comparer.CompareSqlToSql(DatabaseHelpers.EfDatabaseConfigName, DatabaseHelpers.DbUpDatabaseConfigName);
+            var status = comparer.CompareSqlToSql(MiscConstants.EfDatabaseConfigName, MiscConstants.DbUpDatabaseConfigName);
 
             //VERIFY
             status.ShouldBeValid();

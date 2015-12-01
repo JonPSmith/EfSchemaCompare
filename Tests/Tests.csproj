@@ -72,13 +72,12 @@
     <Compile Include="EfClasses\Relationships\DataTop.cs" />
     <Compile Include="EfClasses\Relationships\DataZeroOrOne.cs" />
     <Compile Include="EfClasses\EfSchemaCompareDb.cs" />
-    <Compile Include="Helpers\DatabaseHelpers.cs" />
     <Compile Include="Helpers\ExtendAsserts.cs" />
+    <Compile Include="Helpers\MiscConstants.cs" />
     <Compile Include="Helpers\TestFileHelpers.cs" />
     <Compile Include="Helpers\TimerToConsole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlCommands\BasicSqlCommands.cs" />
-    <Compile Include="UnitTests\Test10DatabasesExist.cs" />
+    <Compile Include="UnitTests\Test10CreateDatabases.cs" />
     <Compile Include="UnitTests\Test15SqlCommands.cs" />
     <Compile Include="UnitTests\Test20SqlTableInfoDataTypes.cs" />
     <Compile Include="UnitTests\Test22SqlTableInfoClassTypes.cs" />

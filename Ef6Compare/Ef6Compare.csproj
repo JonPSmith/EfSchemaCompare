@@ -53,10 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Internal\BasicSqlCommands.cs" />
     <Compile Include="CompareEfSql.cs" />
     <Compile Include="CompareSqlSql.cs" />
-    <Compile Include="Internal\Ef6MetadataDecoder.cs" />
-    <Compile Include="Internal\Ef6PropertyDecoder.cs" />
+    <Compile Include="Internal\ConnectionHelper.cs" />
+    <Compile Include="DatabaseCreators.cs" />
+    <Compile Include="InternalEf6\Ef6MetadataDecoder.cs" />
+    <Compile Include="InternalEf6\Ef6PropertyDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
