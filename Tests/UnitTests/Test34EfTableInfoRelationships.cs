@@ -73,21 +73,6 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test11DataTopRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "Children", "CompositeKeyData", "ManyChildren", "ManyCompKeys", "SingletonNullable", "ZeroOrOneData" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
-            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataChild>), typeof(DataCompKey), typeof(ICollection<DataManyChildren>), typeof(ICollection<DataManyCompKey>), typeof(DataSingleton), typeof(DataZeroOrOne) }, 
-                efInfo.RelationshipCols.Select(x => x.ClrColumnType));
-        }
-
-        [Test]
         public void Test20DataChildNormalColsOk()
         {
             //SETUP
@@ -113,21 +98,6 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test21DataChildRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataChild));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "Parent" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
-            CollectionAssert.AreEquivalent(new[] { typeof(DataTop) }, efInfo.RelationshipCols.Select(x => x.ClrColumnType));
-        }
-
-
-        [Test]
         public void Test30DataManyChildrenNormalColsOk()
         {
             //SETUP
@@ -148,20 +118,6 @@ namespace Tests.UnitTests
             var i = 0;
             list[i++].ToString().ShouldEqual("SqlColumnName: DataManyChildrenId, SqlTypeName: int, ClrColumName: DataManyChildrenId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("SqlColumnName: MyInt, SqlTypeName: int, ClrColumName: MyInt, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
-        }
-
-        [Test]
-        public void Test31DataManyChildrenRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyChildren));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "ManyParents" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
-            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataTop>) }, efInfo.RelationshipCols.Select(x => x.ClrColumnType));
         }
 
         [Test]
@@ -189,20 +145,6 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test41DataSingletonRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataSingleton));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            CollectionAssert.AreEquivalent(new[] { "Parent" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
-            CollectionAssert.AreEquivalent(new[] { typeof(DataTop) }, efInfo.RelationshipCols.Select(x => x.ClrColumnType));
-        }
-
-        [Test]
         public void Test50DataCompKeyNormalColsOk()
         {
             //SETUP
@@ -224,19 +166,6 @@ namespace Tests.UnitTests
             list[i++].ToString().ShouldEqual("SqlColumnName: Key1, SqlTypeName: int, ClrColumName: Key1, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("SqlColumnName: Key2, SqlTypeName: uniqueidentifier, ClrColumName: Key2, ClrColumnType: System.Guid, IsPrimaryKey: True, PrimaryKeyOrder: 2, IsNullable: False, MaxLength: 16");
             list[i++].ToString().ShouldEqual("SqlColumnName: NonStandardColumnName, SqlTypeName: int, ClrColumName: MyEnum, ClrColumnType: Tests.EfClasses.Relationships.EnumTests, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
-        }
-
-        [Test]
-        public void Test51DataCompKeyRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataCompKey));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            efInfo.RelationshipCols.Count().ShouldEqual(0);
         }
 
         [Test]
@@ -263,21 +192,6 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test61DataCompKeyRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyCompKey));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            efInfo.RelationshipCols.Count().ShouldEqual(1);
-            CollectionAssert.AreEquivalent(new[] { "ManyParents" }, efInfo.RelationshipCols.Select(x => x.ClrColumnName));
-            CollectionAssert.AreEquivalent(new[] { typeof(ICollection<DataTop>) }, efInfo.RelationshipCols.Select(x => x.ClrColumnType));
-        }
-
-        [Test]
         public void Test80DataZeroOrOneColsOk()
         {
             //SETUP
@@ -300,19 +214,6 @@ namespace Tests.UnitTests
             list[i++].ToString().ShouldEqual("SqlColumnName: ManyKey1, SqlTypeName: int, ClrColumName: ManyKey1, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("SqlColumnName: ManyKey2, SqlTypeName: uniqueidentifier, ClrColumName: ManyKey2, ClrColumnType: System.Guid, IsPrimaryKey: True, PrimaryKeyOrder: 2, IsNullable: False, MaxLength: 16");
             
-        }
-
-        [Test]
-        public void Test81DataZeroOrOneRelationshipsOk()
-        {
-            //SETUP
-
-            //EXECUTE
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataZeroOrOne));
-
-            //VERIFY
-            efInfo.ShouldNotEqualNull();
-            efInfo.RelationshipCols.Count().ShouldEqual(0);
         }
     }
 }

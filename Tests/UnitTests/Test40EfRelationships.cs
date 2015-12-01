@@ -54,87 +54,39 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(8);
-            foreach (var relCol in _efInfos.SelectMany(x => x.RelationshipCols))
-            {
-                Console.WriteLine(relCol);
-            }
+            _efInfos.Count.ShouldEqual(12);
+            //foreach (var relCol in _efInfos.SelectMany(x => x.RelationshipCols))
+            //{
+            //    Console.WriteLine(relCol);
+            //}
         }
 
         [Test]
-        public void Test10DataTopSingletonNullableOk()
+        public void Test10DataTopOk()
         {
             //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
+            var classType = typeof(DataTop);
 
             //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "SingletonNullable");
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("One-to-ZeroOrOne");
-            refEfCol.ClrColumnType.ShouldEqual(typeof(DataSingleton));
-        }
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.RelationshipCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.RelationshipCols.Count.ShouldEqual(6);
+            var list = efInfo.RelationshipCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("ClrColumnName: Children, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataChild], FromToRelationships: One-to-Many");
+            list[i++].ToString().ShouldEqual("ClrColumnName: CompositeKeyData, ClrColumnType: Tests.EfClasses.Relationships.DataCompKey, FromToRelationships: Many-to-One");
+            list[i++].ToString().ShouldEqual("ClrColumnName: ManyChildren, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataManyChildren], FromToRelationships: Many-to-Many");
+            list[i++].ToString().ShouldEqual("ClrColumnName: ManyCompKeys, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataManyCompKey], FromToRelationships: Many-to-Many");
+            list[i++].ToString().ShouldEqual("ClrColumnName: SingletonNullable, ClrColumnType: Tests.EfClasses.Relationships.DataSingleton, FromToRelationships: One-to-ZeroOrOne");
+            list[i++].ToString().ShouldEqual("ClrColumnName: ZeroOrOneData, ClrColumnType: Tests.EfClasses.Relationships.DataZeroOrOne, FromToRelationships: One-to-ZeroOrOne");
 
-        [Test]
-        public void Test11DataTopChildrenOk()
-        {
-            //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
-
-            //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "Children");
-
-            //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("One-to-Many");
-            GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataChild));
-        }
-
-
-        [Test]
-        public void Test12DataTopManyChildrenOk()
-        {
-            //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
-
-            //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ManyChildren");
-
-            //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
-            GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataManyChildren));
-        }
-
-        [Test]
-        public void Test13DataTopManyCompKeysOk()
-        {
-            //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
-
-            //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ManyCompKeys");
-
-            //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
-            GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataManyCompKey));
-        }
-
-        [Test]
-        public void Test14DataTopZeroOrOneDataOk()
-        {
-            //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataTop));
-
-            //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ZeroOrOneData");
-
-            //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("One-to-ZeroOrOne");
-            refEfCol.ClrColumnType.ShouldEqual(typeof(DataZeroOrOne));
         }
 
 
@@ -142,73 +94,108 @@ namespace Tests.UnitTests
         public void Test20DataChildOk()
         {
             //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataChild));
+            var classType = typeof(DataChild);
 
             //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "Parent");
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-One");
-            refEfCol.ClrColumnType.ShouldEqual(typeof(DataTop));   
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.RelationshipCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.RelationshipCols.Count.ShouldEqual(1);
+            var list = efInfo.RelationshipCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: Tests.EfClasses.Relationships.DataTop, FromToRelationships: Many-to-One");
         }
 
         [Test]
-        public void Test30DataManyChildrenOk()
+        public void Test20DataManyChildrenOk()
         {
             //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyChildren));
+            var classType = typeof(DataManyChildren);
 
             //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ManyParents");
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
-            GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataTop));
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.RelationshipCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.RelationshipCols.Count.ShouldEqual(1);
+            var list = efInfo.RelationshipCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("ClrColumnName: ManyParents, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataTop], FromToRelationships: Many-to-Many");
         }
 
+
         [Test]
-        public void Test40DataSingletonParentOk()
+        public void Test30DataSingletonParentOk()
         {
             //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataSingleton));
+            var classType = typeof(DataSingleton);
 
             //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "Parent");
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("ZeroOrOne-to-One");
-            refEfCol.ClrColumnType.ShouldEqual(typeof(DataTop));  
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.RelationshipCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.RelationshipCols.Count.ShouldEqual(1);
+            var list = efInfo.RelationshipCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: Tests.EfClasses.Relationships.DataTop, FromToRelationships: ZeroOrOne-to-One");
         }
 
         [Test]
         public void Test50DataCompKeyOk()
         {
             //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataCompKey));
+            var classType = typeof(DataCompKey);
 
             //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ManyParents");
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
-            refEfCol.ShouldEqual(null);
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual("NonStandardCompKeyTable");
+            //foreach (var col in efInfo.RelationshipCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.RelationshipCols.Count.ShouldEqual(0);
         }
 
         [Test]
         public void Test60DataManyCompKeyOk()
         {
             //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataManyCompKey));
+            var classType = typeof(DataManyCompKey);
 
             //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ManyParents");
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
-            refEfCol.ShouldNotEqualNull();
-            refEfCol.FromToRelationships.ToString().ShouldEqual("Many-to-Many");
-            GetClassFromCollection(refEfCol).ShouldEqual(typeof(DataTop));
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual(classType.Name);
+            //foreach (var col in efInfo.RelationshipCols)
+            //{
+            //    Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            //}
+            efInfo.RelationshipCols.Count.ShouldEqual(1);
+            var list = efInfo.RelationshipCols.ToList();
+            var i = 0;
+            list[i++].ToString().ShouldEqual("ClrColumnName: ManyParents, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataTop], FromToRelationships: Many-to-Many");
         }
 
 
@@ -216,13 +203,21 @@ namespace Tests.UnitTests
         public void Test70DataZeroOrOneRelationshipsOk()
         {
             //SETUP
-            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == typeof(DataZeroOrOne));
+            var classType = typeof(DataZeroOrOne);
 
             //EXECUTE
-            var refEfCol = efInfo.RelationshipCols.SingleOrDefault(x => x.ClrColumnName == "ZeroOrOneData");
+            var efInfo = _efInfos.SingleOrDefault(x => x.ClrClassType == classType);
 
             //VERIFY
-            refEfCol.ShouldEqual(null);
+            efInfo.ShouldNotEqualNull();
+            efInfo.TableName.ShouldEqual(classType.Name);
+            foreach (var col in efInfo.RelationshipCols)
+            {
+                Console.WriteLine("list[i++].ToString().ShouldEqual(\"{0}\");", col);
+            }
+            efInfo.RelationshipCols.Count.ShouldEqual(0);
+            var list = efInfo.RelationshipCols.ToList();
+            var i = 0;
         }
 
     }

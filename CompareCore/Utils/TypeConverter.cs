@@ -78,7 +78,7 @@ namespace CompareCore.Utils
             {"tinyint", new TypeLenMul( typeof (Byte), 1, false)},
             {"uniqueidentifier", new TypeLenMul( typeof (Guid), 16, false)},
             {"varbinary", new TypeLenMul( typeof (Byte[]), 8000, false)},
-            {"varchar", new TypeLenMul( typeof (String), 1, true)}
+            {"varchar", new TypeLenMul( typeof (String), 8000, false)}
         };
         
         public static Type SqlToClrType(this string sqlType, bool isNullable)
