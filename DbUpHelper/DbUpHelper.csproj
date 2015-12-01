@@ -54,8 +54,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\Script0001 - Create tables.sql" />
+    <EmbeddedResource Include="Scripts\Script0001 - Create relationships.sql" />
     <EmbeddedResource Include="Scripts\Script0002 - Add constraints.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\Script0003 - Create DataTypes.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\Script0004 - Create ClassTypes.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
