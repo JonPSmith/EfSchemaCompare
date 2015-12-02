@@ -15,6 +15,7 @@ namespace Tests.EfClasses.Relationships
     {
         public int DataChildId { get; set; }
 
+        [Index]
         public int MyInt { get; set; }
 
         public string MyString { get; set; }

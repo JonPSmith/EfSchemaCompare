@@ -56,7 +56,20 @@ namespace Tests.UnitTests
 
             //VERIFY
             result.Count.ShouldEqual(2);
-        }    
+        }
+
+        [Test]
+        public void Test30GetNonPrimaryKeyIndexesOk()
+        {
+            //SETUP
+            var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
+
+            //EXECUTE
+            var result = SqlIndexes.GetNonPrimaryKeyIndexes(connection);
+
+            //VERIFY
+            result.Count.ShouldBeGreaterThan(8);
+        }  
     
     }
 }
