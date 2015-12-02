@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: SqlForeignKeys.cs
+// Filename: SqlForeignKey.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -10,11 +10,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using System.Linq;
 using CompareCore.Utils;
+using GenericLibsBase;
+using GenericLibsBase.Core;
 
 namespace CompareCore.SqlInfo
 {
-    public class SqlForeignKeys
+    public class SqlForeignKey
     {
         private const string DeleteActionCascade = "CASCADE";
 
@@ -47,11 +50,10 @@ namespace CompareCore.SqlInfo
         //-------------------------------------------------------------------
         //
 
-
-        public static ICollection<SqlForeignKeys> GetForeignKeys(string connectionString)
+        public static ICollection<SqlForeignKey> GetForeignKeys(string connectionString)
         {
 
-            var result = new Collection<SqlForeignKeys>();
+            var result = new Collection<SqlForeignKey>();
             using (var sqlcon = new SqlConnection(connectionString))
             {
                 var command = sqlcon.CreateCommand();
@@ -76,7 +78,7 @@ INNER JOIN sys.foreign_key_columns AS fc
                 {
                     while (reader.Read())
                     {
-                        var row = new SqlForeignKeys();
+                        var row = new SqlForeignKey();
                         var i = 0;
                         //for (int j = 0; j < reader.FieldCount; j++)
                         //{

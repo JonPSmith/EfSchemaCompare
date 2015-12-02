@@ -21,7 +21,7 @@ namespace Tests.UnitTests
     {
 
         private ICollection<SqlTableInfo> _sqlInfos;
-        private ICollection<SqlForeignKeys> _sqlForeignKeys;
+        private ICollection<SqlForeignKey> _sqlForeignKeys;
                    
         [TestFixtureSetUp]
         public void FixtureSetup()

@@ -39,7 +39,7 @@ namespace Tests.UnitTests
             var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
 
             //EXECUTE
-            var result = SqlForeignKeys.GetForeignKeys(connection);
+            var result = SqlForeignKey.GetForeignKeys(connection);
 
             //VERIFY
             result.Count.ShouldBeGreaterThan(3);
@@ -65,7 +65,7 @@ namespace Tests.UnitTests
             var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
 
             //EXECUTE
-            var result = SqlIndexes.GetNonPrimaryKeyIndexes(connection);
+            var result = SqlIndex.GetAllIndexes(connection);
 
             //VERIFY
             result.Count.ShouldBeGreaterThan(8);

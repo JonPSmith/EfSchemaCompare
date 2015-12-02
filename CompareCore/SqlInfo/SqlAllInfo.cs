@@ -16,18 +16,21 @@ namespace CompareCore.SqlInfo
     {
         public ICollection<SqlTableInfo> TableInfos { get; private set; } 
 
-        public ICollection<SqlForeignKeys> ForeignKeys { get; private set; }
+        public ICollection<SqlForeignKey> ForeignKeys { get; private set; }
 
-        private SqlAllInfo(ICollection<SqlTableInfo> tableInfos, ICollection<SqlForeignKeys> foreignKeys)
+        public ICollection<SqlIndex> Indexes { get; private set; }
+
+        private SqlAllInfo(ICollection<SqlTableInfo> tableInfos, ICollection<SqlForeignKey> foreignKeys, ICollection<SqlIndex> indexes)
         {
             TableInfos = tableInfos;
             ForeignKeys = foreignKeys;
+            Indexes = indexes;
         }
 
         public static SqlAllInfo SqlAllInfoFactory(string connection)
         {
             var allTablesAndCol = SqlTableAndColumnData.GetSqlTablesAndColumns(connection);
-            var allForeignKeys = SqlForeignKeys.GetForeignKeys(connection);
+            var allForeignKeys = SqlForeignKey.GetForeignKeys(connection);
 
             var tableInfos = from tableGroup in allTablesAndCol.GroupBy(x => x.TableName)
                 let schemaName = tableGroup.First().SchemaName
@@ -37,7 +40,9 @@ namespace CompareCore.SqlInfo
                         primaryKey.SingleOrDefault(z => z.COLUMN_NAME == y.ColumnName),
                         y.IsNullable, y.MaxLength)).ToList()));
 
-            return new SqlAllInfo(tableInfos.ToList(), allForeignKeys);
+            var allIndexes = SqlIndex.GetAllIndexes(connection);
+
+            return new SqlAllInfo(tableInfos.ToList(), allForeignKeys, allIndexes);
         }
     }
 }

@@ -55,8 +55,8 @@
     <Compile Include="SqlCompare.cs" />
     <Compile Include="SqlInfo\SqlAllInfo.cs" />
     <Compile Include="SqlInfo\SqlColumnInfo.cs" />
-    <Compile Include="SqlInfo\SqlForeignKeys.cs" />
-    <Compile Include="SqlInfo\SqlIndexes.cs" />
+    <Compile Include="SqlInfo\SqlForeignKey.cs" />
+    <Compile Include="SqlInfo\SqlIndex.cs" />
     <Compile Include="SqlInfo\SqlPrimaryKey.cs" />
     <Compile Include="SqlInfo\SqlTableAndColumnData.cs" />
     <Compile Include="SqlInfo\SqlTableInfo.cs" />

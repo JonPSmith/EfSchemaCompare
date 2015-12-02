@@ -205,7 +205,7 @@ namespace CompareCore.EFInfo
         /// <param name="parentTableName"></param>
         /// <param name="referencedTableAndKey"></param>
         /// <returns></returns>
-        private ICollection<SqlForeignKeys> GetForeignKeys(string parentTableName, SqlTableInfo referencedTableAndKey)
+        private ICollection<SqlForeignKey> GetForeignKeys(string parentTableName, SqlTableInfo referencedTableAndKey)
         {
             return _allSqlInfo.ForeignKeys.Where(x => x.ParentTableName == parentTableName
                                                       && x.ReferencedTableName == referencedTableAndKey.TableName
