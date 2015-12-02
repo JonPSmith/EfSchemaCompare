@@ -29,7 +29,7 @@ namespace CompareCore.SqlInfo
             if (sqlKeyInfo != null)
             {
                 IsPrimaryKey = true;
-                PrimaryKeyOrder = sqlKeyInfo.KEY_SEQ;
+                PrimaryKeyOrder = sqlKeyInfo.KeyOrder;
             }
             IsNullable = isNullable;
             MaxLength = maxLength;

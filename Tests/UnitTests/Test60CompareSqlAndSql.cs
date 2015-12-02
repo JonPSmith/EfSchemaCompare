@@ -7,6 +7,7 @@
 // =====================================================
 #endregion
 
+using System;
 using System.Configuration;
 using Ef6Compare;
 using NUnit.Framework;
@@ -33,7 +34,27 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test10CompareSqlToSqlDbUpOk()
+        public void Test10CompareSqlToSqlDbUpIndexAsWarningsOk()
+        {
+            //SETUP
+            var connection1 = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
+            var connection2 = ConfigurationManager.ConnectionStrings[MiscConstants.DbUpDatabaseConfigName].ConnectionString;
+            var comparer = new CompareSqlSql(false);
+
+            //EXECUTE
+            var status = comparer.CompareSqlToSql( connection1, connection2);
+
+            //VERIFY
+            status.ShouldBeValid();
+            foreach (var warning in status.Warnings)
+            {
+                Console.WriteLine(warning);
+            }
+            //status.HasWarnings.ShouldEqual(false, string.Join("\n", status.Warnings));
+        }
+
+        [Test]
+        public void Test11CompareSqlToSqlDbUpOk()
         {
             //SETUP
             var connection1 = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
@@ -41,7 +62,7 @@ namespace Tests.UnitTests
             var comparer = new CompareSqlSql();
 
             //EXECUTE
-            var status = comparer.CompareSqlToSql( connection1, connection2);
+            var status = comparer.CompareSqlToSql(connection1, connection2);
 
             //VERIFY
             status.ShouldBeValid();
@@ -50,7 +71,7 @@ namespace Tests.UnitTests
 
 
         [Test]
-        public void Test11CompareSqlToSqlDbUpWithConfigLookupOk()
+        public void Test20CompareSqlToSqlDbUpWithConfigLookupOk()
         {
             //SETUP
             var comparer = new CompareSqlSql();

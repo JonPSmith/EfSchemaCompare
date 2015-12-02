@@ -37,7 +37,7 @@ namespace CompareCore.SqlInfo
                 let primaryKey = SqlPrimaryKey.GetPrimaryKeysNames(connection, tableGroup.Key)
                 select (new SqlTableInfo(tableGroup.Key, schemaName,
                     tableGroup.Select(y => new SqlColumnInfo(y.ColumnName, y.ColumnSqlType,
-                        primaryKey.SingleOrDefault(z => z.COLUMN_NAME == y.ColumnName),
+                        primaryKey.SingleOrDefault(z => z.ColumnName == y.ColumnName),
                         y.IsNullable, y.MaxLength)).ToList()));
 
             var allIndexes = SqlIndex.GetAllIndexes(connection);

@@ -10,10 +10,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
-using System.Linq;
 using CompareCore.Utils;
-using GenericLibsBase;
-using GenericLibsBase.Core;
 
 namespace CompareCore.SqlInfo
 {

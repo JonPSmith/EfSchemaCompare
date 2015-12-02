@@ -19,12 +19,12 @@ namespace CompareCore.SqlInfo
 {
     public class SqlPrimaryKey
     {
-        public string TABLE_QUALIFIER { get; private set; } 
-        public string TABLE_OWNER	 { get; private set; } 
-        public string TABLE_NAME	 { get; private set; } 
-        public string COLUMN_NAME { get; private set; }
-        public Int16 KEY_SEQ { get; private set; } 
-        public string PK_NAME { get; private set; } 
+        public string DatabaseName { get; private set; } 
+        public string SchemaName	 { get; private set; } 
+        public string TableName	 { get; private set; } 
+        public string ColumnName { get; private set; }
+        public Int16 KeyOrder { get; private set; } 
+        public string PrimaryKeyConstraintName { get; private set; } 
         
         public static ICollection<SqlPrimaryKey> GetPrimaryKeysNames(string connectionString, string tableName)
         {
@@ -52,12 +52,12 @@ namespace CompareCore.SqlInfo
                         //    object col = reader[j];
                         //    Console.WriteLine("{0}: {1}, type = {2}", j, col, col.GetType());
                         //}
-                        row.TABLE_QUALIFIER = reader.GetString(i++);
-                        row.TABLE_OWNER = reader.GetString(i++);
-                        row.TABLE_NAME = reader.GetString(i++);
-                        row.COLUMN_NAME = reader.GetString(i++);
-                        row.KEY_SEQ = reader.GetInt16(i++);
-                        row.PK_NAME = reader.GetString(i++);
+                        row.DatabaseName = reader.GetString(i++);
+                        row.SchemaName = reader.GetString(i++);
+                        row.TableName = reader.GetString(i++);
+                        row.ColumnName = reader.GetString(i++);
+                        row.KeyOrder = reader.GetInt16(i++);
+                        row.PrimaryKeyConstraintName = reader.GetString(i++);
 
                         result.Add(row);
                     }
