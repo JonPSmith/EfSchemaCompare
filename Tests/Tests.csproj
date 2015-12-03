@@ -92,6 +92,7 @@
     <Compile Include="UnitTests\Test38EfRelationshipChecker.cs" />
     <Compile Include="UnitTests\Test34EfTableInfoRelationships.cs" />
     <Compile Include="UnitTests\Test24SqlTableInfoRelationships.cs" />
+    <Compile Include="UnitTests\Test42MockCompareSqlSql.cs" />
     <Compile Include="UnitTests\Test40LoadJsonHelpers.cs" />
     <Compile Include="UnitTests\Test60CompareSqlAndSql.cs" />
     <Compile Include="UnitTests\Test50CompareEfAndSql.cs" />

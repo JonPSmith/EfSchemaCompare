@@ -69,6 +69,41 @@ namespace Tests.Helpers
             return JsonConvert.DeserializeObject<T>(jObject.ToString(), settings);
         }
 
+        public static T DeserializeDataWithSingleRemoval<T>(string searchString, params object[] accessKeys) where T : class
+        {
+            var jsonText = TestFileHelpers.GetTestFileContent(searchString);
+            var jObject = JObject.Parse(jsonText);
+
+            switch (accessKeys.Length)
+            {
+                case 1:
+                    jObject[accessKeys[0]].Remove();
+                    break;
+                case 2:
+                    jObject[accessKeys[0]][accessKeys[1]].Remove();
+                    break;
+                case 3:
+                    jObject[accessKeys[0]][accessKeys[1]][accessKeys[2]].Remove();
+                    break;
+                case 4:
+                    jObject[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]].Remove();
+                    break;
+                case 5:
+                    jObject[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]][accessKeys[4]].Remove();
+                    break;
+                case 6:
+                    jObject[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]][accessKeys[4]][accessKeys[5]].Remove();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            var contractResolver = new PrivateSetterJsonDefaultContractResolver();
+            var settings = new JsonSerializerSettings { ContractResolver = contractResolver };
+
+            return JsonConvert.DeserializeObject<T>(jObject.ToString(), settings);
+        }
+
 
         public class TypeConverter : JsonConverter
         {

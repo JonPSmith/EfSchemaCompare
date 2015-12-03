@@ -205,6 +205,18 @@ namespace Tests.UnitTests
             sqlData.TableInfos.Count.ShouldEqual(2);
             sqlData.TableInfos[0].TableName.ShouldEqual("DataTop");
             sqlData.TableInfos[1].TableName.ShouldEqual("DataChild");
-        } 
+        }
+
+        [Test]
+        public void Test50DecodeJsonToSqlDataWithSingleRemovalOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 1);
+
+            //VERIFY
+            sqlData.Indexes.Count.ShouldEqual(2);
+        }
     }
 }

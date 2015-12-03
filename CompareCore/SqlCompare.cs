@@ -184,7 +184,8 @@ namespace CompareCore
             {
                 foreach (var missingIndex in toBeCheckedIndexDict.Values.SelectMany(x => x).Where(x => !_tablesToIgnore.Contains(x.TableName)))
                 {
-                    SetAppropriateIndexError(status, 
+                    //Note: this a warning as an extra index isn't an error
+                    status.AddWarning(
                         "The '{0}' database has an index {1}, which the '{2}' database did not have.",
                         _toBeCheckDatabaseName, missingIndex.ToString(), _refDatabaseName);
                 }
@@ -257,9 +258,9 @@ namespace CompareCore
                     foreignKeyDict.Remove(foreignKey.ToString());
                     if (foreignKey.DeleteAction != foreignKey2.DeleteAction)
                         status.AddSingleError(
-                            "Foreign Key Delete Action: The {{0}] database has a foreign key {1} that has delete action of {2}. Second database was '{3}'.",
-                            _refDatabaseName, foreignKey.ToString(), foreignKey.DeleteAction, foreignKey2.DeleteAction,
-                            _toBeCheckDatabaseName);
+                            "Foreign Key Delete Action: The [{0}] database has a foreign key {1} that has delete action of {2}, while database [{3}] has delete action of {4}.",
+                            _refDatabaseName, foreignKey.ToString(), foreignKey.DeleteAction,
+                            _toBeCheckDatabaseName, foreignKey2.DeleteAction);
                 }
             }
             if (foreignKeyDict.Any())
