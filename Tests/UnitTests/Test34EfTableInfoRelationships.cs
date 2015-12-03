@@ -24,7 +24,7 @@ namespace Tests.UnitTests
     public class Test34EfTableInfoRelationships
     {
 
-        private ICollection<EfTableInfo> _efInfos;
+        private IList<EfTableInfo> _efInfos;
 
         [TestFixtureSetUp]
         public void FixtureSetup()

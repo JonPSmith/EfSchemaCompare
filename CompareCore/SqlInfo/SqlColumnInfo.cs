@@ -6,6 +6,11 @@
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
 #endregion
+
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Tests")]
+
 namespace CompareCore.SqlInfo
 {
     public class SqlColumnInfo
@@ -22,7 +27,11 @@ namespace CompareCore.SqlInfo
 
         public int MaxLength { get; private set; }
 
-        public SqlColumnInfo(string columnName, string columnSqlType, SqlPrimaryKey sqlKeyInfo, bool isNullable, int maxLength)
+        internal SqlColumnInfo()
+        {
+        }
+
+        internal SqlColumnInfo(string columnName, string columnSqlType, SqlPrimaryKey sqlKeyInfo, bool isNullable, int maxLength)
         {
             ColumnName = columnName;
             ColumnSqlType = columnSqlType;

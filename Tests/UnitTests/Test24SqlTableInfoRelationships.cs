@@ -20,8 +20,8 @@ namespace Tests.UnitTests
     public class Test24SqlTableInfoRelationships
     {
 
-        private ICollection<SqlTableInfo> _sqlInfos;
-        private ICollection<SqlForeignKey> _sqlForeignKeys;
+        private IList<SqlTableInfo> _sqlInfos;
+        private IList<SqlForeignKey> _sqlForeignKeys;
                    
         [TestFixtureSetUp]
         public void FixtureSetup()

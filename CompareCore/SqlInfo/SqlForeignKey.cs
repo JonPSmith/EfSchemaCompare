@@ -47,7 +47,7 @@ namespace CompareCore.SqlInfo
         //-------------------------------------------------------------------
         //
 
-        public static ICollection<SqlForeignKey> GetForeignKeys(string connectionString)
+        public static IList<SqlForeignKey> GetForeignKeys(string connectionString)
         {
 
             var result = new Collection<SqlForeignKey>();

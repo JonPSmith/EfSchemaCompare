@@ -9,18 +9,23 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace CompareCore.SqlInfo
 {
     public class SqlAllInfo
     {
-        public ICollection<SqlTableInfo> TableInfos { get; private set; } 
+        public IList<SqlTableInfo> TableInfos { get; private set; } 
 
-        public ICollection<SqlForeignKey> ForeignKeys { get; private set; }
+        public IList<SqlForeignKey> ForeignKeys { get; private set; }
 
-        public ICollection<SqlIndex> Indexes { get; private set; }
+        public IList<SqlIndex> Indexes { get; private set; }
 
-        private SqlAllInfo(ICollection<SqlTableInfo> tableInfos, ICollection<SqlForeignKey> foreignKeys, ICollection<SqlIndex> indexes)
+        internal SqlAllInfo() { }
+
+        private SqlAllInfo(IList<SqlTableInfo> tableInfos, IList<SqlForeignKey> foreignKeys, IList<SqlIndex> indexes)
         {
             TableInfos = tableInfos;
             ForeignKeys = foreignKeys;
@@ -35,8 +40,8 @@ namespace CompareCore.SqlInfo
             var tableInfos = from tableGroup in allTablesAndCol.GroupBy(x => x.TableName)
                 let schemaName = tableGroup.First().SchemaName
                 let primaryKey = SqlPrimaryKey.GetPrimaryKeysNames(connection, tableGroup.Key)
-                select (new SqlTableInfo(tableGroup.Key, schemaName,
-                    tableGroup.Select(y => new SqlColumnInfo(y.ColumnName, y.ColumnSqlType,
+                select (new SqlTableInfo(schemaName,
+                    tableGroup.Key, tableGroup.Select(y => new SqlColumnInfo(y.ColumnName, y.ColumnSqlType,
                         primaryKey.SingleOrDefault(z => z.ColumnName == y.ColumnName),
                         y.IsNullable, y.MaxLength)).ToList()));
 

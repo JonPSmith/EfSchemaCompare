@@ -8,21 +8,26 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using CompareCore.Utils;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace CompareCore.SqlInfo
 {
     public class SqlTableInfo
     {
+        public string SchemaName { get; private set; }
+
         public string TableName { get; private set; }
 
-        public string SchemaName { get; private set; }
+        public IList<SqlColumnInfo> ColumnInfo { get; private set; }
 
         public string CombinedName { get { return FormatHelpers.FormCombinedSchemaTableName(SchemaName, TableName); } }
 
-        public ICollection<SqlColumnInfo> ColumnInfo { get; private set; }
+        internal SqlTableInfo() {}
 
-        public SqlTableInfo(string tableName, string schemaName, ICollection<SqlColumnInfo> columnInfo)
+        internal SqlTableInfo(string schemaName, string tableName, IList<SqlColumnInfo> columnInfo)
         {
             TableName = tableName;
             SchemaName = schemaName;
@@ -31,7 +36,7 @@ namespace CompareCore.SqlInfo
 
         public override string ToString()
         {
-            return string.Format("Name: {0}.{1}, Columns: {2}, ForeignKeys: {3}", SchemaName, TableName, ColumnInfo.Count);
+            return string.Format("Name: {0}.{1}, Columns: {2}", SchemaName, TableName, ColumnInfo.Count);
         }
 
     }

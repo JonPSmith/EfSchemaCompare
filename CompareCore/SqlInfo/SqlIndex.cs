@@ -37,7 +37,7 @@ namespace CompareCore.SqlInfo
                 IsUnique ? "" : "not ");
         }
 
-        public static ICollection<SqlIndex> GetAllIndexes(string connectionString)
+        public static IList<SqlIndex> GetAllIndexes(string connectionString)
         {
             var result = new Collection<SqlIndex>();
             using (var sqlcon = new SqlConnection(connectionString))

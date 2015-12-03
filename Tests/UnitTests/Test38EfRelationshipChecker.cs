@@ -7,13 +7,11 @@
 // =====================================================
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
-using Ef6Compare.Internal;
 using Ef6Compare.InternalEf6;
 using NUnit.Framework;
 using Tests.EfClasses;
@@ -22,10 +20,10 @@ using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test45EfRelationshipChecker
+    public class Test38EfRelationshipChecker
     {
 
-        private ICollection<EfTableInfo> _efInfos;
+        private IList<EfTableInfo> _efInfos;
         private EfRelationshipChecker _checker;
             
         [TestFixtureSetUp]

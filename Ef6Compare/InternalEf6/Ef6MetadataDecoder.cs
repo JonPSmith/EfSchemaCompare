@@ -17,7 +17,6 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
-using Ef6Compare.Internal;
 
 namespace Ef6Compare.InternalEf6
 {
@@ -35,7 +34,7 @@ namespace Ef6Compare.InternalEf6
         /// This returns information on all the Ef classes that are mapped to the database
         /// </summary>
         /// <returns></returns>
-        public ICollection<EfTableInfo> GetAllEfTablesWithColInfo(DbContext context)
+        public IList<EfTableInfo> GetAllEfTablesWithColInfo(DbContext context)
         {
             var metadata = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
 

@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
-using Ef6Compare.Internal;
 using Ef6Compare.InternalEf6;
 using NUnit.Framework;
 using Tests.EfClasses;
@@ -21,7 +20,7 @@ using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test40EfRelationships
+    public class Test36EfRelationships
     {
         private ICollection<EfTableInfo> _efInfos;
             

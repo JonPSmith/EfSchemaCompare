@@ -1,0 +1,97 @@
+﻿{
+    TableInfos: [
+        {
+            SchemaName: "dbo",
+            TableName: "DataTop",
+            ColumnInfo: [
+                {
+                    ColumnName: "DataTopId",
+                    ColumnSqlType: "int",
+                    IsPrimaryKey: true,
+                    PrimaryKeyOrder: 1,
+                    IsNullable: false,
+                    MaxLength: 4,
+                },
+                {
+                    ColumnName: "MyBool",
+                    ColumnSqlType: "bit",
+                    IsPrimaryKey: false,
+                    PrimaryKeyOrder: 0,
+                    IsNullable: false,
+                    MaxLength: 1,
+                }
+            ]
+        },
+        {
+            SchemaName: "dbo",
+            TableName: "DataChild",
+            ColumnInfo: [
+                {
+                    ColumnName: "DataChildId",
+                    ColumnSqlType: "int",
+                    IsPrimaryKey: true,
+                    PrimaryKeyOrder: 1,
+                    IsNullable: false,
+                    MaxLength: 4,
+                },
+                {
+                    ColumnName: "MyString",
+                    ColumnSqlType: "varchar",
+                    IsPrimaryKey: false,
+                    PrimaryKeyOrder: 0,
+                    IsNullable: false,
+                    MaxLength: 25,
+                },
+                {
+                    ColumnName: "DataTopId",
+                    ColumnSqlType: "int",
+                    IsPrimaryKey: false,
+                    PrimaryKeyOrder: 0,
+                    IsNullable: false,
+                    MaxLength: 4,
+                },
+            ]
+        }
+    ],
+    ForeignKeys: [
+        {
+            ConstraintName: "FK_dbo.DataChild_dbo.DataTop_DataTopId",
+            SchemaName: "dbo",
+            ParentTableName: "DataChild",
+            ParentColName: "DataTopId",
+            ReferencedTableName: "DataTop",
+            ReferencedColName: "DataTopId",
+            DeleteAction: "CASCADE",
+        }
+    ],
+    //Note: order of indexes is important. Primary keys should go at end of 
+    Indexes: [
+        {
+            SchemaName: "dbo",
+            TableName: "DataChild",
+            ColumnName: "DataTopId",
+            IndexName: "IX_DataTopId",
+            IsPrimaryIndex: false,
+            Clustered: false,
+            IsUnique: false,
+        },
+        {
+            SchemaName: "dbo",
+            TableName: "DataChild",
+            ColumnName: "DataChildId",
+            IndexName: "PK_dbo.DataChild",
+            IsPrimaryIndex: true,
+            Clustered: true,
+            IsUnique: true,
+        },
+                {
+            SchemaName: "dbo",
+            TableName: "DataTop",
+            ColumnName: "DataTopId",
+            IndexName: "PK_dbo.DataChild",
+            IsPrimaryIndex: true,
+            Clustered: true,
+            IsUnique: true,
+        },
+    ]
+}
