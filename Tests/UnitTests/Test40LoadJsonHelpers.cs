@@ -7,6 +7,7 @@
 // =====================================================
 #endregion
 
+using System;
 using System.Collections.Generic;
 using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
@@ -96,15 +97,82 @@ namespace Tests.UnitTests
         //EfTableInfo
 
         [Test]
-        public void Test20DecodeJsonToEfDataCheckTopLayerOk()
+        public void Test20CheckDecodeTypeOk()
         {
             //SETUP
 
             //EXECUTE
-            var sqlData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+            var decodedType = Type.GetType("Tests.EfClasses.Relationships.DataTop");
 
             //VERIFY
-            sqlData.Count.ShouldEqual(2);
+            decodedType.ShouldNotEqualNull();
+        }
+
+        [Test]
+        public void Test21DecodeJsonToEfDataCheckTopLayerOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+
+            //VERIFY
+            efData.Count.ShouldEqual(2);
+            efData[0].ToString().ShouldEqual("Name: dbo.DataTop, NormalCols: 2, Relationships: 0");
+            efData[1].ToString().ShouldEqual("Name: dbo.DataChild, NormalCols: 3, Relationships: 1");
+        }
+
+        [Test]
+        public void Test22DecodeJsonToEfDataCheckFirstTableColumnsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+
+            //VERIFY
+            efData[0].NormalCols.Count.ShouldEqual(2);
+            efData[0].NormalCols[0].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            efData[0].NormalCols[1].ToString().ShouldEqual("SqlColumnName: MyBool, SqlTypeName: bit, ClrColumName: DataTopId, ClrColumnType: System.Boolean, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 1");
+        }
+
+        [Test]
+        public void Test23DecodeJsonToEfDataCheckFirstTableRelationshipsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+
+            //VERIFY
+            efData[0].RelationshipCols.Count.ShouldEqual(0);
+        }
+
+        [Test]
+        public void Test25DecodeJsonToEfDataCheckSecondTableColumnsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+
+            //VERIFY
+            efData[0].NormalCols.Count.ShouldEqual(2);
+            efData[0].NormalCols[0].ToString().ShouldEqual("xxx");
+            efData[0].NormalCols[1].ToString().ShouldEqual("xxx");
+        }
+
+        [Test]
+        public void Test26DecodeJsonToEfDataCheckSecondTableRelationshipsOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+
+            //VERIFY
+            efData[1].RelationshipCols.Count.ShouldEqual(1);
+            efData[1].RelationshipCols[0].ToString().ShouldEqual("xxx");
         }
 
         //-----------------------------------------------------------------

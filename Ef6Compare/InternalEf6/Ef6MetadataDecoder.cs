@@ -81,7 +81,7 @@ namespace Ef6Compare.InternalEf6
                                          let clrProperty = clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(x => x.Name == navProperty.Name)
                                          let relationship = ConvertMetadataToFromToMultpicity(navProperty.FromEndMember, navProperty.ToEndMember)
                                          let columnArr = clrProperty.GetCustomAttribute<ColumnAttribute>()
-                                         select new EfRelationshipInfo(relationship, clrProperty, columnArr == null ? clrProperty.Name : columnArr.Name)).ToList();
+                                         select new EfRelationshipInfo(relationship, clrProperty.Name, clrProperty.PropertyType)).ToList();
 
                 result.Add(new EfTableInfo(tableName, tableSchema, clrClassType, columnInfos, relationshipInfos));
             }

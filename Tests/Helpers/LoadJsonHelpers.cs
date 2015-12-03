@@ -10,6 +10,7 @@
 using System;
 using System.Reflection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
@@ -22,10 +23,15 @@ namespace Tests.Helpers
         {
             var jsonText = TestFileHelpers.GetTestFileContent(searchString);
             var contractResolver = new PrivateSetterJsonDefaultContractResolver();
-            var settings = new JsonSerializerSettings { ContractResolver = contractResolver };
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                Converters = new[] { new TypeConverter() }
+            };
 
             return JsonConvert.DeserializeObject<T>(jsonText, settings);
         }
+
 
 
         public static T DeserializeDataWithSingleAlteration<T>(string searchString, object value, params object [] accessKeys) where T : class
@@ -63,6 +69,34 @@ namespace Tests.Helpers
             return JsonConvert.DeserializeObject<T>(jObject.ToString(), settings);
         }
 
+
+        public class TypeConverter : JsonConverter
+        {
+            public override bool CanRead
+            {
+                get { return true; }
+            }
+
+            public override bool CanConvert(Type objectType)
+            {
+                return (objectType == typeof(Type));
+            }
+
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                var typeName = (string) reader.Value;
+                var typeToReturn = Type.GetType(typeName);
+                if (typeToReturn == null)
+                    throw new InvalidOperationException(
+                        string.Format("Could not convert the type string {0} into a type.", typeName));
+                return typeToReturn;
+            }
+        }
 
         public class PrivateSetterJsonDefaultContractResolver : DefaultContractResolver
         {

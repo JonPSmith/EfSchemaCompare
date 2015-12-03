@@ -8,28 +8,23 @@
 #endregion
 
 using System;
-using System.Reflection;
 
 namespace CompareCore.EFInfo
 {
 
     public class EfRelationshipInfo
     {
-        private readonly PropertyInfo _clrProperty;
+        public string ClrColumnName { get; private set; }
 
-        public string ClrColumnName { get { return _clrProperty.Name; } }
-
-        public Type ClrColumnType { get { return _clrProperty.PropertyType; } }
-
-        public string SqlColumnName { get; private set; }
+        public Type ClrColumnType { get; private set; }
 
         public FromToRelationship FromToRelationships { get; private set; }
 
-        public EfRelationshipInfo(FromToRelationship efRelationshipTypes, PropertyInfo clrProperty, string sqlColumnName)
+        public EfRelationshipInfo(FromToRelationship efRelationshipTypes, string clrColumnName, Type clrColumnType)
         {
+            ClrColumnName = clrColumnName;
+            ClrColumnType = clrColumnType;
             FromToRelationships = efRelationshipTypes;
-            _clrProperty = clrProperty;
-            SqlColumnName = sqlColumnName;
         }
 
         public override string ToString()

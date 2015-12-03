@@ -11,6 +11,7 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using CompareCore.Utils;
+using Newtonsoft.Json;
 
 [assembly: InternalsVisibleTo("Tests")]
 
@@ -38,8 +39,18 @@ namespace CompareCore.EFInfo
         /// </summary>
         public int MaxLength { get; private set; }
 
-        internal EfColumnInfo()
+        //used by json
+        [JsonConstructor]
+        public EfColumnInfo(string sqlColumnName, string sqlTypeName, string clrColumName, Type clrColumnType, bool isPrimaryKey, int primaryKeyOrder, bool isNullable, int maxLength)
         {
+            SqlColumnName = sqlColumnName;
+            SqlTypeName = sqlTypeName;
+            ClrColumName = clrColumName;
+            ClrColumnType = clrColumnType;
+            IsPrimaryKey = isPrimaryKey;
+            PrimaryKeyOrder = primaryKeyOrder;
+            IsNullable = isNullable;
+            MaxLength = maxLength;
         }
 
         public EfColumnInfo(string sqlColumnName, string sqlTypeName, bool isNullable, int? maxLength, byte? precision, EfKeyOrder primaryKeyOrder, PropertyInfo clrProperty)

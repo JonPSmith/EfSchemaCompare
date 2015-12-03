@@ -2,59 +2,78 @@
     {
         SchemaName: "dbo",
         TableName: "DataTop",
-        ClrClassType:  "Tests.EfClasses.RelationShips.DataTop",
+        ClrClassType: "Tests.EfClasses.Relationships.DataTop",
         NormalCols: [
             {
-                SqlColumnName:  "DataTopId",
+                SqlColumnName: "DataTopId",
                 SqlTypeName: "int",
                 ClrColumName: "DataTopId",
-                ClrColumnType:  "Int32",
-                IsPrimaryKey: true,
-                PrimaryKeyOrder: 0,
-                IsNullable: false,
-                MaxLength: 4,
-            },
-            {
-                SqlColumnName:  "MyBool",
-                SqlTypeName: "bit",
-                ClrColumName: "MyBool",
-                ClrColumnType:  "Boolean",
-                IsPrimaryKey: false,
-                PrimaryKeyOrder: 0,
-                IsNullable: false,
-                MaxLength: 1,
-            }
-        ]
-    },
-    {
-        SchemaName: "dbo",
-        TableName: "DataChild",
-        ClrClassType:  "Tests.EfClasses.RelationShips.DataChild",
-        ColumnInfos: [
-            {
-                ColumnName: "DataChildId",
-                SqlTypeName: "int",
+                ClrColumnType: "System.Int32",
                 IsPrimaryKey: true,
                 PrimaryKeyOrder: 1,
                 IsNullable: false,
                 MaxLength: 4,
             },
             {
-                ColumnName: "MyString",
+                SqlColumnName: "MyBool",
+                SqlTypeName: "bit",
+                ClrColumName: "MyBool",
+                ClrColumnType: "System.Boolean",
+                IsPrimaryKey: false,
+                PrimaryKeyOrder: 0,
+                IsNullable: false,
+                MaxLength: 1,
+            }
+        ],
+        RelationshipCols: [ ]
+    },
+    {
+        SchemaName: "dbo",
+        TableName: "DataChild",
+        ClrClassType: "Tests.EfClasses.Relationships.DataChild",
+        NormalCols: [
+            {
+                SqlColumnName: "DataChildId",
+                SqlTypeName: "int",
+                ColumnName: "DataChildId",
+                ClrColumnType: "System.Int32",
+                IsPrimaryKey: true,
+                PrimaryKeyOrder: 1,
+                IsNullable: false,
+                MaxLength: 4,
+            },
+            {
+                SqlColumnName: "MyString",
                 SqlTypeName: "varchar",
+                ColumnName: "MyString",
+                ClrColumnType: "System.String",
                 IsPrimaryKey: false,
                 PrimaryKeyOrder: 0,
                 IsNullable: false,
                 MaxLength: 25,
             },
             {
-                ColumnName: "DataTopId",
+                SqlColumnName: "DataTopId",
                 SqlTypeName: "int",
+                ClrColumName: "DataTopId",
+                ClrColumnType: "System.Int32",
                 IsPrimaryKey: false,
                 PrimaryKeyOrder: 0,
                 IsNullable: false,
                 MaxLength: 4,
             },
+        ],
+        RelationshipCols: [
+            {
+                ClrColumnName: "Parent",
+                ClrColumnType: "Tests.EfClasses.Relationships.DataTop",
+                FromToRelationships: {
+                    FromMultiplicity: "Many",
+                    FromIsCascadeDelete: false,
+                    ToMultiplicity: "One",
+                    ToIsCascadeDelete:  true
+                }
+            }
         ]
     }
 ]
