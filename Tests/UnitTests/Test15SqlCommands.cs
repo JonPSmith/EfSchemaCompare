@@ -10,7 +10,6 @@
 using System.Configuration;
 using CompareCore.SqlInfo;
 using NUnit.Framework;
-using Tests.EfClasses;
 using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
