@@ -7,6 +7,8 @@
 // =====================================================
 #endregion
 
+using System.Collections.Generic;
+using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
 using NUnit.Framework;
 using Tests.Helpers;
@@ -15,6 +17,9 @@ namespace Tests.UnitTests
 {
     public class Test40LoadJsonHelpers
     {
+        //----------------------------------------
+        //SqlAllInfo
+
         [Test]
         public void Test01DecodeJsonToSqlDataCheckTopLayerOk()
         {
@@ -54,8 +59,8 @@ namespace Tests.UnitTests
             //VERIFY
             sqlData.TableInfos.Count.ShouldEqual(2);
             sqlData.TableInfos[0].TableName.ShouldEqual("DataTop");
-            sqlData.TableInfos[0].ColumnInfo[0].ToString().ShouldEqual("ColumnName: DataTopId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
-            sqlData.TableInfos[0].ColumnInfo[1].ToString().ShouldEqual("ColumnName: MyBool, ColumnSqlType: bit, IsPrimaryKey: False, IsNullable: False, MaxLength: 1");
+            sqlData.TableInfos[0].ColumnInfos[0].ToString().ShouldEqual("ColumnName: DataTopId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            sqlData.TableInfos[0].ColumnInfos[1].ToString().ShouldEqual("ColumnName: MyBool, SqlTypeName: bit, IsPrimaryKey: False, IsNullable: False, MaxLength: 1");
         }
 
         [Test]
@@ -86,8 +91,27 @@ namespace Tests.UnitTests
             sqlData.Indexes[2].ToString().ShouldEqual("[dbo].[DataTop].DataTopId: (primary key, clustered, unique)");
         }
 
+
+        //----------------------------------------
+        //EfTableInfo
+
         [Test]
-        public void Test10DecodeJsonToSqlDataWithSingleAlterationOk()
+        public void Test20DecodeJsonToEfDataCheckTopLayerOk()
+        {
+            //SETUP
+
+            //EXECUTE
+            var sqlData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+
+            //VERIFY
+            sqlData.Count.ShouldEqual(2);
+        }
+
+        //-----------------------------------------------------------------
+        //try altering data
+
+        [Test]
+        public void Test40DecodeJsonToSqlDataWithSingleAlterationOk()
         {
             //SETUP
 
@@ -101,12 +125,12 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test11DecodeJsonToSqlDataWithSingleAlterationOk()
+        public void Test41DecodeJsonToSqlDataWithSingleAlterationOk()
         {
             //SETUP
 
             //EXECUTE
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfo", 0, "IsPrimaryKey");
+            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
 
             //VERIFY
             sqlData.TableInfos.Count.ShouldEqual(2);

@@ -1,0 +1,60 @@
+﻿[
+    {
+        SchemaName: "dbo",
+        TableName: "DataTop",
+        ClrClassType:  "Tests.EfClasses.RelationShips.DataTop",
+        NormalCols: [
+            {
+                SqlColumnName:  "DataTopId",
+                SqlTypeName: "int",
+                ClrColumName: "DataTopId",
+                ClrColumnType:  "Int32",
+                IsPrimaryKey: true,
+                PrimaryKeyOrder: 0,
+                IsNullable: false,
+                MaxLength: 4,
+            },
+            {
+                SqlColumnName:  "MyBool",
+                SqlTypeName: "bit",
+                ClrColumName: "MyBool",
+                ClrColumnType:  "Boolean",
+                IsPrimaryKey: false,
+                PrimaryKeyOrder: 0,
+                IsNullable: false,
+                MaxLength: 1,
+            }
+        ]
+    },
+    {
+        SchemaName: "dbo",
+        TableName: "DataChild",
+        ClrClassType:  "Tests.EfClasses.RelationShips.DataChild",
+        ColumnInfos: [
+            {
+                ColumnName: "DataChildId",
+                SqlTypeName: "int",
+                IsPrimaryKey: true,
+                PrimaryKeyOrder: 1,
+                IsNullable: false,
+                MaxLength: 4,
+            },
+            {
+                ColumnName: "MyString",
+                SqlTypeName: "varchar",
+                IsPrimaryKey: false,
+                PrimaryKeyOrder: 0,
+                IsNullable: false,
+                MaxLength: 25,
+            },
+            {
+                ColumnName: "DataTopId",
+                SqlTypeName: "int",
+                IsPrimaryKey: false,
+                PrimaryKeyOrder: 0,
+                IsNullable: false,
+                MaxLength: 4,
+            },
+        ]
+    }
+]

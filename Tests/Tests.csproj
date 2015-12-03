@@ -100,6 +100,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="TestData\EfTableInfos01 - two tables with relationship.json" />
     <None Include="TestData\SqlAllInfo01 - two tables with relationship.json" />
   </ItemGroup>
   <ItemGroup>

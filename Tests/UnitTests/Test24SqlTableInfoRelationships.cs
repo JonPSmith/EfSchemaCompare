@@ -53,14 +53,14 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            var list = sqlInfo.ColumnInfo.ToList();
+            var list = sqlInfo.ColumnInfos.ToList();
             var i = 0;
             list.Count.ShouldEqual(5);
-            list[i++].ToString().ShouldEqual("ColumnName: Key1, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("ColumnName: Key2, ColumnSqlType: uniqueidentifier, IsPrimaryKey: False, IsNullable: False, MaxLength: 16");
-            list[i++].ToString().ShouldEqual("ColumnName: DataTopId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("ColumnName: MyString, ColumnSqlType: varchar, IsPrimaryKey: False, IsNullable: True, MaxLength: 25");
-            list[i++].ToString().ShouldEqual("ColumnName: DataSingletonId, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: Key1, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: Key2, SqlTypeName: uniqueidentifier, IsPrimaryKey: False, IsNullable: False, MaxLength: 16");
+            list[i++].ToString().ShouldEqual("ColumnName: DataTopId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: MyString, SqlTypeName: varchar, IsPrimaryKey: False, IsNullable: True, MaxLength: 25");
+            list[i++].ToString().ShouldEqual("ColumnName: DataSingletonId, SqlTypeName: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
         }
 
         [Test]
@@ -73,13 +73,13 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ColumnInfo.Count.ShouldEqual(4);
-            var list = sqlInfo.ColumnInfo.ToList();
+            sqlInfo.ColumnInfos.Count.ShouldEqual(4);
+            var list = sqlInfo.ColumnInfos.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ColumnName: DataChildId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("ColumnName: MyInt, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("ColumnName: MyString, ColumnSqlType: nvarchar, IsPrimaryKey: False, IsNullable: True, MaxLength: -1");
-            list[i++].ToString().ShouldEqual("ColumnName: DataTopId, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: DataChildId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: MyInt, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: MyString, SqlTypeName: nvarchar, IsPrimaryKey: False, IsNullable: True, MaxLength: -1");
+            list[i++].ToString().ShouldEqual("ColumnName: DataTopId, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
         }
 
         [Test]
@@ -92,9 +92,9 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ColumnInfo.Count.ShouldEqual(2);
-            sqlInfo.ColumnInfo.First().ToString().ShouldEqual("ColumnName: DataManyChildrenId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
-            sqlInfo.ColumnInfo.Last().ToString().ShouldEqual("ColumnName: MyInt, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+            sqlInfo.ColumnInfos.Count.ShouldEqual(2);
+            sqlInfo.ColumnInfos.First().ToString().ShouldEqual("ColumnName: DataManyChildrenId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            sqlInfo.ColumnInfos.Last().ToString().ShouldEqual("ColumnName: MyInt, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
         }
 
         [Test]
@@ -107,12 +107,12 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ColumnInfo.Count.ShouldEqual(3);
-            var list = sqlInfo.ColumnInfo.ToList();
+            sqlInfo.ColumnInfos.Count.ShouldEqual(3);
+            var list = sqlInfo.ColumnInfos.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ColumnName: DataSingletonId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("ColumnName: MyDateTime, ColumnSqlType: datetime, IsPrimaryKey: False, IsNullable: False, MaxLength: 8");
-            list[i++].ToString().ShouldEqual("ColumnName: NonStandardForeignKeyName, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: DataSingletonId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: MyDateTime, SqlTypeName: datetime, IsPrimaryKey: False, IsNullable: False, MaxLength: 8");
+            list[i++].ToString().ShouldEqual("ColumnName: NonStandardForeignKeyName, SqlTypeName: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
         }
 
         [Test]
@@ -125,12 +125,12 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ColumnInfo.Count.ShouldEqual(3);
-            var list = sqlInfo.ColumnInfo.ToList();
+            sqlInfo.ColumnInfos.Count.ShouldEqual(3);
+            var list = sqlInfo.ColumnInfos.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ColumnName: Key1, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("ColumnName: Key2, ColumnSqlType: uniqueidentifier, IsPrimaryKey: True, IsNullable: False, MaxLength: 16");
-            list[i++].ToString().ShouldEqual("ColumnName: NonStandardColumnName, ColumnSqlType: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: Key1, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: Key2, SqlTypeName: uniqueidentifier, IsPrimaryKey: True, IsNullable: False, MaxLength: 16");
+            list[i++].ToString().ShouldEqual("ColumnName: NonStandardColumnName, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
         }
 
         [Test]
@@ -143,11 +143,11 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ColumnInfo.Count.ShouldEqual(2);
-            var list = sqlInfo.ColumnInfo.ToList();
+            sqlInfo.ColumnInfos.Count.ShouldEqual(2);
+            var list = sqlInfo.ColumnInfos.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ColumnName: ManyKey1, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("ColumnName: ManyKey2, ColumnSqlType: uniqueidentifier, IsPrimaryKey: True, IsNullable: False, MaxLength: 16");
+            list[i++].ToString().ShouldEqual("ColumnName: ManyKey1, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: ManyKey2, SqlTypeName: uniqueidentifier, IsPrimaryKey: True, IsNullable: False, MaxLength: 16");
         }
 
         [Test]
@@ -160,11 +160,11 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ColumnInfo.Count.ShouldEqual(2);
-            var list = sqlInfo.ColumnInfo.ToList();
+            sqlInfo.ColumnInfos.Count.ShouldEqual(2);
+            var list = sqlInfo.ColumnInfos.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ColumnName: DataTopId, ColumnSqlType: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("ColumnName: MyBool, ColumnSqlType: bit, IsPrimaryKey: False, IsNullable: False, MaxLength: 1");
+            list[i++].ToString().ShouldEqual("ColumnName: DataTopId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: MyBool, SqlTypeName: bit, IsPrimaryKey: False, IsNullable: False, MaxLength: 1");
         }
 
         [Test]

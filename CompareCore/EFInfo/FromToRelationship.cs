@@ -7,6 +7,10 @@
 // =====================================================
 #endregion
 
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Tests")]
+
 namespace CompareCore.EFInfo
 {
 
@@ -18,6 +22,10 @@ namespace CompareCore.EFInfo
         public bool FromIsCascadeDelete { get; private set; }
         public EfRelationshipTypes ToMultiplicity { get; private set; }
         public bool ToIsCascadeDelete { get; private set; }
+
+        internal FromToRelationship()
+        {
+        }
 
         public FromToRelationship(EfRelationshipTypes fromMultiplicity, bool fromIsCascadeDelete, EfRelationshipTypes toMultiplicity, bool toIsCascadeDelete)
         {

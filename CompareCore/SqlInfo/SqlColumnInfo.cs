@@ -17,7 +17,7 @@ namespace CompareCore.SqlInfo
     {
         public string ColumnName { get; private set; }
 
-        public string ColumnSqlType { get; private set; }
+        public string SqlTypeName { get; private set; }
 
         public bool IsPrimaryKey { get; private set; }
 
@@ -31,10 +31,10 @@ namespace CompareCore.SqlInfo
         {
         }
 
-        internal SqlColumnInfo(string columnName, string columnSqlType, SqlPrimaryKey sqlKeyInfo, bool isNullable, int maxLength)
+        internal SqlColumnInfo(string columnName, string sqlTypeName, SqlPrimaryKey sqlKeyInfo, bool isNullable, int maxLength)
         {
             ColumnName = columnName;
-            ColumnSqlType = columnSqlType;
+            SqlTypeName = sqlTypeName;
             if (sqlKeyInfo != null)
             {
                 IsPrimaryKey = true;
@@ -46,8 +46,8 @@ namespace CompareCore.SqlInfo
 
         public override string ToString()
         {
-            return string.Format("ColumnName: {0}, ColumnSqlType: {1}, IsPrimaryKey: {2}, IsNullable: {3}, MaxLength: {4}",
-                ColumnName, ColumnSqlType, IsPrimaryKey, IsNullable, MaxLength);
+            return string.Format("ColumnName: {0}, SqlTypeName: {1}, IsPrimaryKey: {2}, IsNullable: {3}, MaxLength: {4}",
+                ColumnName, SqlTypeName, IsPrimaryKey, IsNullable, MaxLength);
         }
     }
 }

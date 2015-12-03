@@ -21,22 +21,22 @@ namespace CompareCore.SqlInfo
 
         public string TableName { get; private set; }
 
-        public IList<SqlColumnInfo> ColumnInfo { get; private set; }
+        public IList<SqlColumnInfo> ColumnInfos { get; private set; }
 
         public string CombinedName { get { return FormatHelpers.FormCombinedSchemaTableName(SchemaName, TableName); } }
 
         internal SqlTableInfo() {}
 
-        internal SqlTableInfo(string schemaName, string tableName, IList<SqlColumnInfo> columnInfo)
+        internal SqlTableInfo(string schemaName, string tableName, IList<SqlColumnInfo> columnInfos)
         {
             TableName = tableName;
             SchemaName = schemaName;
-            ColumnInfo = columnInfo;
+            ColumnInfos = columnInfos;
         }
 
         public override string ToString()
         {
-            return string.Format("Name: {0}.{1}, Columns: {2}", SchemaName, TableName, ColumnInfo.Count);
+            return string.Format("Name: {0}.{1}, Columns: {2}", SchemaName, TableName, ColumnInfos.Count);
         }
 
     }

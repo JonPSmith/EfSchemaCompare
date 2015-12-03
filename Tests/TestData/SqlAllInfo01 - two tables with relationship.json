@@ -3,10 +3,10 @@
         {
             SchemaName: "dbo",
             TableName: "DataTop",
-            ColumnInfo: [
+            ColumnInfos: [
                 {
                     ColumnName: "DataTopId",
-                    ColumnSqlType: "int",
+                    SqlTypeName: "int",
                     IsPrimaryKey: true,
                     PrimaryKeyOrder: 1,
                     IsNullable: false,
@@ -14,7 +14,7 @@
                 },
                 {
                     ColumnName: "MyBool",
-                    ColumnSqlType: "bit",
+                    SqlTypeName: "bit",
                     IsPrimaryKey: false,
                     PrimaryKeyOrder: 0,
                     IsNullable: false,
@@ -25,10 +25,10 @@
         {
             SchemaName: "dbo",
             TableName: "DataChild",
-            ColumnInfo: [
+            ColumnInfos: [
                 {
                     ColumnName: "DataChildId",
-                    ColumnSqlType: "int",
+                    SqlTypeName: "int",
                     IsPrimaryKey: true,
                     PrimaryKeyOrder: 1,
                     IsNullable: false,
@@ -36,7 +36,7 @@
                 },
                 {
                     ColumnName: "MyString",
-                    ColumnSqlType: "varchar",
+                    SqlTypeName: "varchar",
                     IsPrimaryKey: false,
                     PrimaryKeyOrder: 0,
                     IsNullable: false,
@@ -44,7 +44,7 @@
                 },
                 {
                     ColumnName: "DataTopId",
-                    ColumnSqlType: "int",
+                    SqlTypeName: "int",
                     IsPrimaryKey: false,
                     PrimaryKeyOrder: 0,
                     IsNullable: false,

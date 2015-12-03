@@ -23,7 +23,7 @@ namespace CompareCore.SqlInfo
 
         public string ColumnName { get; private set; }
 
-        public string ColumnSqlType { get; private set; }
+        public string SqlTypeName { get; private set; }
 
         public bool IsNullable { get; private set; }
 
@@ -32,11 +32,11 @@ namespace CompareCore.SqlInfo
         public override string ToString()
         {
             return string.Format("[{0}].[{1}].{2}, Type: {3}, IsNullable: {4}, MaxLength: {5}", 
-                TableName, SchemaName, ColumnName, ColumnSqlType, IsNullable, MaxLength);
+                TableName, SchemaName, ColumnName, SqlTypeName, IsNullable, MaxLength);
         }
 
 
-        public static ICollection<SqlTableAndColumnData> GetSqlTablesAndColumns(string connectionString)
+        public static IList<SqlTableAndColumnData> GetSqlTablesAndColumns(string connectionString)
         {
             var result = new Collection<SqlTableAndColumnData>();
             using (var sqlcon = new SqlConnection(connectionString))
@@ -45,7 +45,7 @@ namespace CompareCore.SqlInfo
                 command.CommandText = @"SELECT t.name AS TableName,
 SCHEMA_NAME(t.schema_id) AS SchemaName,
 c.name AS ColumnName,
-types.name AS ColumnSqlType,
+types.name AS SqlTypeName,
 c.is_nullable AS IsNullable,
 c.max_length AS MaxLength
 FROM sys.tables AS t
@@ -70,7 +70,7 @@ ORDER BY SchemaName, TableName";
                         row.TableName = reader.GetString(i++);
                         row.SchemaName = reader.GetString(i++);
                         row.ColumnName = reader.GetString(i++);
-                        row.ColumnSqlType = reader.GetString(i++);
+                        row.SqlTypeName = reader.GetString(i++);
                         row.IsNullable = reader.GetBoolean(i++); // reader[i++] as bool? ?? false;
                         row.MaxLength = reader.GetInt16(i++);
 

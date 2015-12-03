@@ -8,23 +8,24 @@
 #endregion
 
 using System;
-using System.Diagnostics.Eventing.Reader;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using CompareCore.Utils;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace CompareCore.EFInfo
 {
     public class EfColumnInfo
     {
-        private readonly PropertyInfo _clrProperty;
 
         public string SqlColumnName { get; private set; }
 
         public string SqlTypeName { get; private set; }
 
-        public string ClrColumName { get { return _clrProperty.Name; } }
+        public string ClrColumName { get; private set; }
 
-        public Type ClrColumnType { get { return _clrProperty.PropertyType; } }
+        public Type ClrColumnType { get; private set; }
 
         public bool IsPrimaryKey { get; private set; }
 
@@ -33,9 +34,13 @@ namespace CompareCore.EFInfo
         public bool IsNullable { get; private set; }
 
         /// <summary>
-        /// This holds the maxlength, or -1 if not set or invalid
+        /// This holds the maxlength in the sql format
         /// </summary>
         public int MaxLength { get; private set; }
+
+        internal EfColumnInfo()
+        {
+        }
 
         public EfColumnInfo(string sqlColumnName, string sqlTypeName, bool isNullable, int? maxLength, byte? precision, EfKeyOrder primaryKeyOrder, PropertyInfo clrProperty)
         {
@@ -46,6 +51,8 @@ namespace CompareCore.EFInfo
             SqlTypeName = sqlTypeName.EndsWith(maxTypeEnding)
                 ? sqlTypeName.Substring(0, sqlTypeName.Length - maxTypeEnding.Length)
                 : sqlTypeName;
+            ClrColumName = clrProperty.Name;
+            ClrColumnType = clrProperty.PropertyType;
             if (primaryKeyOrder != null)
             {
                 IsPrimaryKey = true;
@@ -56,7 +63,6 @@ namespace CompareCore.EFInfo
                 //if looks like presion is only set to non-null on decimal (and numeric?)
                 ? ((byte)precision).GetLengthFromPrecision()
                 : SqlTypeName.GetSqlMaxLengthFromEfMaxLength(maxLength);
-            _clrProperty = clrProperty;
         }
 
         public override string ToString()

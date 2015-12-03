@@ -28,7 +28,7 @@ namespace CompareCore.EFInfo
 
         public EfRelationshipChecker(IEnumerable<EfTableInfo> efInfos, 
             SqlAllInfo allSqlInfo,
-            ICollection<SqlTableInfo> potentialManyToManyTables)
+            IList<SqlTableInfo> potentialManyToManyTables)
         {
             _efInfosDict = efInfos.ToDictionary(x => x.ClrClassType);
             _allSqlInfo = allSqlInfo;
@@ -205,12 +205,12 @@ namespace CompareCore.EFInfo
         /// <param name="parentTableName"></param>
         /// <param name="referencedTableAndKey"></param>
         /// <returns></returns>
-        private ICollection<SqlForeignKey> GetForeignKeys(string parentTableName, SqlTableInfo referencedTableAndKey)
+        private IList<SqlForeignKey> GetForeignKeys(string parentTableName, SqlTableInfo referencedTableAndKey)
         {
             return _allSqlInfo.ForeignKeys.Where(x => x.ParentTableName == parentTableName
                                                       && x.ReferencedTableName == referencedTableAndKey.TableName
                                                       &&
-                                                      referencedTableAndKey.ColumnInfo.Where(y => y.IsPrimaryKey)
+                                                      referencedTableAndKey.ColumnInfos.Where(y => y.IsPrimaryKey)
                                                           .Select(y => y.ColumnName)
                                                           .Contains(x.ReferencedColName)).ToList();
         }

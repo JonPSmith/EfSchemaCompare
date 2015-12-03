@@ -29,7 +29,7 @@ namespace CompareCore
             _sqlTableNamesToIgnore = sqlTableNamesToIgnore;
         }
 
-        public ISuccessOrErrors CompareEfWithSql(ICollection<EfTableInfo> efInfos, SqlAllInfo allSqlInfo)
+        public ISuccessOrErrors CompareEfWithSql(IList<EfTableInfo> efInfos, SqlAllInfo allSqlInfo)
         {
 
             var status = SuccessOrErrors.Success("All Ok");
@@ -49,7 +49,7 @@ namespace CompareCore
                     sqlInfoDict.Remove(efInfo.CombinedName);
 
                     //we create a dict, which we check. As we find columns we remove them
-                    var sqlColsDict = sqlTableInfo.ColumnInfo.ToDictionary(x => x.ColumnName);
+                    var sqlColsDict = sqlTableInfo.ColumnInfos.ToDictionary(x => x.ColumnName);
 
                     foreach (var clrCol in efInfo.NormalCols)
                     {
@@ -72,7 +72,7 @@ namespace CompareCore
                         foreach (var missingCol in sqlColsDict.Values)
                         {
                             status.AddWarning("SQL {0} table {1} has a column called {2} (.NET type {3}) that EF does not access.",
-                                _sqlDbRefString, efInfo.CombinedName, missingCol.ColumnName, missingCol.ColumnSqlType.SqlToClrType(missingCol.IsNullable));
+                                _sqlDbRefString, efInfo.CombinedName, missingCol.ColumnName, missingCol.SqlTypeName.SqlToClrType(missingCol.IsNullable));
                         }
                     }
                 }
@@ -81,7 +81,7 @@ namespace CompareCore
             //now we compare the EF relationships with the SQL foreign keys
             //we do this here because we now have the tables that wren't mentioned in EF,
             //which are the tables that EF will automatically add to handle many-many relationships.
-            var relChecker = new EfRelationshipChecker(efInfos, allSqlInfo, sqlInfoDict.Values);
+            var relChecker = new EfRelationshipChecker(efInfos, allSqlInfo, sqlInfoDict.Values.ToList());
             foreach (var efInfo in efInfos)
             {      
                 //now we check the relationships
@@ -111,10 +111,10 @@ namespace CompareCore
         private ISuccessOrErrors CheckColumn(SqlColumnInfo sqlCol, EfColumnInfo clrCol, string combinedName)
         {
             var status = new SuccessOrErrors();
-            if (sqlCol.ColumnSqlType != clrCol.SqlTypeName)
+            if (sqlCol.SqlTypeName != clrCol.SqlTypeName)
                 status.AddSingleError(
                     "Column Type: The SQL {0} column {1}.{2} type does not match EF. SQL type = {3}, EF type = {4}.",
-                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, sqlCol.ColumnSqlType, clrCol.SqlTypeName);
+                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, sqlCol.SqlTypeName, clrCol.SqlTypeName);
 
             if (sqlCol.IsNullable != clrCol.IsNullable)
                 status.AddSingleError(
@@ -156,7 +156,7 @@ namespace CompareCore
                     "MaxLength: The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,
                     sqlCol.MaxLength, 
-                    sqlCol.ColumnSqlType.EfLengthIdHalfThis() ? clrCol.MaxLength / 2 : clrCol.MaxLength);
+                    sqlCol.SqlTypeName.EfLengthIdHalfThis() ? clrCol.MaxLength / 2 : clrCol.MaxLength);
             }
 
             return status.SetSuccessMessage("All Ok");

@@ -26,7 +26,7 @@ namespace CompareCore.SqlInfo
         public Int16 KeyOrder { get; private set; } 
         public string PrimaryKeyConstraintName { get; private set; } 
         
-        public static ICollection<SqlPrimaryKey> GetPrimaryKeysNames(string connectionString, string tableName)
+        public static IList<SqlPrimaryKey> GetPrimaryKeysNames(string connectionString, string tableName)
         {
             var result = new Collection<SqlPrimaryKey>();
             using (var sqlcon = new SqlConnection(connectionString))

@@ -60,9 +60,9 @@ namespace CompareCore
                     sqlTable2Dict.Remove(sqlTable.CombinedName);
 
                     //we create a dict for columns in SECOND db, which we check. As we find columns we remove them
-                    var sqlColsDict = sqlTable2Info.ColumnInfo.ToDictionary(x => x.ColumnName);
+                    var sqlColsDict = sqlTable2Info.ColumnInfos.ToDictionary(x => x.ColumnName);
 
-                    foreach (var col in sqlTable.ColumnInfo)
+                    foreach (var col in sqlTable.ColumnInfos)
                     {
                         if (!sqlColsDict.ContainsKey(col.ColumnName))
                             status.AddSingleError(
@@ -83,7 +83,7 @@ namespace CompareCore
                         foreach (var missingCol in sqlColsDict.Values)
                         {
                             status.AddWarning("The '{0}' database SQL table {1} has a column called {2} (type {3}), which database '{4}' did not have.",
-                                 _toBeCheckDatabaseName, sqlTable.CombinedName, missingCol.ColumnName, missingCol.ColumnSqlType, _refDatabaseName);
+                                 _toBeCheckDatabaseName, sqlTable.CombinedName, missingCol.ColumnName, missingCol.SqlTypeName, _refDatabaseName);
                         }
                     }
                 }
@@ -277,12 +277,12 @@ namespace CompareCore
         private ISuccessOrErrors CheckSqlColumn(SqlColumnInfo sqlCol, SqlColumnInfo colToCheck, string combinedName)
         {
             var status = new SuccessOrErrors();
-            if (sqlCol.ColumnSqlType != colToCheck.ColumnSqlType)
+            if (sqlCol.SqlTypeName != colToCheck.SqlTypeName)
                 status.AddSingleError(
                     "Column Type: SQL column {0}.{1} type does not match EF. '{2}' db type = {3}, '{4}' db type = {5}.",
                     combinedName, sqlCol.ColumnName, 
-                    _refDatabaseName, sqlCol.ColumnSqlType, 
-                    _toBeCheckDatabaseName, colToCheck.ColumnSqlType);
+                    _refDatabaseName, sqlCol.SqlTypeName, 
+                    _toBeCheckDatabaseName, colToCheck.SqlTypeName);
             
             if (sqlCol.IsNullable != colToCheck.IsNullable)
                 status.AddSingleError(

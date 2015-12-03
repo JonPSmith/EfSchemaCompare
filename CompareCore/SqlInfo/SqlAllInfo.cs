@@ -41,7 +41,7 @@ namespace CompareCore.SqlInfo
                 let schemaName = tableGroup.First().SchemaName
                 let primaryKey = SqlPrimaryKey.GetPrimaryKeysNames(connection, tableGroup.Key)
                 select (new SqlTableInfo(schemaName,
-                    tableGroup.Key, tableGroup.Select(y => new SqlColumnInfo(y.ColumnName, y.ColumnSqlType,
+                    tableGroup.Key, tableGroup.Select(y => new SqlColumnInfo(y.ColumnName, y.SqlTypeName,
                         primaryKey.SingleOrDefault(z => z.ColumnName == y.ColumnName),
                         y.IsNullable, y.MaxLength)).ToList()));
 
