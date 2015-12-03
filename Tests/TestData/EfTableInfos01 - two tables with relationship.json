@@ -35,7 +35,7 @@
             {
                 SqlColumnName: "DataChildId",
                 SqlTypeName: "int",
-                ColumnName: "DataChildId",
+                ClrColumName: "DataChildId",
                 ClrColumnType: "System.Int32",
                 IsPrimaryKey: true,
                 PrimaryKeyOrder: 1,
@@ -45,11 +45,11 @@
             {
                 SqlColumnName: "MyString",
                 SqlTypeName: "varchar",
-                ColumnName: "MyString",
+                ClrColumName: "MyString",
                 ClrColumnType: "System.String",
                 IsPrimaryKey: false,
                 PrimaryKeyOrder: 0,
-                IsNullable: false,
+                IsNullable: true,
                 MaxLength: 25,
             },
             {

@@ -133,7 +133,7 @@ namespace Tests.UnitTests
             //VERIFY
             efData[0].NormalCols.Count.ShouldEqual(2);
             efData[0].NormalCols[0].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
-            efData[0].NormalCols[1].ToString().ShouldEqual("SqlColumnName: MyBool, SqlTypeName: bit, ClrColumName: DataTopId, ClrColumnType: System.Boolean, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 1");
+            efData[0].NormalCols[1].ToString().ShouldEqual("SqlColumnName: MyBool, SqlTypeName: bit, ClrColumName: MyBool, ClrColumnType: System.Boolean, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 1");
         }
 
         [Test]
@@ -157,9 +157,10 @@ namespace Tests.UnitTests
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
 
             //VERIFY
-            efData[0].NormalCols.Count.ShouldEqual(2);
-            efData[0].NormalCols[0].ToString().ShouldEqual("xxx");
-            efData[0].NormalCols[1].ToString().ShouldEqual("xxx");
+            efData[1].NormalCols.Count.ShouldEqual(3);
+            efData[1].NormalCols[0].ToString().ShouldEqual("SqlColumnName: DataChildId, SqlTypeName: int, ClrColumName: DataChildId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
+            efData[1].NormalCols[1].ToString().ShouldEqual("SqlColumnName: MyString, SqlTypeName: varchar, ClrColumName: MyString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 25");
+            efData[1].NormalCols[2].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
         }
 
         [Test]
@@ -172,7 +173,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efData[1].RelationshipCols.Count.ShouldEqual(1);
-            efData[1].RelationshipCols[0].ToString().ShouldEqual("xxx");
+            efData[1].RelationshipCols[0].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: Tests.EfClasses.Relationships.DataTop, FromToRelationships: Many-to-One");
         }
 
         //-----------------------------------------------------------------
