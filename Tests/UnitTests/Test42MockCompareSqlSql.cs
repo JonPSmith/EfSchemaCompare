@@ -49,7 +49,7 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Missing Table: The 'RefUnitTest' SQL database has a table called [dbo].[DataTop], which is missing in the 'ToBeCheckUnitTest' database.", status.GetAllErrors());
-            string.Join(",", status.Warnings).ShouldEqual("Warning: SQL database 'RefUnitTest', table [dbo].[NewDataName] table contained an extra table, [dbo].[NewDataName]", string.Join(",", status.Warnings));
+            string.Join(",", status.Warnings).ShouldEqual("Warning: Extra Table: SQL database 'RefUnitTest', table [dbo].[NewDataName] table contained an extra table, [dbo].[NewDataName]", string.Join(",", status.Warnings));
         }
 
         //-----------------------------------------------------
@@ -69,7 +69,7 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Missing Column: The SQL table [dbo].[DataTop] in second database does not contain a column called DataTopId.", status.GetAllErrors());
-            string.Join(",", status.Warnings).ShouldEqual("Warning: The 'ToBeCheckUnitTest' database SQL table [dbo].[DataTop] has a column called BadColName (type int), which database 'RefUnitTest' did not have.", string.Join(",", status.Warnings));       
+            string.Join(",", status.Warnings).ShouldEqual("Warning: Extra Column: The 'ToBeCheckUnitTest' database SQL table [dbo].[DataTop] has a column called BadColName (type int), which database 'RefUnitTest' did not have.", string.Join(",", status.Warnings));       
         }
 
         [Test]
@@ -187,7 +187,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid();
-            string.Join(",", status.Warnings).ShouldEqual("Warning: The 'ToBeCheckUnitTest' database SQL table [dbo].[DataTop] has a column called DataTopId (type int), which database 'RefUnitTest' did not have.", string.Join(",", status.Warnings));
+            string.Join(",", status.Warnings).ShouldEqual("Warning: Extra Column: The 'ToBeCheckUnitTest' database SQL table [dbo].[DataTop] has a column called DataTopId (type int), which database 'RefUnitTest' did not have.", string.Join(",", status.Warnings));
         }
 
         //--------------------------------------------------
@@ -295,7 +295,7 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Missing Index: The 'RefUnitTest' SQL database has an index [dbo].[DataChild].DataTopId: (not primary key, not clustered, not unique), which is missing in the 'ToBeCheckUnitTest' database.", status.GetAllErrors());
-            string.Join(",", status.Warnings).ShouldEqual("Warning: The 'ToBeCheckUnitTest' database has an index [dbo].[BadName].DataTopId: (not primary key, not clustered, not unique), which the 'RefUnitTest' database did not have.", string.Join(",", status.Warnings));
+            string.Join(",", status.Warnings).ShouldEqual("Warning: Missing Index: The 'ToBeCheckUnitTest' database has an index [dbo].[BadName].DataTopId: (not primary key, not clustered, not unique), which the 'RefUnitTest' database did not have.", string.Join(",", status.Warnings));
         }
 
         [Test]
@@ -312,7 +312,7 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Missing Index: The 'RefUnitTest' SQL database has an index [dbo].[DataChild].DataTopId: (not primary key, not clustered, not unique), which is missing in the 'ToBeCheckUnitTest' database.", status.GetAllErrors());
-            string.Join(",", status.Warnings).ShouldEqual("Warning: The 'ToBeCheckUnitTest' database has an index [dbo].[DataChild].BadName: (not primary key, not clustered, not unique), which the 'RefUnitTest' database did not have.", string.Join(",", status.Warnings));
+            string.Join(",", status.Warnings).ShouldEqual("Warning: Missing Index: The 'ToBeCheckUnitTest' database has an index [dbo].[DataChild].BadName: (not primary key, not clustered, not unique), which the 'RefUnitTest' database did not have.", string.Join(",", status.Warnings));
         }
 
         [Test]

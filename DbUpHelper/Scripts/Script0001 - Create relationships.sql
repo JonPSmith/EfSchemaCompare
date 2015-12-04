@@ -2,8 +2,7 @@
 	[DataTopId] [int] IDENTITY(1,1) PRIMARY KEY,
 	[Key1] [int] NOT NULL,
 	[Key2] [uniqueidentifier] NOT NULL,
-	[MyString] [varchar](25) NULL,
-	[DataSingletonId] [int] NULL,
+	[MyString] [varchar](25) NULL
 )
 go
 
@@ -37,9 +36,8 @@ CREATE TABLE $schema$.[DataManyCompKey](
 go
 
 CREATE TABLE $schema$.[DataSingleton](
-	[DataSingletonId] [int] IDENTITY(1,1) PRIMARY KEY,
-	[MyDateTime] [datetime] NOT NULL,
-	[NonStandardForeignKeyName] [int] NULL
+	[DataTopId] [int] PRIMARY KEY,
+	[MyDateTime] [datetime] NOT NULL
 )
 go
 

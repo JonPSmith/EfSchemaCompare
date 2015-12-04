@@ -82,7 +82,7 @@ namespace CompareCore
                     {
                         foreach (var missingCol in sqlColsDict.Values)
                         {
-                            status.AddWarning("The '{0}' database SQL table {1} has a column called {2} (type {3}), which database '{4}' did not have.",
+                            status.AddWarning("Extra Column: The '{0}' database SQL table {1} has a column called {2} (type {3}), which database '{4}' did not have.",
                                  _toBeCheckDatabaseName, sqlTable.CombinedName, missingCol.ColumnName, missingCol.SqlTypeName, _refDatabaseName);
                         }
                     }
@@ -94,7 +94,7 @@ namespace CompareCore
             {    
                 foreach (var unusedTable in sqlTable2Dict.Values.Where(x => !_tablesToIgnore.Contains(x.TableName)))
                 {
-                    status.AddWarning("SQL database '{0}', table {1} table contained an extra table, {1}", _refDatabaseName, unusedTable.CombinedName);
+                    status.AddWarning("Extra Table: SQL database '{0}', table {1} table contained an extra table, {1}", _refDatabaseName, unusedTable.CombinedName);
                 }
             }
 
@@ -143,7 +143,7 @@ namespace CompareCore
                     {
                         //simple case - missing in toBeChecked
                         SetAppropriateIndexError(status,
-                            "The '{0}' database has an index {1}, which the '{2}' database did not have.",
+                            "Missing Index: The '{0}' database has an index {1}, which the '{2}' database did not have.",
                             _refDatabaseName, listRef.ToString(), _toBeCheckDatabaseName);
                     }
                     else
@@ -165,12 +165,12 @@ namespace CompareCore
                         {
                             if (i >= listToCheck.Count())
                                 SetAppropriateIndexError(status,
-                                    "The '{0}' database has an index {1}, which the '{2}' database did not have.",
+                                    "Missing Index: The '{0}' database has an index {1}, which the '{2}' database did not have.",
                                     _refDatabaseName, listRef[i].ToString(), _toBeCheckDatabaseName);
                             else if (i >= listRef.Count())
                                 //Note: this is warning, as an extra index in the toBeChecked database isn't an error
                                 status.AddWarning(
-                                    "The '{0}' database has an index {1}, which the '{2}' database did not have.",
+                                    "Missing Index: The '{0}' database has an index {1}, which the '{2}' database did not have.",
                                     _toBeCheckDatabaseName, listToCheck[i].ToString(), _refDatabaseName);
                             else
                                 //they both have a index, so check it
@@ -186,7 +186,7 @@ namespace CompareCore
                 {
                     //Note: this a warning as an extra index isn't an error
                     status.AddWarning(
-                        "The '{0}' database has an index {1}, which the '{2}' database did not have.",
+                        "Missing Index: The '{0}' database has an index {1}, which the '{2}' database did not have.",
                         _toBeCheckDatabaseName, missingIndex.ToString(), _refDatabaseName);
                 }
             }

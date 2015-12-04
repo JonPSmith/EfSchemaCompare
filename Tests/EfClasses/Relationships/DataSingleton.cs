@@ -8,6 +8,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tests.EfClasses.Relationships
@@ -17,16 +18,15 @@ namespace Tests.EfClasses.Relationships
     /// </summary>
     public class DataSingleton
     {
-        public int DataSingletonId { get; set; }
+        [Key]
+        public int DataTopId { get; set; }
 
         public DateTime MyDateTime { get; set; }
 
         //---------------------------------------------------------
         //relationships
 
-        public int? NonStandardForeignKeyName { get; set; }
-
-        [ForeignKey("NonStandardForeignKeyName")]
+        [ForeignKey("DataTopId")]
         [Column("NonStandardParent")]
         public DataTop Parent { get; set; }
 

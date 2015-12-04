@@ -28,9 +28,6 @@ namespace Tests.EfClasses.Relationships
         //---------------------------------------------
         //relationships
 
-        public int? DataSingletonId { get; set; }
-
-        [ForeignKey("DataSingletonId")]
         public DataSingleton SingletonNullable { get; set; }
 
         [ForeignKey("CompositeKeyData")]

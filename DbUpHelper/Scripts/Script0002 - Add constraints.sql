@@ -23,7 +23,7 @@ ON DELETE CASCADE
 GO
 
 ALTER TABLE $schema$.[DataSingleton] 
-ADD  CONSTRAINT [FK_dbo.DataSingleton_dbo.DataTop_DataSingletonId] FOREIGN KEY([DataSingletonId])
+ADD  CONSTRAINT [FK_dbo.DataSingleton_dbo.DataTop_DataTopId] FOREIGN KEY([DataTopId])
 REFERENCES $schema$.[DataTop] ([DataTopId])
 GO
 

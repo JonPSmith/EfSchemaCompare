@@ -61,6 +61,9 @@
     <EmbeddedResource Include="Scripts\Script0003 - Create DataTypes.sql" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\Script0010 - Create nonclustered indexes.sql" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Scripts\Script0004 - Create ClassTypes.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

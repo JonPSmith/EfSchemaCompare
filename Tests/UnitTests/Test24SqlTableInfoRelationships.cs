@@ -55,12 +55,11 @@ namespace Tests.UnitTests
             sqlInfo.ShouldNotEqualNull();
             var list = sqlInfo.ColumnInfos.ToList();
             var i = 0;
-            list.Count.ShouldEqual(5);
+            list.Count.ShouldEqual(4);
             list[i++].ToString().ShouldEqual("ColumnName: Key1, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("ColumnName: Key2, SqlTypeName: uniqueidentifier, IsPrimaryKey: False, IsNullable: False, MaxLength: 16");
             list[i++].ToString().ShouldEqual("ColumnName: DataTopId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("ColumnName: MyString, SqlTypeName: varchar, IsPrimaryKey: False, IsNullable: True, MaxLength: 25");
-            list[i++].ToString().ShouldEqual("ColumnName: DataSingletonId, SqlTypeName: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
         }
 
         [Test]
@@ -107,12 +106,11 @@ namespace Tests.UnitTests
 
             //VERIFY
             sqlInfo.ShouldNotEqualNull();
-            sqlInfo.ColumnInfos.Count.ShouldEqual(3);
+            sqlInfo.ColumnInfos.Count.ShouldEqual(2);
             var list = sqlInfo.ColumnInfos.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ColumnName: DataSingletonId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("ColumnName: DataTopId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("ColumnName: MyDateTime, SqlTypeName: datetime, IsPrimaryKey: False, IsNullable: False, MaxLength: 8");
-            list[i++].ToString().ShouldEqual("ColumnName: NonStandardForeignKeyName, SqlTypeName: int, IsPrimaryKey: False, IsNullable: True, MaxLength: 4");
         }
 
         [Test]
@@ -179,7 +177,7 @@ namespace Tests.UnitTests
             var list = _sqlForeignKeys.Select(x => x.ToString()).ToList();
             var i = 0;
             list[i++].ShouldEqual("Parent: DataChild.DataTopId, Referenced: DataTop.DataTopId");
-            list[i++].ShouldEqual("Parent: DataSingleton.DataSingletonId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: DataSingleton.DataTopId, Referenced: DataTop.DataTopId");
             list[i++].ShouldEqual("Parent: DataZeroOrOne.DataTopId, Referenced: DataTop.DataTopId");
             list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataTopId, Referenced: DataTop.DataTopId");
             list[i++].ShouldEqual("Parent: DataManyCompKeyDataTop.DataTop_DataTopId, Referenced: DataTop.DataTopId");
