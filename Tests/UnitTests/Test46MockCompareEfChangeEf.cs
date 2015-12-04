@@ -175,5 +175,7 @@ namespace Tests.UnitTests
             string.Join(",", status.Warnings).ShouldEqual("Warning: SQL SqlRefString table [dbo].[DataChild] has a column called MyString (.NET type System.String) that EF does not access.", string.Join(",", status.Warnings));
         }
 
+        //TODO: add index checks and 
+
     }
 }

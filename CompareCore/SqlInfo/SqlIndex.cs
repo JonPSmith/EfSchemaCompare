@@ -25,6 +25,7 @@ namespace CompareCore.SqlInfo
         public bool IsPrimaryIndex { get; private set; }
         public bool Clustered { get; private set; }
         public bool IsUnique { get; private set; }
+        public bool IsIdentity { get; private set; }
 
         public string CombinedName { get { return string.Format("[{0}].[{1}].{2}", SchemaName, TableName, ColumnName); } }
 
@@ -53,7 +54,8 @@ namespace CompareCore.SqlInfo
      ind.name AS IndexName,
      ind.is_primary_key AS PrimaryKey,
 	 ind.index_id AS IndexType,
-	 ind.is_unique AS IsUnique
+	 ind.is_unique AS IsUnique,
+     col.is_identity AS IsIdentity
 FROM 
      sys.indexes ind 
 INNER JOIN 
@@ -88,7 +90,7 @@ ORDER BY
                         row.IsPrimaryIndex = reader.GetBoolean(i++);
                         row.Clustered = reader.GetInt32(i++) == 1;
                         row.IsUnique = reader.GetBoolean(i++);
-
+                        row.IsIdentity = reader.GetBoolean(i++);
                         result.Add(row);
                     }
                 }

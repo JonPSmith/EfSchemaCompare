@@ -367,7 +367,24 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test35CompareMockDataChangeIndexRemoveNonPrimaryKeyInSetOk()
+        public void Test35CompareMockDataChangeIndexHasIdentityOk()
+        {
+            //SETUP
+            var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
+            var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsIdentity");
+
+            //EXECUTE
+            var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
+
+            //VERIFY
+            status.ShouldBeValid(false);
+            status.GetAllErrors().ShouldEqual("Index Mismatch: The 'RefUnitTest' SQL database, index on [dbo].[DataChild].DataTopId is NOT an identity column, while the index on the same table.column in SQL database ToBeCheckUnitTest is an identity column.", status.GetAllErrors());
+            status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
+        }
+
+        [Test]
+        public void Test40CompareMockDataChangeIndexRemoveNonPrimaryKeyInSetOk()
         {
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
@@ -384,7 +401,7 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test36CompareMockDataChangeIndexRemovePrimaryKeyInSetOk()
+        public void Test41CompareMockDataChangeIndexRemovePrimaryKeyInSetOk()
         {
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);

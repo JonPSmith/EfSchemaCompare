@@ -74,6 +74,7 @@
             IsPrimaryIndex: false,
             Clustered: false,
             IsUnique: false,
+            IsIdentity: false
         },
         {
             SchemaName: "dbo",
@@ -83,6 +84,7 @@
             IsPrimaryIndex: true,
             Clustered: true,
             IsUnique: true,
+            IsIdentity: true
         },
                 {
             SchemaName: "dbo",
@@ -92,6 +94,7 @@
             IsPrimaryIndex: true,
             Clustered: true,
             IsUnique: true,
+            IsIdentity: true
         },
     ]
 }

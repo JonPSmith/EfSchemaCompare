@@ -228,6 +228,17 @@ namespace CompareCore
                     _toBeCheckDatabaseName,
                     indexToCheck.IsUnique ? "" : "NOT ");
             }
+            if (refIndex.IsIdentity != indexToCheck.IsIdentity)
+            {
+                SetAppropriateIndexError(status,
+                    "Index Mismatch: The '{0}' SQL database, index on {1} is {2} identity column," +
+                    " while the index on the same table.column in SQL database {3} is {4} identity column.",
+                    _refDatabaseName, refIndex.CombinedName,
+                    refIndex.IsIdentity ? "an" : "NOT an",
+                    _toBeCheckDatabaseName,
+                    indexToCheck.IsIdentity ? "an" : "NOT an");
+            }
+
 
             return status;
         }
