@@ -41,7 +41,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NewDataName", "TableInfos", 0, "TableName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NewDataName", "TableInfos", 0, "TableName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -61,7 +61,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadColName", "TableInfos", 0, "ColumnInfos", 0, "ColumnName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadColName", "TableInfos", 0, "ColumnInfos", 0, "ColumnName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -78,7 +78,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "bit", "TableInfos", 0, "ColumnInfos", 0, "SqlTypeName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "bit", "TableInfos", 0, "ColumnInfos", 0, "SqlTypeName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -95,7 +95,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -112,7 +112,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "PrimaryKeyOrder");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "PrimaryKeyOrder");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -129,7 +129,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "TableInfos", 0, "ColumnInfos", 0, "IsNullable");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "TableInfos", 0, "ColumnInfos", 0, "IsNullable");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -146,7 +146,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "MaxLength");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "MaxLength");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -163,7 +163,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "TableInfos", 0, "ColumnInfos", 0);
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "TableInfos", 0, "ColumnInfos", 0);
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -179,7 +179,7 @@ namespace Tests.UnitTests
         {
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
-            var sqlData1 = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "TableInfos", 0, "ColumnInfos", 0);
+            var sqlData1 = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "TableInfos", 0, "ColumnInfos", 0);
             var sqlData2 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
 
             //EXECUTE
@@ -199,7 +199,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentTableName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentTableName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -216,7 +216,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentColName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentColName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -233,7 +233,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedTableName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedTableName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -250,7 +250,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedColName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedColName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -267,7 +267,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "DeleteAction");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "DeleteAction");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -287,7 +287,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "TableName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "TableName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -304,7 +304,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "ColumnName");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "ColumnName");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -321,7 +321,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsPrimaryIndex");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsPrimaryIndex");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -338,7 +338,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "Clustered");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "Clustered");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -355,7 +355,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsUnique");
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsUnique");
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -372,7 +372,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 0);
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 0);
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);
@@ -389,7 +389,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new SqlCompare("RefUnitTest", "ToBeCheckUnitTest", "", true);
             var sqlData1 = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
-            var sqlData2 = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 1);
+            var sqlData2 = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 1);
 
             //EXECUTE
             var status = comparer.CompareSqlToSql(sqlData1, sqlData2);

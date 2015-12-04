@@ -42,7 +42,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NewDataName", "TableInfos", 0, "TableName");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NewDataName", "TableInfos", 0, "TableName");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -63,7 +63,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadColName", "TableInfos", 0, "ColumnInfos", 0, "ColumnName");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadColName", "TableInfos", 0, "ColumnInfos", 0, "ColumnName");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -81,7 +81,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "bit", "TableInfos", 0, "ColumnInfos", 0, "SqlTypeName");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "bit", "TableInfos", 0, "ColumnInfos", 0, "SqlTypeName");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -98,7 +98,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -116,7 +116,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "PrimaryKeyOrder");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "PrimaryKeyOrder");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -133,7 +133,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "TableInfos", 0, "ColumnInfos", 0, "IsNullable");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "TableInfos", 0, "ColumnInfos", 0, "IsNullable");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -150,7 +150,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "MaxLength");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "MaxLength");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -167,7 +167,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "TableInfos", 0, "ColumnInfos", 0);
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "TableInfos", 0, "ColumnInfos", 0);
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -188,7 +188,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentTableName");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentTableName");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -205,7 +205,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentColName");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentColName");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -222,7 +222,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedTableName");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedTableName");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -239,7 +239,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedColName");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedColName");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -256,7 +256,7 @@ namespace Tests.UnitTests
             //SETUP
             var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "DeleteAction");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "DeleteAction");
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -278,7 +278,7 @@ namespace Tests.UnitTests
         //    //SETUP
         //    var comparer = new EfCompare("SqlRefString","");
         //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-        //    var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "TableName");
+        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "TableName");
 
         //    //EXECUTE
         //    var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -295,7 +295,7 @@ namespace Tests.UnitTests
         //    //SETUP
         //    var comparer = new EfCompare("SqlRefString","");
         //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-        //    var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "ColumnName");
+        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "ColumnName");
 
         //    //EXECUTE
         //    var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -312,7 +312,7 @@ namespace Tests.UnitTests
         //    //SETUP
         //    var comparer = new EfCompare("SqlRefString","");
         //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-        //    var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsPrimaryIndex");
+        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsPrimaryIndex");
 
         //    //EXECUTE
         //    var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -329,7 +329,7 @@ namespace Tests.UnitTests
         //    //SETUP
         //    var comparer = new EfCompare("SqlRefString","");
         //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-        //    var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "Clustered");
+        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "Clustered");
 
         //    //EXECUTE
         //    var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -346,7 +346,7 @@ namespace Tests.UnitTests
         //    //SETUP
         //    var comparer = new EfCompare("SqlRefString","");
         //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-        //    var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsUnique");
+        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "Indexes", 0, "IsUnique");
 
         //    //EXECUTE
         //    var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -363,7 +363,7 @@ namespace Tests.UnitTests
         //    //SETUP
         //    var comparer = new EfCompare("SqlRefString","");
         //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-        //    var sqlData = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 0);
+        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 0);
 
         //    //EXECUTE
         //    var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -380,7 +380,7 @@ namespace Tests.UnitTests
         //    //SETUP
         //    var comparer = new EfCompare("SqlRefString","");
         //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-        //    var sqlData = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 1);
+        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 1);
 
         //    //EXECUTE
         //    var status = comparer.CompareEfWithSql(efData, sqlData);

@@ -10,7 +10,6 @@
 using System;
 using System.Reflection;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
@@ -32,9 +31,7 @@ namespace Tests.Helpers
             return JsonConvert.DeserializeObject<T>(jsonText, settings);
         }
 
-
-
-        public static T DeserializeDataWithSingleAlteration<T>(string searchString, object value, params object [] accessKeys) where T : class
+        public static T DeserializeObjectWithSingleAlteration<T>(string searchString, object value, params object [] accessKeys) where T : class
         {
             var jsonText = TestFileHelpers.GetTestFileContent(searchString);
             var jObject = JObject.Parse(jsonText);
@@ -64,12 +61,55 @@ namespace Tests.Helpers
             }
 
             var contractResolver = new PrivateSetterJsonDefaultContractResolver();
-            var settings = new JsonSerializerSettings { ContractResolver = contractResolver };
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                Converters = new[] { new TypeConverter() }
+            };
 
             return JsonConvert.DeserializeObject<T>(jObject.ToString(), settings);
         }
 
-        public static T DeserializeDataWithSingleRemoval<T>(string searchString, params object[] accessKeys) where T : class
+        public static T DeserializeArrayWithSingleAlteration<T>(string searchString, object value, params object[] accessKeys) where T : class
+        {
+            var jsonText = TestFileHelpers.GetTestFileContent(searchString);
+            var jArray = JArray.Parse(jsonText);
+
+            switch (accessKeys.Length)
+            {
+                case 1:
+                    jArray[accessKeys[0]] = new JValue(value);
+                    break;
+                case 2:
+                    jArray[accessKeys[0]][accessKeys[1]] = new JValue(value);
+                    break;
+                case 3:
+                    jArray[accessKeys[0]][accessKeys[1]][accessKeys[2]] = new JValue(value);
+                    break;
+                case 4:
+                    jArray[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]] = new JValue(value);
+                    break;
+                case 5:
+                    jArray[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]][accessKeys[4]] = new JValue(value);
+                    break;
+                case 6:
+                    jArray[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]][accessKeys[4]][accessKeys[5]] = new JValue(value);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            var contractResolver = new PrivateSetterJsonDefaultContractResolver();
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                Converters = new[] { new TypeConverter() }
+            };
+
+            return JsonConvert.DeserializeObject<T>(jArray.ToString(), settings);
+        }
+
+        public static T DeserializeObjectWithSingleRemoval<T>(string searchString, params object[] accessKeys) where T : class
         {
             var jsonText = TestFileHelpers.GetTestFileContent(searchString);
             var jObject = JObject.Parse(jsonText);
@@ -99,9 +139,52 @@ namespace Tests.Helpers
             }
 
             var contractResolver = new PrivateSetterJsonDefaultContractResolver();
-            var settings = new JsonSerializerSettings { ContractResolver = contractResolver };
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                Converters = new[] { new TypeConverter() }
+            };
 
             return JsonConvert.DeserializeObject<T>(jObject.ToString(), settings);
+        }
+
+        public static T DeserializeArrayWithSingleRemoval<T>(string searchString, params object[] accessKeys) where T : class
+        {
+            var jsonText = TestFileHelpers.GetTestFileContent(searchString);
+            var jArray = JArray.Parse(jsonText);
+
+            switch (accessKeys.Length)
+            {
+                case 1:
+                    jArray[accessKeys[0]].Remove();
+                    break;
+                case 2:
+                    jArray[accessKeys[0]][accessKeys[1]].Remove();
+                    break;
+                case 3:
+                    jArray[accessKeys[0]][accessKeys[1]][accessKeys[2]].Remove();
+                    break;
+                case 4:
+                    jArray[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]].Remove();
+                    break;
+                case 5:
+                    jArray[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]][accessKeys[4]].Remove();
+                    break;
+                case 6:
+                    jArray[accessKeys[0]][accessKeys[1]][accessKeys[2]][accessKeys[3]][accessKeys[4]][accessKeys[5]].Remove();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            var contractResolver = new PrivateSetterJsonDefaultContractResolver();
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                Converters = new[] { new TypeConverter() }
+            };
+
+            return JsonConvert.DeserializeObject<T>(jArray.ToString(), settings);
         }
 
 

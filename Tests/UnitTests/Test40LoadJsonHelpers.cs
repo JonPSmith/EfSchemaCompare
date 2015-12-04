@@ -185,7 +185,7 @@ namespace Tests.UnitTests
             //SETUP
 
             //EXECUTE
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NewDataName", "TableInfos", 0, "TableName");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NewDataName", "TableInfos", 0, "TableName");
 
             //VERIFY
             sqlData.TableInfos.Count.ShouldEqual(2);
@@ -199,7 +199,7 @@ namespace Tests.UnitTests
             //SETUP
 
             //EXECUTE
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
 
             //VERIFY
             sqlData.TableInfos.Count.ShouldEqual(2);
@@ -213,7 +213,7 @@ namespace Tests.UnitTests
             //SETUP
 
             //EXECUTE
-            var sqlData = LoadJsonHelpers.DeserializeDataWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 1);
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 1);
 
             //VERIFY
             sqlData.Indexes.Count.ShouldEqual(2);
