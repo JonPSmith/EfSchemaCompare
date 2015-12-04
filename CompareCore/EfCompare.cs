@@ -101,7 +101,7 @@ namespace CompareCore
                 var tablesToIgnore = _sqlTableNamesToIgnore.Split(',').Select(x => x.Trim()).ToList();
                 foreach (var unusedTable in sqlInfoDict.Values.Where(x => !tablesToIgnore.Contains(x.TableName)))
                 {
-                    status.AddWarning("SQL {0} table {1} was not used by EF", _sqlDbRefString, unusedTable.CombinedName);
+                    status.AddWarning("SQL {0} table {1} was not used by EF.", _sqlDbRefString, unusedTable.CombinedName);
                 }
             }
 
@@ -118,7 +118,7 @@ namespace CompareCore
 
             if (sqlCol.IsNullable != clrCol.IsNullable)
                 status.AddSingleError(
-                    "Column Nullable: SQL {0} column {1}.{2} nullablity does not match. SQL is {3}NULL, EF is {5}NULL.",
+                    "Column Nullable: SQL {0} column {1}.{2} nullablity does not match. SQL is {3}NULL, EF is {4}NULL.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName,
                     sqlCol.IsNullable ? "" : "NOT ",
                     clrCol.IsNullable ? "" : "NOT ");
@@ -153,7 +153,7 @@ namespace CompareCore
             if (sqlCol.MaxLength != clrCol.MaxLength)
             {
                 return status.AddSingleError(
-                    "MaxLength: The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}",
+                    "MaxLength: The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,
                     sqlCol.MaxLength, 
                     sqlCol.SqlTypeName.EfLengthIdHalfThis() ? clrCol.MaxLength / 2 : clrCol.MaxLength);

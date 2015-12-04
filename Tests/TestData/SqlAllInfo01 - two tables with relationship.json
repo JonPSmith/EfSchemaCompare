@@ -39,7 +39,7 @@
                     SqlTypeName: "varchar",
                     IsPrimaryKey: false,
                     PrimaryKeyOrder: 0,
-                    IsNullable: false,
+                    IsNullable: true,
                     MaxLength: 25,
                 },
                 {
