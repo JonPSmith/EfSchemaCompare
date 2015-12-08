@@ -174,18 +174,18 @@ namespace Tests.UnitTests
 
             //VERIFY
             _sqlForeignKeys.Count.ShouldEqual(10);
-            var list = _sqlForeignKeys.Select(x => x.ToString()).ToList();
+            var list = _sqlForeignKeys.Select(x => x.ToString()).OrderBy(x => x).ToList();
             var i = 0;
             list[i++].ShouldEqual("Parent: DataChild.DataTopId, Referenced: DataTop.DataTopId");
-            list[i++].ShouldEqual("Parent: DataSingleton.DataTopId, Referenced: DataTop.DataTopId");
-            list[i++].ShouldEqual("Parent: DataZeroOrOne.DataTopId, Referenced: DataTop.DataTopId");
-            list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataTopId, Referenced: DataTop.DataTopId");
-            list[i++].ShouldEqual("Parent: DataManyCompKeyDataTop.DataTop_DataTopId, Referenced: DataTop.DataTopId");
-            list[i++].ShouldEqual("Parent: DataTop.Key1, Referenced: NonStandardCompKeyTable.Key1");
-            list[i++].ShouldEqual("Parent: DataTop.Key2, Referenced: NonStandardCompKeyTable.Key2");
-            list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataManyChildrenId, Referenced: DataManyChildren.DataManyChildrenId");
             list[i++].ShouldEqual("Parent: DataManyCompKeyDataTop.DataManyCompKey_ManyKey1, Referenced: DataManyCompKey.ManyKey1");
             list[i++].ShouldEqual("Parent: DataManyCompKeyDataTop.DataManyCompKey_ManyKey2, Referenced: DataManyCompKey.ManyKey2");
+            list[i++].ShouldEqual("Parent: DataManyCompKeyDataTop.DataTop_DataTopId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: DataSingleton.DataTopId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: DataTop.Key1, Referenced: NonStandardCompKeyTable.Key1");
+            list[i++].ShouldEqual("Parent: DataTop.Key2, Referenced: NonStandardCompKeyTable.Key2");
+            list[i++].ShouldEqual("Parent: DataZeroOrOne.DataTopId, Referenced: DataTop.DataTopId");
+            list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataManyChildrenId, Referenced: DataManyChildren.DataManyChildrenId");
+            list[i++].ShouldEqual("Parent: NonStandardManyToManyTableName.DataTopId, Referenced: DataTop.DataTopId");
         }
     }
 }
