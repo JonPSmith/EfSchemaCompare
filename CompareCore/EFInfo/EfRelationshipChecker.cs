@@ -81,7 +81,6 @@ namespace CompareCore.EFInfo
                                 toEfTable.TableName);
 
                         manyToManyTableName = linkCombinedNames.First();
-                        //todo: check cascade deletes
                         foreach (var foreignKey in _allSqlInfo.ForeignKeys.Where(x => x.ParentTableNameWithScheme == manyToManyTableName)
                             .Where(foreignKey => !foreignKey.IsCascade))
                         {
