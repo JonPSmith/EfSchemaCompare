@@ -2,7 +2,7 @@
     {
         SchemaName: "dbo",
         TableName: "DataTop",
-        ClrClassType: "Tests.EfClasses.Relationships.DataTop",
+        ClrClassType: "EfPocoClasses.Relationships.DataTop",
         NormalCols: [
             {
                 SqlColumnName: "DataTopId",
@@ -30,7 +30,7 @@
     {
         SchemaName: "dbo",
         TableName: "DataChild",
-        ClrClassType: "Tests.EfClasses.Relationships.DataChild",
+        ClrClassType: "EfPocoClasses.Relationships.DataChild",
         NormalCols: [
             {
                 SqlColumnName: "DataChildId",
@@ -66,7 +66,7 @@
         RelationshipCols: [
             {
                 ClrColumnName: "Parent",
-                ClrColumnType: "Tests.EfClasses.Relationships.DataTop",
+                ClrColumnType: "EfPocoClasses.Relationships.DataTop",
                 FromToRelationships: {
                     FromMultiplicity: "Many",
                     FromIsCascadeDelete: false,

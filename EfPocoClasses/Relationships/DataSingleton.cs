@@ -11,7 +11,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tests.EfClasses.Relationships
+namespace EfPocoClasses.Relationships
 {
     /// <summary>
     /// Thsi can only take part in a one to one or ZeroOrOne to One relationship

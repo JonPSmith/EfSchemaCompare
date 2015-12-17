@@ -8,26 +8,26 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tests.EfClasses.Relationships
+namespace EfPocoClasses.Relationships
 {
-    public enum EnumTests { One, Two, Three}
 
-    [Table("NonStandardCompKeyTable")]
-    public class DataCompKey
+    public class DataManyCompKey
     {
         [Key]
         [Column(Order = 1)]
-        public int Key1 { get; set; }
+        public int ManyKey1 { get; set; }
 
         [Key]
         [Column(Order = 2)]
-        public Guid Key2 { get; set; }
+        public Guid ManyKey2 { get; set; }
 
-        [Column("NonStandardColumnName")]
-        public EnumTests MyEnum { get; set; }
+        //------------------------------------------
+        //relationships
 
+        public ICollection<DataTop> ManyParents { get; set; }
     }
 }

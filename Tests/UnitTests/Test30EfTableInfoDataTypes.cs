@@ -14,9 +14,10 @@ using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.Internal;
 using Ef6Compare.InternalEf6;
+using EfPocoClasses.DataTypes;
+using EfPocoClasses.Relationships;
 using NUnit.Framework;
 using Tests.EfClasses;
-using Tests.EfClasses.DataTypes;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
@@ -31,7 +32,7 @@ namespace Tests.UnitTests
         {
             using (var db = new EfSchemaCompareDb())
             {
-                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(EfSchemaCompareDb)));
+                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(DataTop)));
                 _efInfos = decoder.GetAllEfTablesWithColInfo(db);
             }
         }
@@ -161,10 +162,10 @@ namespace Tests.UnitTests
             var i = 0;
             list[i++].ToString().ShouldEqual("SqlColumnName: DataGuidEnumId, SqlTypeName: int, ClrColumName: DataGuidEnumId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("SqlColumnName: DataGuid, SqlTypeName: uniqueidentifier, ClrColumName: DataGuid, ClrColumnType: System.Guid, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 16");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ByteEnum, SqlTypeName: tinyint, ClrColumName: ByteEnum, ClrColumnType: Tests.EfClasses.DataTypes.ByteEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 1");
-            list[i++].ToString().ShouldEqual("SqlColumnName: ShortEnum, SqlTypeName: smallint, ClrColumName: ShortEnum, ClrColumnType: Tests.EfClasses.DataTypes.ShortEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 2");
-            list[i++].ToString().ShouldEqual("SqlColumnName: NormalEnum, SqlTypeName: int, ClrColumName: NormalEnum, ClrColumnType: Tests.EfClasses.DataTypes.NormalEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
-            list[i++].ToString().ShouldEqual("SqlColumnName: LongEnum, SqlTypeName: bigint, ClrColumName: LongEnum, ClrColumnType: Tests.EfClasses.DataTypes.LongEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 8");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ByteEnum, SqlTypeName: tinyint, ClrColumName: ByteEnum, ClrColumnType: EfPocoClasses.DataTypes.ByteEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 1");
+            list[i++].ToString().ShouldEqual("SqlColumnName: ShortEnum, SqlTypeName: smallint, ClrColumName: ShortEnum, ClrColumnType: EfPocoClasses.DataTypes.ShortEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 2");
+            list[i++].ToString().ShouldEqual("SqlColumnName: NormalEnum, SqlTypeName: int, ClrColumName: NormalEnum, ClrColumnType: EfPocoClasses.DataTypes.NormalEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: LongEnum, SqlTypeName: bigint, ClrColumName: LongEnum, ClrColumnType: EfPocoClasses.DataTypes.LongEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 8");
         }
 
 

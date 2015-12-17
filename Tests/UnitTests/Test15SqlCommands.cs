@@ -9,8 +9,8 @@
 
 using System.Configuration;
 using CompareCore.SqlInfo;
+using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
 namespace Tests.UnitTests

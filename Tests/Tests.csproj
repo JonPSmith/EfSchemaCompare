@@ -61,20 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EfClasses\ClassTypes\ComplexComplexClass.cs" />
-    <Compile Include="EfClasses\ClassTypes\ComplexClass.cs" />
-    <Compile Include="EfClasses\DataTypes\DataGuidEnum.cs" />
-    <Compile Include="EfClasses\Relationships\DataChild.cs" />
-    <Compile Include="EfClasses\ClassTypes\DataComplex.cs" />
-    <Compile Include="EfClasses\DataTypes\DataDate.cs" />
-    <Compile Include="EfClasses\DataTypes\DataIntDouble.cs" />
-    <Compile Include="EfClasses\Relationships\DataManyCompKey.cs" />
-    <Compile Include="EfClasses\Relationships\DataCompKey.cs" />
-    <Compile Include="EfClasses\Relationships\DataManyChildren.cs" />
-    <Compile Include="EfClasses\Relationships\DataSingleton.cs" />
-    <Compile Include="EfClasses\DataTypes\DataStringByte.cs" />
-    <Compile Include="EfClasses\Relationships\DataTop.cs" />
-    <Compile Include="EfClasses\Relationships\DataZeroOrOne.cs" />
     <Compile Include="EfClasses\EfSchemaCompareDb.cs" />
     <Compile Include="Helpers\ExtendAsserts.cs" />
     <Compile Include="Helpers\LoadJsonHelpers.cs" />
@@ -115,9 +101,13 @@
       <Project>{fff4183b-08ae-4af9-bc81-1b7b7810c7c3}</Project>
       <Name>DbUpHelper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ef6Compare\Ef6Compare.csproj">
+    <ProjectReference Include="..\Ef6Compare\Ef6SchemaCompare.csproj">
       <Project>{2e6bb740-b53f-4534-a938-083e0e2d0b69}</Project>
-      <Name>Ef6Compare</Name>
+      <Name>Ef6SchemaCompare</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EfPocoClasses\EfPocoClasses.csproj">
+      <Project>{376e3e99-611a-47e1-942f-8abeabe35ca2}</Project>
+      <Name>EfPocoClasses</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

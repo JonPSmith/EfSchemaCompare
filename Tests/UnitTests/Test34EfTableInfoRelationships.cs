@@ -14,9 +14,9 @@ using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.Internal;
 using Ef6Compare.InternalEf6;
+using EfPocoClasses.Relationships;
 using NUnit.Framework;
 using Tests.EfClasses;
-using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
@@ -31,7 +31,7 @@ namespace Tests.UnitTests
         {
             using (var db = new EfSchemaCompareDb())
             {
-                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(EfSchemaCompareDb)));
+                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(DataTop)));
                 _efInfos = decoder.GetAllEfTablesWithColInfo(db);
             }
         }
@@ -164,7 +164,7 @@ namespace Tests.UnitTests
             var i = 0;
             list[i++].ToString().ShouldEqual("SqlColumnName: Key1, SqlTypeName: int, ClrColumName: Key1, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("SqlColumnName: Key2, SqlTypeName: uniqueidentifier, ClrColumName: Key2, ClrColumnType: System.Guid, IsPrimaryKey: True, PrimaryKeyOrder: 2, IsNullable: False, MaxLength: 16");
-            list[i++].ToString().ShouldEqual("SqlColumnName: NonStandardColumnName, SqlTypeName: int, ClrColumName: MyEnum, ClrColumnType: Tests.EfClasses.Relationships.EnumTests, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
+            list[i++].ToString().ShouldEqual("SqlColumnName: NonStandardColumnName, SqlTypeName: int, ClrColumName: MyEnum, ClrColumnType: EfPocoClasses.Relationships.EnumTests, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
         }
 
         [Test]

@@ -9,7 +9,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Tests.EfClasses.Relationships
+namespace EfPocoClasses.Relationships
 {
     public class DataZeroOrOne
     {

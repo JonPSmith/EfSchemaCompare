@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Tests.EfClasses.DataTypes
+namespace EfPocoClasses.DataTypes
 {
     public enum ByteEnum : byte { AllOk, Byte}
     public enum ShortEnum : short { AllOk, Short }

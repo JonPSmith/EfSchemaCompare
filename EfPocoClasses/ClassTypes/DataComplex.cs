@@ -7,7 +7,7 @@
 // =====================================================
 #endregion
 
-namespace Tests.EfClasses.ClassTypes
+namespace EfPocoClasses.ClassTypes
 {
     public class DataComplex
     {

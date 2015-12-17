@@ -7,7 +7,7 @@
 // =====================================================
 #endregion
 
-namespace Tests.EfClasses.DataTypes
+namespace EfPocoClasses.DataTypes
 {
     public class DataIntDouble
     {

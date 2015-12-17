@@ -7,11 +7,13 @@
 // =====================================================
 #endregion
 
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using Tests.EfClasses.ClassTypes;
-using Tests.EfClasses.DataTypes;
-using Tests.EfClasses.Relationships;
+using EfPocoClasses.ClassTypes;
+using EfPocoClasses.DataTypes;
+using EfPocoClasses.Relationships;
 
 namespace Tests.EfClasses
 {
@@ -50,6 +52,10 @@ namespace Tests.EfClasses
                 .HasOptional(x => x.ZeroOrOneData)
                 .WithRequired()
                 .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<DataChild>()
+                .Property(t => t.MyInt)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 
             modelBuilder.Entity<DataSingleton>()
                 .HasRequired(x => x.Parent)

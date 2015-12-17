@@ -13,9 +13,9 @@ using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.InternalEf6;
+using EfPocoClasses.Relationships;
 using NUnit.Framework;
 using Tests.EfClasses;
-using Tests.EfClasses.Relationships;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
@@ -29,7 +29,7 @@ namespace Tests.UnitTests
         {
             using (var db = new EfSchemaCompareDb())
             {
-                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(EfSchemaCompareDb)));
+                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(DataTop)));
                 _efInfos = decoder.GetAllEfTablesWithColInfo(db);
             }
         }
@@ -80,12 +80,12 @@ namespace Tests.UnitTests
             efInfo.RelationshipCols.Count.ShouldEqual(6);
             var list = efInfo.RelationshipCols.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ClrColumnName: Children, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataChild], FromToRelationships: One-to-Many");
-            list[i++].ToString().ShouldEqual("ClrColumnName: CompositeKeyData, ClrColumnType: Tests.EfClasses.Relationships.DataCompKey, FromToRelationships: Many-to-One");
-            list[i++].ToString().ShouldEqual("ClrColumnName: ManyChildren, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataManyChildren], FromToRelationships: Many-to-Many");
-            list[i++].ToString().ShouldEqual("ClrColumnName: ManyCompKeys, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataManyCompKey], FromToRelationships: Many-to-Many");
-            list[i++].ToString().ShouldEqual("ClrColumnName: SingletonNullable, ClrColumnType: Tests.EfClasses.Relationships.DataSingleton, FromToRelationships: One-to-ZeroOrOne");
-            list[i++].ToString().ShouldEqual("ClrColumnName: ZeroOrOneData, ClrColumnType: Tests.EfClasses.Relationships.DataZeroOrOne, FromToRelationships: One-to-ZeroOrOne");
+            list[i++].ToString().ShouldEqual("ClrColumnName: Children, ClrColumnType: System.Collections.Generic.ICollection`1[EfPocoClasses.Relationships.DataChild], FromToRelationships: One-to-Many");
+            list[i++].ToString().ShouldEqual("ClrColumnName: CompositeKeyData, ClrColumnType: EfPocoClasses.Relationships.DataCompKey, FromToRelationships: Many-to-One");
+            list[i++].ToString().ShouldEqual("ClrColumnName: ManyChildren, ClrColumnType: System.Collections.Generic.ICollection`1[EfPocoClasses.Relationships.DataManyChildren], FromToRelationships: Many-to-Many");
+            list[i++].ToString().ShouldEqual("ClrColumnName: ManyCompKeys, ClrColumnType: System.Collections.Generic.ICollection`1[EfPocoClasses.Relationships.DataManyCompKey], FromToRelationships: Many-to-Many");
+            list[i++].ToString().ShouldEqual("ClrColumnName: SingletonNullable, ClrColumnType: EfPocoClasses.Relationships.DataSingleton, FromToRelationships: One-to-ZeroOrOne");
+            list[i++].ToString().ShouldEqual("ClrColumnName: ZeroOrOneData, ClrColumnType: EfPocoClasses.Relationships.DataZeroOrOne, FromToRelationships: One-to-ZeroOrOne");
 
         }
 
@@ -109,7 +109,7 @@ namespace Tests.UnitTests
             efInfo.RelationshipCols.Count.ShouldEqual(1);
             var list = efInfo.RelationshipCols.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: Tests.EfClasses.Relationships.DataTop, FromToRelationships: Many-to-One");
+            list[i++].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: EfPocoClasses.Relationships.DataTop, FromToRelationships: Many-to-One");
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace Tests.UnitTests
             efInfo.RelationshipCols.Count.ShouldEqual(1);
             var list = efInfo.RelationshipCols.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ClrColumnName: ManyParents, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataTop], FromToRelationships: Many-to-Many");
+            list[i++].ToString().ShouldEqual("ClrColumnName: ManyParents, ClrColumnType: System.Collections.Generic.ICollection`1[EfPocoClasses.Relationships.DataTop], FromToRelationships: Many-to-Many");
         }
 
 
@@ -154,7 +154,7 @@ namespace Tests.UnitTests
             efInfo.RelationshipCols.Count.ShouldEqual(1);
             var list = efInfo.RelationshipCols.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: Tests.EfClasses.Relationships.DataTop, FromToRelationships: ZeroOrOne-to-One");
+            list[i++].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: EfPocoClasses.Relationships.DataTop, FromToRelationships: ZeroOrOne-to-One");
         }
 
         [Test]
@@ -195,7 +195,7 @@ namespace Tests.UnitTests
             efInfo.RelationshipCols.Count.ShouldEqual(1);
             var list = efInfo.RelationshipCols.ToList();
             var i = 0;
-            list[i++].ToString().ShouldEqual("ClrColumnName: ManyParents, ClrColumnType: System.Collections.Generic.ICollection`1[Tests.EfClasses.Relationships.DataTop], FromToRelationships: Many-to-Many");
+            list[i++].ToString().ShouldEqual("ClrColumnName: ManyParents, ClrColumnType: System.Collections.Generic.ICollection`1[EfPocoClasses.Relationships.DataTop], FromToRelationships: Many-to-Many");
         }
 
 

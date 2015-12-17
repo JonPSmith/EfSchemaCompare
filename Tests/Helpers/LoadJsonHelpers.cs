@@ -9,6 +9,7 @@
 
 using System;
 using System.Reflection;
+using EfPocoClasses.Relationships;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -208,7 +209,10 @@ namespace Tests.Helpers
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
                 var typeName = (string) reader.Value;
-                var typeToReturn = Type.GetType(typeName);
+                var pocoAssembly = Assembly.GetAssembly(typeof (DataTop));
+                var typeToReturn = typeName.StartsWith(pocoAssembly.GetName().Name) 
+                    ? pocoAssembly.GetType(typeName)
+                    : Type.GetType(typeName);
                 if (typeToReturn == null)
                     throw new InvalidOperationException(
                         string.Format("Could not convert the type string {0} into a type.", typeName));

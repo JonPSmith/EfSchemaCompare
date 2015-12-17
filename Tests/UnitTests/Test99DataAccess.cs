@@ -8,9 +8,9 @@
 #endregion
 
 using System.Collections.ObjectModel;
+using EfPocoClasses.Relationships;
 using NUnit.Framework;
 using Tests.EfClasses;
-using Tests.EfClasses.Relationships;
 
 namespace Tests.UnitTests
 {

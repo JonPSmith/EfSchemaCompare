@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using CompareCore.SqlInfo;
+using EfPocoClasses.DataTypes;
 using NUnit.Framework;
-using Tests.EfClasses.DataTypes;
 using Tests.Helpers;
 
 namespace Tests.UnitTests

@@ -9,8 +9,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
+using EfPocoClasses.Relationships;
 using NUnit.Framework;
 using Tests.Helpers;
 
@@ -102,7 +104,7 @@ namespace Tests.UnitTests
             //SETUP
 
             //EXECUTE
-            var decodedType = Type.GetType("Tests.EfClasses.Relationships.DataTop");
+            var decodedType = Assembly.GetAssembly(typeof(DataTop)).GetType("EfPocoClasses.Relationships.DataTop");
 
             //VERIFY
             decodedType.ShouldNotEqualNull();
@@ -173,7 +175,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             efData[1].RelationshipCols.Count.ShouldEqual(1);
-            efData[1].RelationshipCols[0].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: Tests.EfClasses.Relationships.DataTop, FromToRelationships: Many-to-One");
+            efData[1].RelationshipCols[0].ToString().ShouldEqual("ClrColumnName: Parent, ClrColumnType: EfPocoClasses.Relationships.DataTop, FromToRelationships: Many-to-One");
         }
 
         //-----------------------------------------------------------------

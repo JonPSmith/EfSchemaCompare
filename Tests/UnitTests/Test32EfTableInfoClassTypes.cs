@@ -14,9 +14,10 @@ using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.Internal;
 using Ef6Compare.InternalEf6;
+using EfPocoClasses.ClassTypes;
+using EfPocoClasses.Relationships;
 using NUnit.Framework;
 using Tests.EfClasses;
-using Tests.EfClasses.ClassTypes;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
@@ -31,7 +32,7 @@ namespace Tests.UnitTests
         {
             using (var db = new EfSchemaCompareDb())
             {
-                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(EfSchemaCompareDb)));
+                var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(DataTop)));
                 _efInfos = decoder.GetAllEfTablesWithColInfo(db);
             }
         }

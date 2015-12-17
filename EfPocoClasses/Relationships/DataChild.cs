@@ -9,13 +9,13 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tests.EfClasses.Relationships
+namespace EfPocoClasses.Relationships
 {
     public class DataChild
     {
         public int DataChildId { get; set; }
 
-        [Index]
+        //This is set as an Index in the EF configuration
         public int MyInt { get; set; }
 
         public string MyString { get; set; }
