@@ -6,11 +6,20 @@
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
 #endregion
+
+using Ef6TestDbContext;
+
 namespace Tests.Helpers
 {
     public class MiscConstants
     {
-        public const string EfDatabaseConfigName = "TestEf6SchemaCompareDb";
+        public static string GetEfDatabaseConfigName()
+        {
+            return TestEf6SchemaCompareDb.EfDatabaseConfigName;
+        }
+        
+
+
         public const string DbUpDatabaseConfigName = "DbUpSchemaCompareDb"; 
     }
 }

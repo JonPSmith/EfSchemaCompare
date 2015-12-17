@@ -28,7 +28,7 @@ namespace Tests.UnitTests
 
             //EXECUTE
             var conStr =
-                MiscConstants.EfDatabaseConfigName.GetConnectionStringFromConfigOrCheckItIsValidConnectionString();
+                MiscConstants.GetEfDatabaseConfigName().GetConnectionStringFromConfigOrCheckItIsValidConnectionString();
 
             //VERIFY
             conStr.ShouldNotEqualNull();
@@ -41,7 +41,7 @@ namespace Tests.UnitTests
             //SETUP
 
             //EXECUTE
-            DatabaseCreators.DeleteAndCreateEfDatabase<TestEf6SchemaCompareDb>(MiscConstants.EfDatabaseConfigName, true);
+            DatabaseCreators.DeleteAndCreateEfDatabase<TestEf6SchemaCompareDb>(MiscConstants.GetEfDatabaseConfigName(), true);
 
             //VERIFY
         }
@@ -88,7 +88,7 @@ namespace Tests.UnitTests
             var ex =
                 Assert.Throws<InvalidOperationException>(
                     () =>
-                        DatabaseCreators.DeleteAndCreateEfDatabase<TestEf6SchemaCompareDb>(MiscConstants.EfDatabaseConfigName));
+                        DatabaseCreators.DeleteAndCreateEfDatabase<TestEf6SchemaCompareDb>(MiscConstants.GetEfDatabaseConfigName()));
 
             //VERIFY
             ex.Message.ShouldEqual(

@@ -22,7 +22,7 @@ namespace Tests.UnitTests
         public void Test01CompareSqlToSqlSelfOk()
         {
             //SETUP
-            var connection = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
+            var connection = ConfigurationManager.ConnectionStrings[MiscConstants.GetEfDatabaseConfigName()].ConnectionString;
             var comparer = new CompareSqlSql();
 
             //EXECUTE
@@ -37,7 +37,7 @@ namespace Tests.UnitTests
         public void Test10CompareSqlToSqlDbUpIndexAsWarningsOk()
         {
             //SETUP
-            var connection1 = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
+            var connection1 = ConfigurationManager.ConnectionStrings[MiscConstants.GetEfDatabaseConfigName()].ConnectionString;
             var connection2 = ConfigurationManager.ConnectionStrings[MiscConstants.DbUpDatabaseConfigName].ConnectionString;
             var comparer = new CompareSqlSql(false);
 
@@ -57,7 +57,7 @@ namespace Tests.UnitTests
         public void Test11CompareSqlToSqlDbUpOk()
         {
             //SETUP
-            var connection1 = ConfigurationManager.ConnectionStrings[MiscConstants.EfDatabaseConfigName].ConnectionString;
+            var connection1 = ConfigurationManager.ConnectionStrings[MiscConstants.GetEfDatabaseConfigName()].ConnectionString;
             var connection2 = ConfigurationManager.ConnectionStrings[MiscConstants.DbUpDatabaseConfigName].ConnectionString;
             var comparer = new CompareSqlSql();
 
@@ -77,7 +77,7 @@ namespace Tests.UnitTests
             var comparer = new CompareSqlSql();
 
             //EXECUTE
-            var status = comparer.CompareSqlToSql(MiscConstants.EfDatabaseConfigName, MiscConstants.DbUpDatabaseConfigName);
+            var status = comparer.CompareSqlToSql(MiscConstants.GetEfDatabaseConfigName(), MiscConstants.DbUpDatabaseConfigName);
 
             //VERIFY
             status.ShouldBeValid();

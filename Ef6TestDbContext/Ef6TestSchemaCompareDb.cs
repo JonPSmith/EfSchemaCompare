@@ -19,6 +19,8 @@ namespace Ef6TestDbContext
 {
     public class TestEf6SchemaCompareDb : DbContext
     {
+        public const string EfDatabaseConfigName = "TestEf6SchemaCompareDb";
+
         public TestEf6SchemaCompareDb()
         {
         }
