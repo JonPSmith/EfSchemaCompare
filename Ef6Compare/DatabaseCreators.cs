@@ -11,7 +11,8 @@ using System;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.SqlClient;
-using Ef6Compare.Internal;
+using CompareCore.SqlInfo;
+using CompareCore.Utils;
 
 namespace Ef6Compare
 {

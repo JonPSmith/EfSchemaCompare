@@ -8,9 +8,9 @@
 #endregion
 
 using System;
+using CompareCore.Utils;
 using DbUpHelper;
 using Ef6Compare;
-using Ef6Compare.Internal;
 using Ef6TestDbContext;
 using NUnit.Framework;
 using Tests.Helpers;
@@ -28,7 +28,7 @@ namespace Tests.UnitTests
 
             //EXECUTE
             var conStr =
-                MiscConstants.GetEfDatabaseConfigName().GetConnectionStringFromConfigOrCheckItIsValidConnectionString();
+                MiscConstants.GetEfDatabaseConfigName().GetConnectionStringAndCheckValid();
 
             //VERIFY
             conStr.ShouldNotEqualNull();
@@ -50,7 +50,7 @@ namespace Tests.UnitTests
         public void Test20SqlCreatedDatabaseExists()
         {
             //SETUP
-            var connectionString = MiscConstants.DbUpDatabaseConfigName.GetConnectionStringFromConfigOrCheckItIsValidConnectionString();
+            var connectionString = MiscConstants.DbUpDatabaseConfigName.GetConnectionStringAndCheckValid();
 
             //EXECUTE
             DatabaseCreators.DeleteAndNewSqlDatabase(connectionString);
@@ -72,7 +72,7 @@ namespace Tests.UnitTests
              var ex =
                 Assert.Throws<ArgumentException>(
                     () =>
-                "Bad connection name and not connection string".GetConnectionStringFromConfigOrCheckItIsValidConnectionString());
+                "Bad connection name and not connection string".GetConnectionStringAndCheckValid());
 
             //VERIFY
             ex.Message.ShouldStartWith(

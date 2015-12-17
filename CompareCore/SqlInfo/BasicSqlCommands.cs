@@ -7,15 +7,14 @@
 // =====================================================
 #endregion
 
-using System.Data;
 using System.Data.SqlClient;
 using CompareCore.Utils;
 using GenericLibsBase;
 using GenericLibsBase.Core;
 
-namespace Ef6Compare.Internal
+namespace CompareCore.SqlInfo
 {
-    internal class BasicSqlCommands
+    public class BasicSqlCommands
     {
         private readonly string _connectionString;
 

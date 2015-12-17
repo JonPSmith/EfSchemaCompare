@@ -7,6 +7,7 @@
 // =====================================================
 #endregion
 
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
 
@@ -24,6 +25,25 @@ namespace CompareCore.Utils
         {
             var builder = new SqlConnectionStringBuilder(connectionString);
             return builder.InitialCatalog;
+        }
+
+        public static string GetConnectionStringAndCheckValid(this string nameOrConnectionString)
+        {
+            var connectionFromConfigFile = ConfigurationManager.ConnectionStrings[nameOrConnectionString];
+            if (connectionFromConfigFile != null)
+                return connectionFromConfigFile.ConnectionString;
+
+            try
+            {
+                var builder = new SqlConnectionStringBuilder(nameOrConnectionString);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("The nameOrConnectionString was neither a valid connection string name in the .Config file, or a valid connection string." +
+                " The actual error message was " + e.Message);
+            }
+
+            return nameOrConnectionString;
         }
     }
 }

@@ -57,6 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CompareCore\CompareCore.csproj">
+      <Project>{12d89635-0b76-4aae-96e6-303e05666ffe}</Project>
+      <Name>CompareCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EfPocoClasses\EfPocoClasses.csproj">
       <Project>{376e3e99-611a-47e1-942f-8abeabe35ca2}</Project>
       <Name>EfPocoClasses</Name>

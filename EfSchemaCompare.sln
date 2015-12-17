@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ef6TestDbContext", "Ef6Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ef7SchemaCompare", "Ef7SchemaCompare\Ef7SchemaCompare.csproj", "{4F5F32C0-BBA0-4260-ADE1-CE58C4EF2AAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ef7TestDbContext", "Ef7TestDbContext\Ef7TestDbContext.csproj", "{1FA05044-694D-40A6-B9EA-67923A095B50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{4F5F32C0-BBA0-4260-ADE1-CE58C4EF2AAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F5F32C0-BBA0-4260-ADE1-CE58C4EF2AAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F5F32C0-BBA0-4260-ADE1-CE58C4EF2AAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FA05044-694D-40A6-B9EA-67923A095B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FA05044-694D-40A6-B9EA-67923A095B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FA05044-694D-40A6-B9EA-67923A095B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FA05044-694D-40A6-B9EA-67923A095B50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

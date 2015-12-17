@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4F5F32C0-BBA0-4260-ADE1-CE58C4EF2AAE}</ProjectGuid>
+    <ProjectGuid>{1FA05044-694D-40A6-B9EA-67923A095B50}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ef7SchemaCompare</RootNamespace>
-    <AssemblyName>Ef7SchemaCompare</AssemblyName>
+    <RootNamespace>Ef7TestDbContext</RootNamespace>
+    <AssemblyName>Ef7TestDbContext</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -116,6 +116,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ef6TestSchemaCompareDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +127,10 @@
     <ProjectReference Include="..\CompareCore\CompareCore.csproj">
       <Project>{12d89635-0b76-4aae-96e6-303e05666ffe}</Project>
       <Name>CompareCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EfPocoClasses\EfPocoClasses.csproj">
+      <Project>{376e3e99-611a-47e1-942f-8abeabe35ca2}</Project>
+      <Name>EfPocoClasses</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
