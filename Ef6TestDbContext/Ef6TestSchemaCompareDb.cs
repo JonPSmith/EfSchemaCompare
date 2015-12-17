@@ -1,7 +1,7 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: EfSchemaCompareDb.cs
+// Filename: TestEf6SchemaCompareDb.cs
 // Date Created: 2015/10/31
 // © Copyright Selective Analytics 2015. All rights reserved
 // =====================================================
@@ -15,15 +15,15 @@ using EfPocoClasses.ClassTypes;
 using EfPocoClasses.DataTypes;
 using EfPocoClasses.Relationships;
 
-namespace Tests.EfClasses
+namespace Ef6TestDbContext
 {
-    public class EfSchemaCompareDb : DbContext
+    public class TestEf6SchemaCompareDb : DbContext
     {
-        public EfSchemaCompareDb()
+        public TestEf6SchemaCompareDb()
         {
         }
 
-        public EfSchemaCompareDb(string nameOrConnectionString) : base(nameOrConnectionString)
+        public TestEf6SchemaCompareDb(string nameOrConnectionString) : base(nameOrConnectionString)
         {
         }
 

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUpHelper", "DbUpHelper\Db
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfPocoClasses", "EfPocoClasses\EfPocoClasses.csproj", "{376E3E99-611A-47E1-942F-8ABEABE35CA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ef6TestDbContext", "Ef6TestDbContext\Ef6TestDbContext.csproj", "{8B5FC2A5-136D-4FAA-8506-25E08A9BB688}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{376E3E99-611A-47E1-942F-8ABEABE35CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{376E3E99-611A-47E1-942F-8ABEABE35CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{376E3E99-611A-47E1-942F-8ABEABE35CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B5FC2A5-136D-4FAA-8506-25E08A9BB688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B5FC2A5-136D-4FAA-8506-25E08A9BB688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B5FC2A5-136D-4FAA-8506-25E08A9BB688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B5FC2A5-136D-4FAA-8506-25E08A9BB688}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

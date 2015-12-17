@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tests</RootNamespace>
     <AssemblyName>Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,7 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EfClasses\EfSchemaCompareDb.cs" />
     <Compile Include="Helpers\ExtendAsserts.cs" />
     <Compile Include="Helpers\LoadJsonHelpers.cs" />
     <Compile Include="Helpers\MiscConstants.cs" />
@@ -104,6 +104,10 @@
     <ProjectReference Include="..\Ef6Compare\Ef6SchemaCompare.csproj">
       <Project>{2e6bb740-b53f-4534-a938-083e0e2d0b69}</Project>
       <Name>Ef6SchemaCompare</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ef6TestDbContext\Ef6TestDbContext.csproj">
+      <Project>{8b5fc2a5-136d-4faa-8506-25e08a9bb688}</Project>
+      <Name>Ef6TestDbContext</Name>
     </ProjectReference>
     <ProjectReference Include="..\EfPocoClasses\EfPocoClasses.csproj">
       <Project>{376e3e99-611a-47e1-942f-8abeabe35ca2}</Project>

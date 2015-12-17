@@ -17,7 +17,7 @@ using Ef6Compare.InternalEf6;
 using EfPocoClasses.ClassTypes;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Tests.EfClasses;
+using Ef6TestDbContext;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
@@ -30,7 +30,7 @@ namespace Tests.UnitTests
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            using (var db = new EfSchemaCompareDb())
+            using (var db = new TestEf6SchemaCompareDb())
             {
                 var decoder = new Ef6MetadataDecoder(Assembly.GetAssembly(typeof(DataTop)));
                 _efInfos = decoder.GetAllEfTablesWithColInfo(db);

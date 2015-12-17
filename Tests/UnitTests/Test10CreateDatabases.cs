@@ -11,8 +11,8 @@ using System;
 using DbUpHelper;
 using Ef6Compare;
 using Ef6Compare.Internal;
+using Ef6TestDbContext;
 using NUnit.Framework;
-using Tests.EfClasses;
 using Tests.Helpers;
 
 
@@ -41,7 +41,7 @@ namespace Tests.UnitTests
             //SETUP
 
             //EXECUTE
-            DatabaseCreators.DeleteAndCreateEfDatabase<EfSchemaCompareDb>(MiscConstants.EfDatabaseConfigName, true);
+            DatabaseCreators.DeleteAndCreateEfDatabase<TestEf6SchemaCompareDb>(MiscConstants.EfDatabaseConfigName, true);
 
             //VERIFY
         }
@@ -88,7 +88,7 @@ namespace Tests.UnitTests
             var ex =
                 Assert.Throws<InvalidOperationException>(
                     () =>
-                        DatabaseCreators.DeleteAndCreateEfDatabase<EfSchemaCompareDb>(MiscConstants.EfDatabaseConfigName));
+                        DatabaseCreators.DeleteAndCreateEfDatabase<TestEf6SchemaCompareDb>(MiscConstants.EfDatabaseConfigName));
 
             //VERIFY
             ex.Message.ShouldEqual(

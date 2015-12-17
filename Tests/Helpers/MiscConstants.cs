@@ -10,7 +10,7 @@ namespace Tests.Helpers
 {
     public class MiscConstants
     {
-        public const string EfDatabaseConfigName = "EfSchemaCompareDb";
+        public const string EfDatabaseConfigName = "TestEf6SchemaCompareDb";
         public const string DbUpDatabaseConfigName = "DbUpSchemaCompareDb"; 
     }
 }

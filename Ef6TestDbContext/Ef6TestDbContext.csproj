@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{376E3E99-611A-47E1-942F-8ABEABE35CA2}</ProjectGuid>
+    <ProjectGuid>{8B5FC2A5-136D-4FAA-8506-25E08A9BB688}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EfPocoClasses</RootNamespace>
-    <AssemblyName>EfPocoClasses</AssemblyName>
+    <RootNamespace>Ef6TestDbContext</RootNamespace>
+    <AssemblyName>Ef6TestDbContext</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -42,21 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClassTypes\ComplexClass.cs" />
-    <Compile Include="ClassTypes\ComplexComplexClass.cs" />
-    <Compile Include="ClassTypes\DataComplex.cs" />
-    <Compile Include="DataTypes\DataDate.cs" />
-    <Compile Include="DataTypes\DataGuidEnum.cs" />
-    <Compile Include="DataTypes\DataIntDouble.cs" />
-    <Compile Include="DataTypes\DataStringByte.cs" />
+    <Compile Include="Ef6TestSchemaCompareDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Relationships\DataChild.cs" />
-    <Compile Include="Relationships\DataCompKey.cs" />
-    <Compile Include="Relationships\DataManyChildren.cs" />
-    <Compile Include="Relationships\DataManyCompKey.cs" />
-    <Compile Include="Relationships\DataSingleton.cs" />
-    <Compile Include="Relationships\DataTop.cs" />
-    <Compile Include="Relationships\DataZeroOrOne.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EfPocoClasses\EfPocoClasses.csproj">
+      <Project>{376e3e99-611a-47e1-942f-8abeabe35ca2}</Project>
+      <Name>EfPocoClasses</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

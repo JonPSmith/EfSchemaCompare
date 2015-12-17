@@ -14,7 +14,7 @@ using CompareCore;
 using Ef6Compare;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Tests.EfClasses;
+using Ef6TestDbContext;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
@@ -25,7 +25,7 @@ namespace Tests.UnitTests
         [Test]
         public void Test02CompareEfWithSqlTOk()
         {
-            using (var db = new EfSchemaCompareDb())
+            using (var db = new TestEf6SchemaCompareDb())
             {
                 //SETUP
                 var comparer = new CompareEfSql();
@@ -42,7 +42,7 @@ namespace Tests.UnitTests
         [Test]
         public void Test11CompareEfWithDbUpSqlTOk()
         {
-            using (var db = new EfSchemaCompareDb())
+            using (var db = new TestEf6SchemaCompareDb())
             {
                 //SETUP
                 var comparer = new CompareEfSql();
@@ -63,7 +63,7 @@ namespace Tests.UnitTests
         [Test]
         public void Test40GetEfDataBad()
         {
-            using (var db = new EfSchemaCompareDb())
+            using (var db = new TestEf6SchemaCompareDb())
             {
                 //SETUP
                 var comparer = new CompareEfSql();

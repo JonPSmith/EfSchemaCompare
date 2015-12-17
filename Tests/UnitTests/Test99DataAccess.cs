@@ -10,7 +10,7 @@
 using System.Collections.ObjectModel;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Tests.EfClasses;
+using Ef6TestDbContext;
 
 namespace Tests.UnitTests
 {
@@ -20,7 +20,7 @@ namespace Tests.UnitTests
         [Ignore]
         public void Test01GetEfTableColumnInfo()
         {
-            using (var db = new EfSchemaCompareDb("DbUpSchemaCompareDb"))
+            using (var db = new TestEf6SchemaCompareDb("DbUpSchemaCompareDb"))
             {
                 //SETUP
 

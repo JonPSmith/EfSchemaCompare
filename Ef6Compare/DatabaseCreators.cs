@@ -8,6 +8,7 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using Ef6Compare.Internal;
@@ -44,6 +45,7 @@ namespace Ef6Compare
                             }
                         }
                     }
+                    Database.SetInitializer<T>(null);
 
                     if (db.Database.Exists())
                     {
