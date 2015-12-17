@@ -18,7 +18,7 @@ namespace Ef6Compare.Internal
 {
     internal static class ConnectionHelper
     {
-        public static string GetConnectionStringFromConfigOrCheckItIsValidConnectionString(this string nameOrConnectionString)
+        public static string GetConnectionStringAndCheckValid(this string nameOrConnectionString)
         {
             var connectionFromConfigFile = ConfigurationManager.ConnectionStrings[nameOrConnectionString];
             if (connectionFromConfigFile != null) 

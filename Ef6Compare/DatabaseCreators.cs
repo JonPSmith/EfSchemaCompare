@@ -37,7 +37,7 @@ namespace Ef6Compare
                         using (var originalDb = (DbContext) Activator.CreateInstance(typeof(T)))
                         {
                             if (originalDb.Database.Connection.ConnectionString ==
-                                nameOrConnectionString.GetConnectionStringFromConfigOrCheckItIsValidConnectionString())
+                                nameOrConnectionString.GetConnectionStringAndCheckValid())
                             {
                                 //attempt to wipe the actual database
                                 throw new InvalidOperationException("You attempted to wipe the main database that your DbContext points to. " +
@@ -70,7 +70,7 @@ namespace Ef6Compare
         public static void DeleteAndNewSqlDatabase(string nameOrConnectionString)
         {
             var databaseConnectionString =
-                nameOrConnectionString.GetConnectionStringFromConfigOrCheckItIsValidConnectionString();
+                nameOrConnectionString.GetConnectionStringAndCheckValid();
             var builder = new SqlConnectionStringBuilder(databaseConnectionString);
             var databaseName = builder.InitialCatalog;
             builder.InitialCatalog = "";          //remove database, as create database won't work with it
