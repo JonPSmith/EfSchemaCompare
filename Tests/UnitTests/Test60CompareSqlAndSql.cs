@@ -10,6 +10,8 @@
 using System;
 using System.Configuration;
 using Ef6Compare;
+using Ef6TestDbContext;
+using EfPocoClasses.Relationships;
 using NUnit.Framework;
 using Tests.Helpers;
 
@@ -82,6 +84,23 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid();
             status.HasWarnings.ShouldEqual(false, string.Join("\n", status.Warnings));
+        }
+
+        [Test]
+        public void Test30CompareSqlToEfGeneratedSqlOk()
+        {
+            using (var db = new TestEf6SchemaCompareDb())
+            {
+                //SETUP
+                var comparer = new CompareSqlSql();
+
+                //EXECUTE
+                var status = comparer.CompareSqlToEfGeneratedSql(MiscConstants.DbUpDatabaseConfigName, db);
+
+                //VERIFY
+                status.ShouldBeValid();
+                status.HasWarnings.ShouldEqual(false, string.Join("\n", status.Warnings));
+            }
         }
     }
 }

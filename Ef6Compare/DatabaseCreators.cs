@@ -8,7 +8,6 @@
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using CompareCore.SqlInfo;
@@ -20,7 +19,9 @@ namespace Ef6Compare
     {
 
         /// <summary>
-        /// Wipes out the existing database and creates a new one using your EF
+        /// This ipes out any existing database pointed to by the nameOrConnectionString and creates a new one using your EF DbContext,
+        /// i.e. it creates the database and sets up all the tables, foreign keys and indexes
+        /// NOTE: This sets a null database initializer on the database. 
         /// </summary>
         /// <typeparam name="T">The type of your own DbContext</typeparam>
         /// <param name="nameOrConnectionString">the name of a connection string in your .Config file, or a valid connection string</param>
@@ -59,7 +60,7 @@ namespace Ef6Compare
             {
                 throw new MissingMethodException(
                     "Could not find an contructor that take a connection string as an argument."+
-                    "Please add public <YourDbContext>(string nameOrConnectionString) : base(nameOrConnectionString){} ");
+                    "Please add public ctor <YourDbContext>(string nameOrConnectionString) : base(nameOrConnectionString){} ");
             }
         }
 

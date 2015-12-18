@@ -7,6 +7,8 @@
 // =====================================================
 #endregion
 
+using System.Data.Entity;
+using System.Data.SqlClient;
 using CompareCore;
 using CompareCore.SqlInfo;
 using CompareCore.Utils;
@@ -16,6 +18,8 @@ namespace Ef6Compare
 {
     public class CompareSqlSql
     {
+        public const string EfGeneratedDatabasePrefix = ".EfGenerated";
+
         private readonly bool _showMismatchedIndexsAsErrors;
         private readonly string _sqlTableNamesToIgnore;
 
@@ -42,8 +46,8 @@ namespace Ef6Compare
         /// <returns></returns>
         public ISuccessOrErrors CompareSqlToSql(string refDbNameOrConnectionString, string toBeCheckDbNameOrConnectionString)
         {
-            var refDbConnection = refDbNameOrConnectionString.GetConfigurationOrActualString();
-            var toBeCheckDbConnection = toBeCheckDbNameOrConnectionString.GetConfigurationOrActualString();
+            var refDbConnection = refDbNameOrConnectionString.GetConnectionStringAndCheckValid();
+            var toBeCheckDbConnection = toBeCheckDbNameOrConnectionString.GetConnectionStringAndCheckValid();
             var refDatabaseName = refDbConnection.GetDatabaseNameFromConnectionString();
             var toBeCheckDatabaseName = toBeCheckDbConnection.GetDatabaseNameFromConnectionString();
 
@@ -53,6 +57,41 @@ namespace Ef6Compare
             var comparer = new SqlCompare(refDatabaseName, toBeCheckDatabaseName, _sqlTableNamesToIgnore, _showMismatchedIndexsAsErrors);
             return comparer.CompareSqlToSql(refSqlData, toBeCheckSqlData);
         }
-       
+
+        /// <summary>
+        /// This creates a new database based on the DbContext you give it, but with a new name consisting of the orginial name with
+        /// ".EfGenerated" on the end. It then proceeds to check your SQL database against the EF Generated database
+        /// NOTE: This sets a null database initializer on the database. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="refDbNameOrConnectionString"></param>
+        /// <param name="dbContext"></param>
+        /// <returns></returns>
+        public ISuccessOrErrors CompareSqlToEfGeneratedSql<T>(string refDbNameOrConnectionString, T dbContext) where T : DbContext, new()
+        {
+            var refDbConnection = refDbNameOrConnectionString.GetConnectionStringAndCheckValid();
+            var toBeCheckDbConnection = FormEfGeneratedConnectionString(dbContext);
+            //This creates the EF database with the new name
+            DatabaseCreators.DeleteAndCreateEfDatabase<T>(toBeCheckDbConnection);
+
+            var refDatabaseName = refDbConnection.GetDatabaseNameFromConnectionString();
+            var toBeCheckDatabaseName = toBeCheckDbConnection.GetDatabaseNameFromConnectionString();
+
+            var refSqlData = SqlAllInfo.SqlAllInfoFactory(refDbConnection);
+            var toBeCheckSqlData = SqlAllInfo.SqlAllInfoFactory(toBeCheckDbConnection);
+
+            var comparer = new SqlCompare(refDatabaseName, toBeCheckDatabaseName, _sqlTableNamesToIgnore, _showMismatchedIndexsAsErrors);
+            return comparer.CompareSqlToSql(refSqlData, toBeCheckSqlData);
+        }
+
+        //----------------------------------------------------------------------
+        //private methods
+
+        private static string FormEfGeneratedConnectionString(DbContext dbContext)
+        {
+            var builder = new SqlConnectionStringBuilder(dbContext.Database.Connection.ConnectionString);
+            builder.InitialCatalog = builder.InitialCatalog + EfGeneratedDatabasePrefix;
+            return builder.ToString();
+        }
     }
 }
