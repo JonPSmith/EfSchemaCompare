@@ -8,11 +8,13 @@
 #endregion
 
 using CompareCore.Utils;
+using Ef7TestDbContext.ManyToManyClasses;
 using EfPocoClasses.ClassTypes;
 using EfPocoClasses.DataTypes;
 using EfPocoClasses.Relationships;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
+using Microsoft.Data.Entity.Metadata;
 
 
 namespace Ef7TestDbContext
@@ -52,23 +54,30 @@ namespace Ef7TestDbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            //modelBuilder.Entity<DataTop>()
-            //    .Property(x => x.SingletonNullable)
-            //    .IsRequired(false);
-            //    //.WillCascadeOnDelete(true);
+            modelBuilder.Entity<DataTop>()
+                .Property(x => x.SingletonNullable)
+                .IsRequired(false);
 
-            //modelBuilder.Entity<DataTop>()
-            //    .Property(x => x.ZeroOrOneData)
-            //    .IsRequired(false);
-            //    //.WillCascadeOnDelete(true);
+            modelBuilder.Entity<DataTop>()
+                .HasOne(x => x.SingletonNullable)
+                .WithOne(x => x.Parent)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<DataTop>()
+                .Property(x => x.ZeroOrOneData)
+                .IsRequired(false);
+
+            modelBuilder.Entity<DataTop>()
+                .HasOne(x => x.ZeroOrOneData)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<DataChild>()
                 .HasIndex(t => t.MyInt);
 
-            //modelBuilder.Entity<DataSingleton>()
-            //    .HasRequired(x => x.Parent)
-            //    .WithOptional(x => x.SingletonNullable)
-            //    .WillCascadeOnDelete(false);
+            //---------------------------------------------
+            //In EF7 RC1 many-to-many relationships without an entity class present are not supported
+            //see http://ef.readthedocs.org/en/latest/modeling/relationships.html#many-to-many
 
             //modelBuilder.Entity<DataTop>()
             //    .HasMany(r => r.ManyChildren)

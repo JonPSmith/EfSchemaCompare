@@ -116,7 +116,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ef6TestSchemaCompareDb.cs" />
+    <Compile Include="ManyToManyClasses\ManyToManyDataTopToManyChildren.cs" />
+    <Compile Include="TestEf7SchemaCompareDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
