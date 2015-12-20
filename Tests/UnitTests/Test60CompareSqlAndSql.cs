@@ -87,7 +87,7 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test30CompareSqlToEfGeneratedSqlOk()
+        public void Test30CompareEfGeneratedSqlToSqlOk()
         {
             using (var db = new TestEf6SchemaCompareDb())
             {
@@ -95,7 +95,7 @@ namespace Tests.UnitTests
                 var comparer = new CompareSqlSql();
 
                 //EXECUTE
-                var status = comparer.CompareSqlToEfGeneratedSql(MiscConstants.DbUpDatabaseConfigName, db);
+                var status = comparer.CompareEfGeneratedSqlToSql(db, MiscConstants.DbUpDatabaseConfigName);
 
                 //VERIFY
                 status.ShouldBeValid();

@@ -64,15 +64,15 @@ namespace Ef6Compare
         /// NOTE: This sets a null database initializer on the database. 
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="refDbNameOrConnectionString"></param>
         /// <param name="dbContext"></param>
+        /// <param name="refDbNameOrConnectionString"></param>
         /// <returns></returns>
-        public ISuccessOrErrors CompareSqlToEfGeneratedSql<T>(string refDbNameOrConnectionString, T dbContext) where T : DbContext, new()
+        public ISuccessOrErrors CompareEfGeneratedSqlToSql<T>(T dbContext, string refDbNameOrConnectionString) where T : DbContext, new()
         {
-            var refDbConnection = refDbNameOrConnectionString.GetConnectionStringAndCheckValid();
-            var toBeCheckDbConnection = FormEfGeneratedConnectionString(dbContext);
+            var refDbConnection = FormEfGeneratedConnectionString(dbContext);
+            var toBeCheckDbConnection = refDbNameOrConnectionString.GetConnectionStringAndCheckValid();
             //This creates the EF database with the new name
-            DatabaseCreators.DeleteAndCreateEfDatabase<T>(toBeCheckDbConnection);
+            DatabaseCreators.DeleteAndCreateEfDatabase<T>(refDbConnection);
 
             var refDatabaseName = refDbConnection.GetDatabaseNameFromConnectionString();
             var toBeCheckDatabaseName = toBeCheckDbConnection.GetDatabaseNameFromConnectionString();
