@@ -74,11 +74,9 @@ using (var db = new YourDbContext())
 
 The `CompareEfSql` has an optional parameter
 which takes a comma delimited list of tables in the SQL database to ignore when looking
-for missing tables. Its default value is 
-"__MigrationHistory,SchemaVersions", which ignores
+for missing tables. Its default value is `"__MigrationHistory,SchemaVersions"`, which ignores
 the "__MigrationHistory" that EF uses and the "SchemaVersions" table that 
-[DbUp](http://dbup.readthedocs.org/en/latest/) adds. 
-*Note: DbUp is my chosen way of handling data migrations.*
+[DbUp](http://dbup.readthedocs.org/en/latest/) adds. *Note: DbUp is my chosen way of handling data migrations.*
 
 There are two other variations of the `CompareEfWithDb` method call.
 
