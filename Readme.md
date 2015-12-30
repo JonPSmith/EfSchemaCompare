@@ -74,9 +74,11 @@ using (var db = new YourDbContext())
 
 The `CompareEfSql` has an optional parameter
 which takes a comma delimited list of tables in the SQL database to ignore when looking
-for missing tables. Its default value is "__MigrationHistory,SchemaVersions", which ignores
+for missing tables. Its default value is 
+"__MigrationHistory,SchemaVersions", which ignores
 the "__MigrationHistory" that EF uses and the "SchemaVersions" table that 
-[DbUp](http://dbup.readthedocs.org/en/latest/) adds. *Note: DbUp is my chosen way of handling data migrations.*
+[DbUp](http://dbup.readthedocs.org/en/latest/) adds. 
+*Note: DbUp is my chosen way of handling data migrations.*
 
 There are two other variations of the `CompareEfWithDb` method call.
 
@@ -103,7 +105,8 @@ var status = comparer.CompareEfWithDb(db, AConnectionStringName);
 
 ## 2. CompareEfGeneratedSqlToSql
 
-This version compare a database created by EF against an actual SQL database. This catches 100% of the differences
+This version created a new EF database using `DbContext.Database.Create()` and then compares that
+database against an actual SQL database. This catches 100% of the differences
 (note: differences in the SQL that EF uses - it is not a full compare of SQL databases),
 but errors are SQL based so a little harder to interpret. 
 
@@ -126,8 +129,9 @@ using (var db = new YourDbContext())
 The `CompareSqlSql` ctor has two optional parameters:
 
 1. **showMismatchedIndexsAsErrors** (default true). Normally differences in indexes will show as errors
-but EF is rather *heavy handed* at adding non-clustered indexes and you may not want a mismatch to show 
-as errors. Setting this to false means they show up as warnings.
+but EF is rather heavy handed at adding non-clustered indexes, i.e. adds them on every foreign key.
+You may therefore not add all the indexes EF does and therefore don't want an index mismatch to show 
+as an errors. Setting this to false means they show up as warnings.
 2. **SQLTableNamesToIgnore** (default "__MigrationHistory,SchemaVersions"). These are the tables that it won't
 complain about if the database referred to in the second parameter hasn't got them.
 
