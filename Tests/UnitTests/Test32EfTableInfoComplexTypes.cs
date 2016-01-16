@@ -13,15 +13,15 @@ using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.InternalEf6;
-using EfPocoClasses.ClassTypes;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
 using Ef6TestDbContext;
+using EfPocoClasses.ComplexTypes;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test32EfTableInfoClassTypes
+    public class Test32EfTableInfoComplexTypes
     {
 
         private ICollection<EfTableInfo> _efInfos;

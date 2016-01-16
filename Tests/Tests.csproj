@@ -71,9 +71,11 @@
     <Compile Include="UnitTests\Test10CreateDatabases.cs" />
     <Compile Include="UnitTests\Test15SqlCommands.cs" />
     <Compile Include="UnitTests\Test20SqlTableInfoDataTypes.cs" />
-    <Compile Include="UnitTests\Test22SqlTableInfoClassTypes.cs" />
+    <Compile Include="UnitTests\Test23SqlTableInfoPublicPrivate.cs" />
+    <Compile Include="UnitTests\Test22SqlTableInfoComplexTypes.cs" />
     <Compile Include="UnitTests\Test30EfTableInfoDataTypes.cs" />
-    <Compile Include="UnitTests\Test32EfTableInfoClassTypes.cs" />
+    <Compile Include="UnitTests\Test33EfTableInfoPublicPrivateClasses.cs" />
+    <Compile Include="UnitTests\Test32EfTableInfoComplexTypes.cs" />
     <Compile Include="UnitTests\Test36EfRelationships.cs" />
     <Compile Include="UnitTests\Test38EfRelationshipChecker.cs" />
     <Compile Include="UnitTests\Test34EfTableInfoRelationships.cs" />

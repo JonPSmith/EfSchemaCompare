@@ -17,7 +17,7 @@ using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test22SqlTableInfoClassTypes
+    public class Test22SqlTableInfoComplexTypes
     {
 
         private ICollection<SqlTableInfo> _sqlInfos;

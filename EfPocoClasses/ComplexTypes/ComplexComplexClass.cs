@@ -10,7 +10,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EfPocoClasses.ClassTypes
+namespace EfPocoClasses.ComplexTypes
 {
     /// <summary>
     /// Nested complex class

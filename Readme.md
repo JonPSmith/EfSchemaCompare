@@ -11,7 +11,8 @@ schema contains. This is useful if you want to:
 # NOTE: This project is NOT for general release
 
 1. It has a few limitations. see [Current Limitations](#Current-limitations) section.
-2. It needs some more examples to show people how it works, especially if distributed as a NuGet package.
+2. It needs some more examples to show people how it works, especially if it is only
+distributed as a NuGet package.
 3. It is not a public domain project! I am reserving the licence on the code for now.
 
 
@@ -144,7 +145,7 @@ The code below compares two databases. The first parameter holds the name of a c
 App.Config/Web.Config, or a actual connection string of the **reference database**. The second parameter
 holds name/connection of the **database to be checked**.  
 
-**NOTE: THE ORDER IS REALLY IMPORTANT**:
+**NOTE: THE ORDER OF THE PARAMETERS IS REALLY IMPORTANT**:  
 CompareSqlToSql will report **errors** for tables and/or columns that are in the 
 database referred to in the first paramater (called the **reference database**),
 but not in the database referred to in the second paramater (called the **database to be checked**).
@@ -155,8 +156,8 @@ This is because it is valid for a database to have additional tables/columns
 that EF does not access, so the compare shows **extra** tables/columns in the database
 referred to in the second parameter as warnings, not errors.
 
-Beloe is a typical call to `CompareSqlToSql`. Note that The ctor is the same as used for
-`CompareEfGeneratedSqlToSql`, so see above for its option parameters.
+Below is a typical call to `CompareSqlToSql`. Note that The ctor is the same as used for
+`CompareEfGeneratedSqlToSql`, so see last section for its optional parameters.
 
 ```
 using (var db = new YourDbContext())
@@ -183,7 +184,7 @@ index on the same column is necessary.
 
 Also SchemaCompareDb will never support the complex type-to-table mappings options in EF 6 listed below.
 I found it is very difficult (impossible!) in EF6 to find that information in the EF model data,
-and EF7 does not currently plan to support these features 
+and EF7 does not currently plan to support these features in first release, or maybe never
 (see [EF7, Section Bucket #4: Removal of features](http://blogs.msdn.com/b/adonet/archive/2014/10/27/ef7-v1-or-v7.aspx)).
 
 The list of complex type-to-table mappings NOT supported are:

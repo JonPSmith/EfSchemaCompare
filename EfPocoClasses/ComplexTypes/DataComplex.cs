@@ -7,7 +7,7 @@
 // =====================================================
 #endregion
 
-namespace EfPocoClasses.ClassTypes
+namespace EfPocoClasses.ComplexTypes
 {
     public class DataComplex
     {

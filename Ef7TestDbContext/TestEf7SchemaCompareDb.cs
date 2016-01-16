@@ -9,7 +9,7 @@
 
 using CompareCore.Utils;
 using Ef7TestDbContext.ManyToManyClasses;
-using EfPocoClasses.ClassTypes;
+using EfPocoClasses.ComplexTypes;
 using EfPocoClasses.DataTypes;
 using EfPocoClasses.Relationships;
 using Microsoft.Data.Entity;

@@ -10,7 +10,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EfPocoClasses.ClassTypes
+namespace EfPocoClasses.ComplexTypes
 {
     [ComplexType]
     public class ComplexClass

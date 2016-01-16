@@ -1,6 +1,6 @@
 ﻿
-CREATE TABLE $schema$.[DataPublicPrivateEf6](
-	[DataPublicPrivateEf6Id] [int] IDENTITY(1,1)  PRIMARY KEY,
+CREATE TABLE $schema$.[DataPublicPrivate](
+	[DataPublicPrivateId] [int] IDENTITY(1,1)  PRIMARY KEY,
 	[PublicInt] [int] NOT NULL,
 	[PublicProtectedSetInt] [int] NOT NULL,
 	[PublicPrivateSetInt] [int] NOT NULL,
