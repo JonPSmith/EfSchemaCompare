@@ -147,7 +147,7 @@ holds name/connection of the **database to be checked**.
 **NOTE: THE ORDER IS REALLY IMPORTANT**:
 CompareSqlToSql will report **errors** for tables and/or columns that are in the 
 database referred to in the first paramater (called the **reference database**),
-but not in the database referred to in the second paramater (called the **database to be checked**).  
+but not in the database referred to in the second paramater (called the **database to be checked**).
 If your reverse the order or the two parameters, 
 then CompareSqlToSql will report **warnings**, not errors, for the same missing tables/columns. 
 
