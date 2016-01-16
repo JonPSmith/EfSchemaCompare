@@ -44,7 +44,7 @@ namespace Tests.UnitTests
             //EXECUTE
 
             //VERIFY
-            _efInfos.Count.ShouldEqual(12);
+            _efInfos.Count.ShouldEqual(13);
         }
 
         [Test]

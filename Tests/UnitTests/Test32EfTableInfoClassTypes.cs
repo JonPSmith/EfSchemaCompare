@@ -37,17 +37,6 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test01GetEfTableColumnInfo()
-        {
-            //SETUP
-
-            //EXECUTE
-
-            //VERIFY
-            _efInfos.Count.ShouldEqual(12);
-        }
-
-        [Test]
         public void Test70DataComplexColsOk()
         {
             //SETUP

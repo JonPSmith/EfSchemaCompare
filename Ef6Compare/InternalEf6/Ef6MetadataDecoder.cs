@@ -94,8 +94,9 @@ namespace Ef6Compare.InternalEf6
 
             var clrClassType = _dataClassesAssembly.GetType(classFullName, false);
             if (clrClassType == null)
-                throw new InvalidOperationException("Could not find the EF data class {0} in the assembly {1}." +
-                                                    " If data classes are in a separate assembly to the DbContext then use the method with <T>");
+                throw new InvalidOperationException(string.Format("Could not find the EF data class {0} in the assembly {1}." +
+                                                    " If data classes are in a separate assembly to the DbContext then use the method with <T>",
+                                                    classFullName, _dataClassesAssembly.GetName().Name));
             return clrClassType;
         }
 

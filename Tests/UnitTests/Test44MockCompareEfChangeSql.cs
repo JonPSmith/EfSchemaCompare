@@ -199,6 +199,7 @@ namespace Tests.UnitTests
             status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
         }
 
+        [Ignore("CompareEfWithSql will NOT catch this error")]
         [Test]
         public void Test21CompareMockDataChangeForeignKeyParentColNameOk()
         {

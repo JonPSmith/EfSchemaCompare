@@ -10,8 +10,8 @@ schema contains. This is useful if you want to:
 
 # NOTE: This project is NOT for general release
 
-1. It has quite a few limitations. see [Current Limitations](#Current-limitations) section.
-2. It does not have good documentation. See the "Tests" assembly for Unit Tests which may be useful.
+1. It has a few limitations. see [Current Limitations](#Current-limitations) section.
+2. It needs some more examples to show people how it works, especially if distributed as a NuGet package.
 3. It is not a public domain project! I am reserving the licence on the code for now.
 
 
@@ -32,7 +32,8 @@ I have also have started a series on
 [database migrations](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-1-applying-the-updates/)
 on my own blog site which covers the same area, but with a bit more detail.
 
-*Note: if you are thinking of taking over the migrations this you need to read the section in the article
+*Note: if you are thinking of taking over the migrations this you need to read the section near the end of
+[this article](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-2-keeping-ef-and-sql-scheme-in-step/)
 called 'Telling Entity Framework that you will handle migrations' which covers `Null database Initializers`*
 
 # How to use SchemaCompareDb
@@ -143,6 +144,20 @@ The code below compares two databases. The first parameter holds the name of a c
 App.Config/Web.Config, or a actual connection string of the **reference database**. The second parameter
 holds name/connection of the **database to be checked**.  
 
+**NOTE: THE ORDER IS REALLY IMPORTANT**:
+CompareSqlToSql will report **errors** for tables and/or columns that are in the 
+database referred to in the first paramater (called the **reference database**),
+but not in the database referred to in the second paramater (called the **database to be checked**).  
+If your reverse the order or the two parameters, 
+then CompareSqlToSql will report **warnings**, not errors, for the same missing tables/columns. 
+
+This is because it is valid for a database to have additional tables/columns 
+that EF does not access, so the compare shows **extra** tables/columns in the database
+referred to in the second parameter as warnings, not errors.
+
+Beloe is a typical call to `CompareSqlToSql`. Note that The ctor is the same as used for
+`CompareEfGeneratedSqlToSql`, so see above for its option parameters.
+
 ```
 using (var db = new YourDbContext())
 {
@@ -156,18 +171,25 @@ using (var db = new YourDbContext())
 }
 ```
 
-The ctor is the same as used for `CompareEfGeneratedSqlToSql`, so see above for its option parameters.
-
 # Current limitations
 
 1. It does not handle the case where you have multiple DbContext covering the same database.
 It will show incorrect 'missing table' errors (and maybe other problems too - I haven' tried it).
-2. It doesn't do any checking on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
-3. Does not handle any of the clever table mapping options in EF 6, e.g.
-  * [table-per-type (TPT) inheritance](https://msdn.microsoft.com/en-us/data/jj618293) mapping.
-  * [table-per-hierarchy (TPH) inheritance](https://msdn.microsoft.com/en-us/data/jj618292) mapping.
-  * [Map an Entity to Multiple Tables](https://msdn.microsoft.com/en-us/data/jj715646).
-  * [Map Multiple Entities to One Table](https://msdn.microsoft.com/en-us/data/jj715645).
-4. EF 6 has some funny ideas about indexes on ZeroOrOne to Many relationships. Needs more work.
-5s. No support for EF7.
+2. Currently no support for EF7.
+3. CompareSqlToSql does not check on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
+4. Minor point, but EF 6 create two indexes on one end of a ZeroOrOne to Many relationships. 
+Currently I just report on what indexes EF has, but I'm not sure having both a clustered and non-clustered
+index on the same column is necessary.
+
+Also SchemaCompareDb will never support the complex type-to-table mappings options in EF 6 listed below.
+I found it is very difficult (impossible!) in EF6 to find that information in the EF model data,
+and EF7 does not currently plan to support these features 
+(see [EF7, Section Bucket #4: Removal of features](http://blogs.msdn.com/b/adonet/archive/2014/10/27/ef7-v1-or-v7.aspx)).
+
+The list of complex type-to-table mappings NOT supported are:
+
+* [table-per-type (TPT) inheritance](https://msdn.microsoft.com/en-us/data/jj618293) mapping.
+* [table-per-hierarchy (TPH) inheritance](https://msdn.microsoft.com/en-us/data/jj618292) mapping.
+* [Map an Entity to Multiple Tables](https://msdn.microsoft.com/en-us/data/jj715646).
+* [Map Multiple Entities to One Table](https://msdn.microsoft.com/en-us/data/jj715645).
 

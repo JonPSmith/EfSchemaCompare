@@ -13,6 +13,7 @@ using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using EfPocoClasses.ClassTypes;
 using EfPocoClasses.DataTypes;
+using EfPocoClasses.PublicPrivate;
 using EfPocoClasses.Relationships;
 
 namespace Ef6TestDbContext
@@ -38,10 +39,13 @@ namespace Ef6TestDbContext
         public DbSet<DataStringByte> DataStringBytes { get; set; }
         public DbSet<DataDate> DataDates { get; set; }
         public DbSet<DataGuidEnum> DataGuidEnums { get; set; }
+        public DbSet<DataPublicPrivateEf6> DataPublicPrivates { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+            modelBuilder.Configurations.Add(new DataPublicPrivateEf6.DataPublicPrivateConfiguration());
 
             modelBuilder.Entity<DataTop>()
                 .HasOptional(x => x.SingletonNullable)

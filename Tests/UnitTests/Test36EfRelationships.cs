@@ -47,21 +47,6 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Test01GetEfTableColumnInfo()
-        {
-            //SETUP
-
-            //EXECUTE
-
-            //VERIFY
-            _efInfos.Count.ShouldEqual(12);
-            //foreach (var relCol in _efInfos.SelectMany(x => x.RelationshipCols))
-            //{
-            //    Console.WriteLine(relCol);
-            //}
-        }
-
-        [Test]
         public void Test10DataTopOk()
         {
             //SETUP

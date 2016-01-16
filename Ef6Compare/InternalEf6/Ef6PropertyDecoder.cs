@@ -53,7 +53,7 @@ namespace Ef6Compare.InternalEf6
                     var sqlTypeName = _tableEntitySet.ElementType.DeclaredMembers
                         .Single(x => x.Name == columnName).TypeUsage.EdmType.Name;
                     var clrProperty =
-                        clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        clrClassType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                             .Single(x => x.Name == edmProperty.Name);
                     var primaryKey = primaryKeys.SingleOrDefault(x => x.Name == edmProperty.Name);
                     columnInfos.Add(new EfColumnInfo(columnName, sqlTypeName, edmProperty.Nullable,
