@@ -39,5 +39,10 @@ namespace EfPocoClasses.PublicPrivate
         [Column]
         private int PrivateInt { get; set; }
 
+        /// <summary>
+        ///This private property is not included in EF database
+        /// </summary>
+        private int PrivateIntNotInEf { get; set; }
+
     }
 }

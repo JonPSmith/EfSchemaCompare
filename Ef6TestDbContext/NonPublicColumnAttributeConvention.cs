@@ -34,7 +34,7 @@ namespace Ef6TestDbContext
         {
             var matchingProperties =
                 type.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance)
-                    //.Where(propInfo => propInfo.GetCustomAttributes(typeof (ColumnAttribute), true).Length > 0)
+                    .Where(propInfo => propInfo.GetCustomAttributes(typeof (ColumnAttribute), true).Length > 0)
                     .ToArray();
             return matchingProperties.Length == 0 ? null : matchingProperties;
         }
