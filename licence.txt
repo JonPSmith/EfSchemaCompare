@@ -1,0 +1,22 @@
+This software is the property of Selective Analytics Ltd
+and must not be pass on to others, or published in any way
+to the public without written permission from Selective Analytics Ltd.
+
+No Distribution - No distribution of code or binaries is allowed. 
+Code can be hosted on license holder's private servers/sites but must
+never be published to a public site.
+
+If you are granted a licence it is for private use but can be used to
+support the development and testing of a commercial product. However
+you cannot distribute or provide this code to your customer.
+
+Copyright (c) 2015 Jon Smith (www.selectiveanalytics.com & www.thereformedprogrammer.net) 
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+

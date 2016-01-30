@@ -17,6 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ef6TestDbContext", "Ef6Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB022124-6FD9-478D-A2B3-26FBF1D55086}"
 	ProjectSection(SolutionItems) = preProject
+		licence.txt = licence.txt
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
