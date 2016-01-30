@@ -57,6 +57,7 @@
     <Compile Include="CompareSqlSql.cs" />
     <Compile Include="DatabaseCreators.cs" />
     <Compile Include="InternalEf6\DbConnectionString.cs" />
+    <Compile Include="InternalEf6\Ef6CompareParts.cs" />
     <Compile Include="InternalEf6\Ef6MetadataDecoder.cs" />
     <Compile Include="InternalEf6\Ef6PropertyDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

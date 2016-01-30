@@ -21,32 +21,31 @@ namespace CompareCore
     public class EfCompare
     {
         private readonly string _sqlDbRefString;
-        private readonly string _sqlTableNamesToIgnore;
+        private readonly Dictionary<string, SqlTableInfo> _sqlInfoDict;
 
-        public EfCompare(string sqlDbRefString, string sqlTableNamesToIgnore)
+        public EfCompare(string sqlDbRefString, Dictionary<string, SqlTableInfo> sqlInfoDict)
         {
             _sqlDbRefString = sqlDbRefString;
-            _sqlTableNamesToIgnore = sqlTableNamesToIgnore;
+            _sqlInfoDict = sqlInfoDict;
         }
 
         public ISuccessOrErrors CompareEfWithSql(IList<EfTableInfo> efInfos, SqlAllInfo allSqlInfo)
         {
 
             var status = SuccessOrErrors.Success("All Ok");
-            var sqlInfoDict = allSqlInfo.TableInfos.ToDictionary(x => x.CombinedName);
 
             //first we compare the ef table columns with the SQL table columns
             foreach (var efInfo in efInfos)
             {
-                if (!sqlInfoDict.ContainsKey(efInfo.CombinedName))
+                if (!_sqlInfoDict.ContainsKey(efInfo.CombinedName))
                     status.AddSingleError(
                         "Missing Table: The SQL {0} does not contain a table called {1}. Needed by EF class {2}.",
                         _sqlDbRefString, efInfo.CombinedName, efInfo.ClrClassType.Name);
                 else
                 {
                     //has table, so compare the columns/properties
-                    var sqlTableInfo = sqlInfoDict[efInfo.CombinedName];
-                    sqlInfoDict.Remove(efInfo.CombinedName);
+                    var sqlTableInfo = _sqlInfoDict[efInfo.CombinedName];
+                    _sqlInfoDict.Remove(efInfo.CombinedName);
 
                     //we create a dict, which we check. As we find columns we remove them
                     var sqlColsDict = sqlTableInfo.ColumnInfos.ToDictionary(x => x.ColumnName);
@@ -81,7 +80,7 @@ namespace CompareCore
             //now we compare the EF relationships with the SQL foreign keys
             //we do this here because we now have the tables that wren't mentioned in EF,
             //which are the tables that EF will automatically add to handle many-many relationships.
-            var relChecker = new EfRelationshipChecker(efInfos, allSqlInfo, sqlInfoDict.Values.ToList());
+            var relChecker = new EfRelationshipChecker(efInfos, allSqlInfo, _sqlInfoDict.Values.ToList());
             foreach (var efInfo in efInfos)
             {      
                 //now we check the relationships
@@ -91,17 +90,7 @@ namespace CompareCore
                     status.Combine(relStatus);
                     if (relStatus.IsValid && relStatus.Result != null)
                         //It has found a many-to-many table which we need to remove so that it does not show a warning at the end
-                        sqlInfoDict.Remove(relStatus.Result);
-                }
-            }
-
-            //now see what SQL tables haven't been mentioned
-            if (sqlInfoDict.Any())
-            {
-                var tablesToIgnore = _sqlTableNamesToIgnore.Split(',').Select(x => x.Trim()).ToList();
-                foreach (var unusedTable in sqlInfoDict.Values.Where(x => !tablesToIgnore.Contains(x.TableName)))
-                {
-                    status.AddWarning("SQL {0} table {1} was not used by EF.", _sqlDbRefString, unusedTable.CombinedName);
+                        _sqlInfoDict.Remove(relStatus.Result);
                 }
             }
 

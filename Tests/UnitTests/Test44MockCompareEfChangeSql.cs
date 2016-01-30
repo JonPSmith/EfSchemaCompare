@@ -8,6 +8,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using CompareCore;
 using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
@@ -22,9 +23,9 @@ namespace Tests.UnitTests
         public void Test01CompareSameMockDataOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
+            var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -40,18 +41,21 @@ namespace Tests.UnitTests
         public void Test05CompareMockDataChangeTableNameOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NewDataName", "TableInfos", 0, "TableName");
+            var sqlInfoDict = sqlData.TableInfos.ToDictionary(x => x.CombinedName);
+            var comparer = new EfCompare("SqlRefString", sqlInfoDict);
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
 
             //VERIFY
             status.ShouldBeValid(false);
-            status.GetAllErrors().ShouldEqual("Missing Table: The SQL SqlRefString does not contain a table called [dbo].[DataTop]. Needed by EF class DataTop.\n"+
+            status.GetAllErrors().ShouldEqual("Missing Table: The SQL SqlRefString does not contain a table called [dbo].[DataTop]. Needed by EF class DataTop.\n" +
             "Missing SQL Table: Could not find the SQL table called [dbo].[DataTop].", status.GetAllErrors());
-            string.Join(",", status.Warnings).ShouldEqual("Warning: SQL SqlRefString table [dbo].[NewDataName] was not used by EF.", string.Join(",", status.Warnings));
+            status.HasWarnings.ShouldEqual(false);
+            sqlInfoDict.Keys.Count.ShouldEqual(1);
+            sqlInfoDict.ContainsKey("[dbo].[NewDataName]").ShouldEqual(true);
         }
 
         //-----------------------------------------------------
@@ -61,9 +65,9 @@ namespace Tests.UnitTests
         public void Test10CompareMockDataChangeColumnNameOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadColName", "TableInfos", 0, "ColumnInfos", 0, "ColumnName");
+            var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -79,9 +83,9 @@ namespace Tests.UnitTests
         public void Test11CompareMockDataChangeColumnSqlTypeOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "bit", "TableInfos", 0, "ColumnInfos", 0, "SqlTypeName");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -96,9 +100,9 @@ namespace Tests.UnitTests
         public void Test12CompareMockDataChangePrimaryKeyOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -114,9 +118,9 @@ namespace Tests.UnitTests
         public void Test13CompareMockDataChangePrimaryKeyOrderOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "PrimaryKeyOrder");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -131,9 +135,9 @@ namespace Tests.UnitTests
         public void Test14CompareMockDataChangeIsNullableOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", true, "TableInfos", 0, "ColumnInfos", 0, "IsNullable");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -148,9 +152,9 @@ namespace Tests.UnitTests
         public void Test15CompareMockDataChangeMaxLengthOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", 2, "TableInfos", 0, "ColumnInfos", 0, "MaxLength");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -165,9 +169,9 @@ namespace Tests.UnitTests
         public void Test16CompareMockDataRemoveColumnInToBeCheckedOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "TableInfos", 0, "ColumnInfos", 0);
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -186,9 +190,9 @@ namespace Tests.UnitTests
         public void Test20CompareMockDataChangeForeignKeyParentTableNameOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentTableName");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -204,9 +208,9 @@ namespace Tests.UnitTests
         public void Test21CompareMockDataChangeForeignKeyParentColNameOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ParentColName");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -221,9 +225,9 @@ namespace Tests.UnitTests
         public void Test22CompareMockDataChangeForeignKeyReferencedTableNameOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedTableName");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -238,9 +242,9 @@ namespace Tests.UnitTests
         public void Test23CompareMockDataChangeForeignKeyReferencedColNameOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "ReferencedColName");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);
@@ -255,9 +259,9 @@ namespace Tests.UnitTests
         public void Test24CompareMockDataChangeForeignKeyReferencedColNameOk()
         {
             //SETUP
-            var comparer = new EfCompare("SqlRefString","");
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "ForeignKeys", 0, "DeleteAction");
+                        var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
 
             //EXECUTE
             var status = comparer.CompareEfWithSql(efData, sqlData);

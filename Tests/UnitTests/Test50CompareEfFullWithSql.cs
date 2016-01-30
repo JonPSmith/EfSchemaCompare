@@ -8,8 +8,6 @@
 #endregion
 
 using System;
-using System.Configuration;
-using System.Linq;
 using CompareCore;
 using Ef6Compare;
 using EfPocoClasses.Relationships;
@@ -19,7 +17,7 @@ using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
-    public class Test50CompareEfAndSql
+    public class Test50CompareEfFullWithSql
     {
 
         [Test]

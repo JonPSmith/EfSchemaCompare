@@ -33,19 +33,12 @@ I have also have started a series on
 [database migrations](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-1-applying-the-updates/)
 on my own blog site which covers the same area, but with a bit more detail.
 
-*Note: if you are thinking of taking over the migrations this you need to read the section near the end of
-[this article](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-2-keeping-ef-and-sql-scheme-in-step/)
-called 'Telling Entity Framework that you will handle migrations' which covers `Null database Initializers`*
-
-
 # Current limitations
 
-1. It does not handle the case where you have multiple DbContext covering the same database.
-It will show incorrect 'missing table' errors (and maybe other problems too - I haven' tried it).
+1. CompareSqlToSql does not check on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
 2. Currently no support for [Entity Framework Core](https://github.com/aspnet/EntityFramework/wiki),
 previously known as EF7.
-3. CompareSqlToSql does not check on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
-4. Minor point, but EF 6 create two indexes on one end of a ZeroOrOne to Many relationships.
+3. Minor point, but EF 6 create two indexes on one end of a ZeroOrOne to Many relationships.
 Currently I just report on what indexes EF has, but I'm not sure having both a clustered and non-clustered
 index on the same column is necessary.
 
@@ -65,7 +58,7 @@ The list of complex type-to-table mappings NOT supported are:
 
 There are three main ways of comparing EF and databases:
 
-1. **CompareEfWithDb**: Compare EF's model against an actual SQL database.
+1. **CompareEfWithDb**: Compare EF's DbContext(s) against an actual SQL database.
 2. **CompareEfGeneratedSqlToSql**: Compare a database created by EF against an actual SQL database.
 3. **CompareSqlToSql**: Compare one SQL database against another SQL database.
 
@@ -110,49 +103,54 @@ However, if you want check for an **exact** match between two databases you shou
 
 # Detailed description of each of the commands.
 
-## 1. CompareEfWithDb
+## 1. `CompareEfSql`
 
-This compares EF's model against an actual SQL database. This catches 90% of issues and gives good, EF centric, error messages.
+The `CompareEfSql` class is used to compare EF's DbContext(s) againts a SQL database. 
+This catches 90% of issues and gives good, EF centric, error messages. It is slower than
+the `CompareSqlSql`, especially when calling the `CompareEfGeneratedSqlToSql` version, but
+the detail of this errors are worth having.
+
+`CompareEfSql` can work with a single DbContext that covers the whole of the database, or multiple
+DbContexts that cover different parts of the database.
+
+The `CompareEfSql` ctor has an optional parameter
+which takes a comma delimited list of tables in the SQL database to ignore when looking
+for missing tables. Its default value is `"__MigrationHistory,SchemaVersions"`, which ignores
+the "__MigrationHistory" that EF uses and the "SchemaVersions" table that
+[DbUp](http://dbup.readthedocs.org/en/latest/) adds. 
+*Note: DbUp is my chosen way of handling data migrations.*
+
+
+### 1.a: EF classes in the same assembly as DbContext
+
 The code below show a call to `CompareEfWithDb` that compares the EF internal model with the database
 that `YourDbContext` points to:
-
 
 ```
 using (var db = new YourDbContext())
 {
-var comparer = new CompareEfSql();
+    var comparer = new CompareEfSql();
 
-var status = comparer.CompareEfWithDb(db);
-//status.IsValid is true if no errors.
-//status.Errors contains any errors.
-//status.Warnings contains any warnings
+    var status = comparer.CompareEfWithDb(db);
+    //status.IsValid is true if no errors.
+    //status.Errors contains any errors.
+    //status.Warnings contains any warnings
 }
 ```
 
-*Note: All the compare methods return a ISuccessOrErrors result (you can find the
-[SuccessOrErrors code here](https://github.com/JonPSmith/GenericServices/blob/master/GenericLibsBase/Core/SuccessOrErrors.cs))*
-
-The `CompareEfSql` has an optional parameter
-which takes a comma delimited list of tables in the SQL database to ignore when looking
-for missing tables. Its default value is `"__MigrationHistory,SchemaVersions"`, which ignores
-the "__MigrationHistory" that EF uses and the "SchemaVersions" table that
-[DbUp](http://dbup.readthedocs.org/en/latest/) adds. *Note: DbUp is my chosen way of handling data migrations.*
-
-There are two other variations of the `CompareEfWithDb` method call.
-
-### 1.a: EF classes in a different assembly
+### 1.b: EF classes in a different assembly
 
 If you have your EF data classes in an separate assembly to your DbContext (I do)
 then you need to use the form that takes a Type, which should be one of your EF data classes.
 It uses this type to find the right assembly to scan for the data classes.
-*Note: it cannot handle data classes in multiple assembly.*
+*Note: this cannot handle data classes in multiple assembly.*
 
 ```
 var status = comparer.CompareEfWithDb<AnEfDataClass>(db);
 ```
 
 
-### 1.b: Compare EF with different database
+### 1.c: Compare EF with different database
 
 If you want compare EF with another database then you provide a second parameter, which should be the
 name of a connection string in your App.Config/Web.Config, or a actual connection string, e.g.
@@ -161,7 +159,52 @@ name of a connection string in your App.Config/Web.Config, or a actual connectio
 var status = comparer.CompareEfWithDb(db, AConnectionStringName);
 ```
 
-## 2. CompareEfGeneratedSqlToSql
+
+### 1.d: Compare multiple EF DbContexts with a database
+
+Sometimes you may want to split the coverage of the database over multiple DbContexts.
+In this case we can support this (with some limitations that I explain later). 
+This works in three stages:
+
+1. **Setup**: call `CompareEfPartStart(db)` or `CompareEfPartStart(AConnectionStringName)` to setup the compare.
+2. **Compare**: call `CompareEfPartWithDb(db)` (or other variants) for each DbContext
+3. **Finalise**: call `CompareEfPartFinalChecks()` to do a final check for unused tables.
+
+Below is an example where two DbContexts, DbPart1 and DbPart2, cover the same database.
+In this example I combine all the errors so I can check them at the end, but you can
+check each one as you go if you like.
+
+
+```
+var comparer = new CompareEfSql();
+ISuccessOrErrors status;
+
+using (var db = new DbPart1())
+{
+    comparer.CompareEfPartStart(db);
+    status = comparer.CompareEfPartWithDb<DataTop>(db);
+}
+using (var db = new DbPart1())
+{
+    status.Combine(comparer.CompareEfPartWithDb<DataTop>(db));
+}
+status.Combine(comparer.CompareEfPartFinalChecks());
+//Now check the errors and warnings
+```
+
+#### Limitations on CompareEfParts
+
+The only limitation is that the standard calls shown above assume that there is no overlap 
+of the classes/tables that each DbContext references, e.g. DbPart1 and DbPart2 cannot 
+both have an EF data class called MyClass. This is because one reference to a class by one
+DbContext removes it from the list of available tables, so the second reference will fail.
+
+If you do share classes between DbContexts then you should create a new `CompareEfSql` for
+each DbContext and call just `CompareEfPartStart` and `CompareEfPartWithDb` and not call
+`CompareEfPartFinalChecks`. You will miss out on some tests, like unused tables, but other
+than that it will work OK.
+
+## 1.e. CompareEfGeneratedSqlToSql
 
 This version created a new EF database using `DbContext.Database.Create()` and then compares that
 database against an actual SQL database. This catches 100% of the differences
@@ -184,7 +227,11 @@ var status = comparer.CompareEfGeneratedSqlToSql(db, AConnectionStringName);
 }
 ```
 
-### `CompareSqlSql` ctor:
+# 2. `CompareSqlSql`:
+
+The `CompareSqlSql` class is used for comparing one SQL database against another. It is quicker and
+more detailed than `CompareEfSql`, but the error messages are harder to relate to EF, as it doesn't
+know anytheing about the EF classes.
 
 The `CompareSqlSql` ctor, which is used by `CompareEfGeneratedSqlToSql` and `CompareSqlToSql` has
 two optional parameters. They are:
@@ -196,7 +243,7 @@ as an errors. Setting this to false means they show up as warnings.
 2. **SQLTableNamesToIgnore** (default "__MigrationHistory,SchemaVersions"). These are the tables that it won't
 complain about if the database referred to in the second parameter hasn't got them.
 
-## 3. CompareSqlToSql
+## 2.a. CompareSqlToSql
 
 This final version compares one SQL database against another SQL database. This useful to check differences between say
 a production database and a development database. It is also very quick as it only uses SQL commands,

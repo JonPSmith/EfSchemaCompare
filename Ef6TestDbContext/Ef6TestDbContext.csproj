@@ -50,6 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestEf6PublicPrivateDb.cs" />
+    <Compile Include="TestEf6ComplexDb.cs" />
+    <Compile Include="TestEf6RelationshipsDb.cs" />
+    <Compile Include="TestEf6DataTypesDb.cs" />
     <Compile Include="Ef6TestSchemaCompareDb.cs" />
     <Compile Include="NonPublicColumnAttributeConvention.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
