@@ -10,10 +10,10 @@ schema contains. This is useful if you want to:
 
 # NOTE: This project is NOT for general release
 
-1. It has a few limitations. see [Current Limitations](#Current-limitations) section.
-2. It needs some more examples to show people how it works, especially if it is only
+1. It needs some more examples to show people how it works, especially if it is only
 distributed as a NuGet package.
-3. It is not a public domain project! I am reserving the licence on the code for now.
+2. It is not a public domain project! I am reserving the licence on the code for now.
+3. It has a few limitations. see [Current Limitations](#Current-limitations) section.
 
 
 ## Why I built this project?
