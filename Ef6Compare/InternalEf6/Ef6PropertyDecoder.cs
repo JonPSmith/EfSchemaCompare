@@ -52,9 +52,7 @@ namespace Ef6Compare.InternalEf6
                         .Column.Name;
                     var sqlTypeName = _tableEntitySet.ElementType.DeclaredMembers
                         .Single(x => x.Name == columnName).TypeUsage.EdmType.Name;
-                    var clrProperty =
-                        clrClassType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                            .Single(x => x.Name == edmProperty.Name);
+                    var clrProperty = Ef6MetadataDecoder.GetPublicAndPrivatePropertyByName(clrClassType, edmProperty.Name);
                     var primaryKey = primaryKeys.SingleOrDefault(x => x.Name == edmProperty.Name);
                     columnInfos.Add(new EfColumnInfo(columnName, sqlTypeName, edmProperty.Nullable,
                          edmProperty.MaxLength, edmProperty.Precision, primaryKey, clrProperty));
@@ -71,8 +69,9 @@ namespace Ef6Compare.InternalEf6
             var complexCols = new List<EfColumnInfo>();
             foreach (var property in complexMapping.TypeMappings.SelectMany(x => x.PropertyMappings))
             {
-                var complexClrType = parentClass.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Single(x => x.Name == complexMapping.Property.Name).PropertyType;
+                var complexClrType =
+                    Ef6MetadataDecoder.GetPublicAndPrivatePropertyByName(parentClass, complexMapping.Property.Name)
+                        .PropertyType;
                 if (property.Property.IsComplexType)
                 {
                     complexCols.AddRange(DecodeComplexTypes((ComplexPropertyMapping)property, complexClrType));
@@ -82,9 +81,7 @@ namespace Ef6Compare.InternalEf6
                     var columnName = ((ScalarPropertyMapping)property).Column.Name;
                     var sqlTypeName = _tableEntitySet.ElementType.DeclaredMembers
                         .Single(x => x.Name == columnName).TypeUsage.EdmType.Name;
-                    var clrProperty = complexClrType
-                            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                            .Single(x => x.Name == property.Property.Name);
+                    var clrProperty = Ef6MetadataDecoder.GetPublicAndPrivatePropertyByName(complexClrType, property.Property.Name);
                     complexCols.Add(new EfColumnInfo(columnName, sqlTypeName, property.Property.Nullable,
                         property.Property.MaxLength, property.Property.Precision, null, clrProperty));                 
                 }

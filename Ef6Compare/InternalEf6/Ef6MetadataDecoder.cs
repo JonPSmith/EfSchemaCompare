@@ -78,7 +78,7 @@ namespace Ef6Compare.InternalEf6
                 var columnInfos = propDecoder.DecodeTableProperties(entitySet, clrClassType, primaryKeys);
 
                 var relationshipInfos = (from navProperty in entitySet.ElementType.NavigationProperties
-                                         let clrProperty = clrClassType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Single(x => x.Name == navProperty.Name)
+                                         let clrProperty = GetPublicAndPrivatePropertyByName(clrClassType, navProperty.Name)
                                          let relationship = ConvertMetadataToFromToMultpicity(navProperty.FromEndMember, navProperty.ToEndMember)
                                          let columnArr = clrProperty.GetCustomAttribute<ColumnAttribute>()
                                          select new EfRelationshipInfo(relationship, clrProperty.Name, clrProperty.PropertyType)).ToList();
@@ -94,15 +94,36 @@ namespace Ef6Compare.InternalEf6
 
             var clrClassType = _dataClassesAssembly.GetType(classFullName, false);
             if (clrClassType == null)
-                throw new InvalidOperationException(string.Format("Could not find the EF data class {0} in the assembly {1}." +
+                throw new InvalidOperationException(String.Format("Could not find the EF data class {0} in the assembly {1}." +
                                                     " If data classes are in a separate assembly to the DbContext then use the method with <T>",
                                                     classFullName, _dataClassesAssembly.GetName().Name));
             return clrClassType;
         }
 
+        //-------------------------------------------------------------
+        //Internal methods
+
+        /// <summary>
+        /// Have extracted the GetPropertes method so that the public/private is handled properly in all instances
+        /// </summary>
+        /// <param name="classToScan"></param>
+        /// <param name="propertyName">property name we are looking for</param>
+        /// <returns></returns>
+        internal static PropertyInfo GetPublicAndPrivatePropertyByName(Type classToScan, string propertyName)
+        {
+            // NOTE: EF can access non-public properties if the developer sets up EF that way, so we need to search both public and non public
+            // See NonPublicColumnAttributeConvention in Ef6TestDbContext project for an example of that
+            var foundProperty = classToScan.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .SingleOrDefault(x => x.Name == propertyName);
+            if (foundProperty == null)
+                throw new InvalidOperationException(string.Format("Failed to find property called {0} in class {1}.",
+                    propertyName, classToScan.Name));
+
+            return foundProperty;
+        }
 
         //--------------------------------------------------------------------------
-        //private method
+        //private methods
 
         /// <summary>
         /// We convert the EF6 metadata RelationshipMultiplicity to an local copy to insulate against changes in the metadata format
@@ -117,6 +138,6 @@ namespace Ef6Compare.InternalEf6
             var efToType = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), toRelationship.RelationshipMultiplicity.ToString());
             var toCascade = toRelationship.DeleteBehavior == OperationAction.Cascade;
             return new FromToRelationship(efFromType, fromCascade, efToType, toCascade);
-        } 
+        }
     }
 }
