@@ -134,21 +134,20 @@ namespace CompareCore
             if (sqlCol.MaxLength == -1 && clrCol.MaxLength != -1)
             {
                 //SQL is at max length, but EF isn't
-                return status.AddSingleError(
+                status.AddWarning(
                     "MaxLength: The SQL {0} column {1}.{2}, type {3}, is at max length, but EF length is at {4}.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType, clrCol.MaxLength);
             }
-
-            if (sqlCol.MaxLength != clrCol.MaxLength)
+            else if (sqlCol.MaxLength != clrCol.MaxLength)
             {
-                return status.AddSingleError(
+               status.AddSingleError(
                     "MaxLength: The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,
                     sqlCol.MaxLength, 
                     sqlCol.SqlTypeName.EfLengthIdHalfThis() ? clrCol.MaxLength / 2 : clrCol.MaxLength);
             }
 
-            return status.SetSuccessMessage("All Ok");
+            return status;
         }
     }
 

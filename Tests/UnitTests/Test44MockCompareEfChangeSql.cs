@@ -166,6 +166,23 @@ namespace Tests.UnitTests
         }
 
         [Test]
+        public void Test15CompareMockDataChangeMaxLengthMaxLengthSqlOk()
+        {
+            //SETUP
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", -1, "TableInfos", 0, "ColumnInfos", 0, "MaxLength");
+            var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
+
+            //EXECUTE
+            var status = comparer.CompareEfWithSql(efData, sqlData);
+
+            //VERIFY
+            status.ShouldBeValid();
+            status.HasWarnings.ShouldEqual(true);
+            string.Join(",", status.Warnings).ShouldEqual("Warning: MaxLength: The SQL SqlRefString column [dbo].[DataTop].DataTopId, type System.Int32, is at max length, but EF length is at 4.");
+        }
+
+        [Test]
         public void Test16CompareMockDataRemoveColumnInToBeCheckedOk()
         {
             //SETUP
