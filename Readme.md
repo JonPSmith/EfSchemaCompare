@@ -28,23 +28,19 @@ on my own blog site which covers the same area, but with a bit more detail.
 # Current limitations
 
 1. CompareSqlToSql does not check on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
-2. Currently no support for [Entity Framework Core](https://github.com/aspnet/EntityFramework/wiki),
-previously known as EF7.
+2. CompareSqlToSql does not check the [default contraint](http://www.w3schools.com/sql/sql_default.asp) on columns. 
 3. Minor point, but EF 6 create two indexes on one end of a ZeroOrOne to Many relationships.
 Currently I just report on what indexes EF has, but I'm not sure having both a clustered and non-clustered
-index on the same column is necessary.
-
-Also SchemaCompareDb will never support the complex type-to-table mappings options in EF 6 listed below.
-I found it is very difficult (impossible!) in EF6 to find that information in the EF model data,
-and EF Core does not currently plan to support these features in first release, or maybe never
-(see [EF7, Section Bucket #4: Removal of features](http://blogs.msdn.com/b/adonet/archive/2014/10/27/ef7-v1-or-v7.aspx)).
-
+index on the same column is necessary. *Let me know if I'm wrong on that!*
+5. SchemaCompareDb does not support the complex type-to-table mappings options.
+I found it is very difficult (impossible!) in EF6 to find that information in the EF model data.
 The list of complex type-to-table mappings NOT supported are:
-
-* [table-per-type (TPT) inheritance](https://msdn.microsoft.com/en-us/data/jj618293) mapping.
-* [table-per-hierarchy (TPH) inheritance](https://msdn.microsoft.com/en-us/data/jj618292) mapping.
-* [Map an Entity to Multiple Tables](https://msdn.microsoft.com/en-us/data/jj715646).
-* [Map Multiple Entities to One Table](https://msdn.microsoft.com/en-us/data/jj715645).
+  * [table-per-type (TPT) inheritance](https://msdn.microsoft.com/en-us/data/jj618293) mapping.
+  * [table-per-hierarchy (TPH) inheritance](https://msdn.microsoft.com/en-us/data/jj618292) mapping.
+  * [Map an Entity to Multiple Tables](https://msdn.microsoft.com/en-us/data/jj715646).
+  * [Map Multiple Entities to One Table](https://msdn.microsoft.com/en-us/data/jj715645).
+4. Currently no support for [Entity Framework Core](https://github.com/aspnet/EntityFramework/wiki),
+previously known as EF7.
 
 # How to use SchemaCompareDb
 
@@ -84,9 +80,17 @@ are warnings. If there are warnings then they can be accessed via
 the `Warnings` property, which is a `IReadOnlyList<string>`
 
 Warnings are differences between the two databases which EfSchemaCompare believes should not
-cause problems to EF. Typically they are extra tables, columns, indexes in the second, 
-`ToBeChecked` database, and as such EF can normally ignore these. Later you will also see that
-you can relegate differences in Indexes from errors to warnings, as EF is adds lots of Indexes.
+cause problems to EF. Typically they are:
+- Extra tables in SQL that EF does not refer to - these are normally safe.
+- Columns in a SQL table that EF does not refer to (in some cases these can cause problems).
+- The size of a string (varchar, nvarchar) or other type with a length is at max in SQL but not at max in EF.
+*This can happen when you have a `[MaxLength(nn)]` setting on an EF column, but the size is over the 
+point where SQL makes it max length.*
+- When doing a SQL-to- SQL compare then tndexes in the second, **database to be checked**,
+but not in the **reference database**.
+
+Later you will also see that
+you can relegate differences in Indexes from errors to warnings, as EF adds lots of Indexes.
 (see [`CompareSqlSql` ctor](#CompareSqlSql-ctor))
 
 However, if you want check for an **exact** match between two databases you should check that
