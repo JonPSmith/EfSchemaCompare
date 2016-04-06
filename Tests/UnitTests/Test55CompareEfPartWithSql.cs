@@ -10,7 +10,7 @@
 // =====================================================
 #endregion
 
-using Ef6Compare;
+using Ef6SchemaCompare;
 using Ef6TestDbContext;
 using EfPocoClasses.Relationships;
 using GenericLibsBase;

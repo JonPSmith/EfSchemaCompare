@@ -16,7 +16,7 @@ using System.Data.SqlClient;
 using CompareCore.SqlInfo;
 using CompareCore.Utils;
 
-namespace Ef6Compare
+namespace Ef6SchemaCompare
 {
     public static class DatabaseCreators
     {

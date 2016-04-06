@@ -21,7 +21,7 @@ using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
 
-namespace Ef6Compare.InternalEf6
+namespace Ef6SchemaCompare.InternalEf6
 {
     public class Ef6MetadataDecoder
     {

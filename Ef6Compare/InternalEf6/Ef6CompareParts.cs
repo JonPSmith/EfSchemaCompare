@@ -20,7 +20,7 @@ using CompareCore.SqlInfo;
 using GenericLibsBase;
 using GenericLibsBase.Core;
 
-namespace Ef6Compare.InternalEf6
+namespace Ef6SchemaCompare.InternalEf6
 {
     internal class Ef6CompareParts
     {

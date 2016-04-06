@@ -16,8 +16,8 @@
    2. RECOMPILE GenericServices in RELEASE MODE
    3. Update release notes in the nuget package
    4. Run the following two command lines
-      cd C:\Users\Jon\Documents\Visual Studio 2015\Projects\EfSchemaCompare\Ef6SchemaCompare\NuGet
-      Nuget pack GenericServices.nuspec -Symbols
+      cd "C:\Users\Jon\Documents\Visual Studio 2015\Projects\EfSchemaCompare\Ef6Compare\NuGet"
+      Nuget pack EfSchemaCompare.EF6.nuspec -Symbols
    
    To Test locally
    ===============
@@ -25,7 +25,7 @@
    2. Go to TestEfSchemaCompare
    3. Set Package manager->Package Source to All, or <your local source>
    4. Use the following package manager command in target 
-      Install-Package EfSchemaCompare.EF6 -Project <projectname>
+      Install-Package EfSchemaCompare.EF6.<1.0.0> -Project <projectname>
       or
       Update-Package GenericServices
    
@@ -43,7 +43,7 @@
    -->
   <metadata>
     <id>EfSchemaCompare.EF6</id>
-    <version>1.0.1</version>
+    <version>1.0.0</version>
     <title>EfSchemaCompare.EF6</title>
     <authors>Jon Smith</authors>
     <owners>Jon Smith</owners>
@@ -52,13 +52,15 @@
     <iconUrl>https://raw.githubusercontent.com/JonPSmith/EfSchemaCompare/master/Ef6Compare/NuGet/EfSchemaCompareNuGetIcon128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      EfSchemaCompare.EF6 allows you to compare Entity Framework database modal with an actual SQL database. 
+      EfSchemaCompare.EF6 allows you to compare Entity Framework's database modal with an actual SQL database. 
       Useful if you are managing the database and its migrations yourself and want to ensure that the SQL is in step with EF.
     </description>
     <releaseNotes>First public release.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>EntityFramework EF EF6</tags>
     <dependencies>
+      <dependency id="GenericLibsBase" version="1.0.1" />
+      <dependency id="Newtonsoft.Json" version="8.0.3" />
       <dependency id="EntityFramework" version="6.1.3" />
     </dependencies>
     <frameworkAssemblies>
@@ -66,7 +68,8 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="..\bin\Release\GenericServices.dll" target="lib" />
-    <file src="..\bin\Release\GenericServices.xml" target="lib" />
+    <file src="..\..\CompareCore\bin\Release\CompareCore.dll" target="lib\net451" />
+    <file src="..\bin\Release\Ef6SchemaCompare.dll" target="lib\net451" />
+    <file src="..\bin\Release\Ef6SchemaCompare.xml" target="lib\net451" />
   </files>
 </package>

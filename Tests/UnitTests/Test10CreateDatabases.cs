@@ -13,7 +13,7 @@
 using System;
 using CompareCore.Utils;
 using DbUpHelper;
-using Ef6Compare;
+using Ef6SchemaCompare;
 using Ef6TestDbContext;
 using NUnit.Framework;
 using Tests.Helpers;

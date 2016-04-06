@@ -13,7 +13,7 @@
 using System;
 using System.Data.Entity;
 
-namespace Ef6Compare.InternalEf6
+namespace Ef6SchemaCompare.InternalEf6
 {
     internal static class DbConnectionString
     {

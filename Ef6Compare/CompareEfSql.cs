@@ -14,10 +14,10 @@ using System;
 using System.Data.Entity;
 using System.Reflection;
 using CompareCore.Utils;
-using Ef6Compare.InternalEf6;
+using Ef6SchemaCompare.InternalEf6;
 using GenericLibsBase;
 
-namespace Ef6Compare
+namespace Ef6SchemaCompare
 {
     public class CompareEfSql
     {

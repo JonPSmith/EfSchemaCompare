@@ -17,7 +17,7 @@ using CompareCore.SqlInfo;
 using CompareCore.Utils;
 using GenericLibsBase;
 
-namespace Ef6Compare
+namespace Ef6SchemaCompare
 {
     public class CompareSqlSql
     {

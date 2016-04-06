@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
-using Ef6Compare.InternalEf6;
+using Ef6SchemaCompare.InternalEf6;
 using Ef6TestDbContext;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;

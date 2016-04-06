@@ -17,7 +17,7 @@ using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using CompareCore.EFInfo;
 
-namespace Ef6Compare.InternalEf6
+namespace Ef6SchemaCompare.InternalEf6
 {
     internal class Ef6PropertyDecoder
     {
