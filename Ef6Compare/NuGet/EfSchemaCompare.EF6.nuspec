@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<package >
+  <!-- Steps to making a Nuget package.
+   
+   Setup
+   =====
+   1. Download NuGet.exe from and place it in the directory C:\User\Jon\
+   2. Make sure path points to it by running the line below
+   set PATH=%PATH%;C:\Users\Jon\
+   
+   To create nuget package
+   =======================
+   1. Update version numbers
+      a. In the AssemblyVersionPart in NuGet folder 
+      b. Update the version field below 
+   2. RECOMPILE GenericServices in RELEASE MODE
+   3. Update release notes in the nuget package
+   4. Run the following two command lines
+      cd C:\Users\Jon\Documents\Visual Studio 2015\Projects\EfSchemaCompare\Ef6SchemaCompare\NuGet
+      Nuget pack GenericServices.nuspec -Symbols
+   
+   To Test locally
+   ===============
+   1. Copy to C:\Users\Jon\LocalNuget
+   2. Go to TestEfSchemaCompare
+   3. Set Package manager->Package Source to All, or <your local source>
+   4. Use the following package manager command in target 
+      Install-Package EfSchemaCompare.EF6 -Project <projectname>
+      or
+      Update-Package GenericServices
+   
+   To test via staging
+   ===================
+   1. Go to http://staging.nuget.org/ and log on normally
+   2. Upload the package to check
+   
+   To upload to NuGet
+   ==================
+   Quickest way is via command line as it pushes both the package and the symboles
+   Nuget SetApiKey <key>
+   Nuget Push GenericServices.1.0.<ver>.nupkg
+   
+   -->
+  <metadata>
+    <id>EfSchemaCompare.EF6</id>
+    <version>1.0.1</version>
+    <title>EfSchemaCompare.EF6</title>
+    <authors>Jon Smith</authors>
+    <owners>Jon Smith</owners>
+    <licenseUrl>https://raw.githubusercontent.com/JonPSmith/EfSchemaCompare/master/licence.txt</licenseUrl>
+    <projectUrl>https://github.com/JonPSmith/EfSchemaCompare</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/JonPSmith/EfSchemaCompare/master/Ef6Compare/NuGet/EfSchemaCompareNuGetIcon128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      EfSchemaCompare.EF6 allows you to compare Entity Framework database modal with an actual SQL database. 
+      Useful if you are managing the database and its migrations yourself and want to ensure that the SQL is in step with EF.
+    </description>
+    <releaseNotes>First public release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>EntityFramework EF EF6</tags>
+    <dependencies>
+      <dependency id="EntityFramework" version="6.1.3" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Core" targetFramework="net451" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="..\bin\Release\GenericServices.dll" target="lib" />
+    <file src="..\bin\Release\GenericServices.xml" target="lib" />
+  </files>
+</package>

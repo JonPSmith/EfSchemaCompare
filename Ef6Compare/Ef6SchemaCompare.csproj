@@ -60,10 +60,12 @@
     <Compile Include="InternalEf6\Ef6CompareParts.cs" />
     <Compile Include="InternalEf6\Ef6MetadataDecoder.cs" />
     <Compile Include="InternalEf6\Ef6PropertyDecoder.cs" />
+    <Compile Include="NuGet\AssemblyVersionPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="NuGet\EfSchemaCompare.EF6.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -72,7 +74,9 @@
       <Name>CompareCore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="NuGet\EfSchemaCompareNuGetIcon128.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
