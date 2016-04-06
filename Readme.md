@@ -1,4 +1,4 @@
-# SchemaCompareDb
+# EfSchemaCompare
 
 The SchemaCompareDb package is designed to compare what Microsoft's
 [Entity Framework](https://msdn.microsoft.com/en-gb/data/ef.aspx) (EF)
@@ -7,6 +7,11 @@ schema contains. This is useful if you want to:
 
 1. Take over the creation, definition or migration of the database.
 2. You want to build a EF model that works with an existing database.
+
+**EfSchemaCompare is an open-source project 
+[(MIT licence)](https://github.com/JonPSmith/EfSchemaCompare/blob/master/licence.txt)
+and is available on NuGet as
+[EfSchemaCompare.EF6](https://www.nuget.org/packages/EfSchemaCompare.EF6/)**
 
 ## Why I built this project?
 I was working on an e-commerce web site and was thinking through the problems of applying database migrations

@@ -13,7 +13,7 @@
    1. Update version numbers
       a. In the AssemblyVersionPart in NuGet folder 
       b. Update the version field below 
-   2. RECOMPILE GenericServices in RELEASE MODE
+   2. RECOMPILE EfSchemaCompare.EF6 in RELEASE MODE
    3. Update release notes in the nuget package
    4. Run the following two command lines
       cd "C:\Users\Jon\Documents\Visual Studio 2015\Projects\EfSchemaCompare\Ef6Compare\NuGet"
@@ -25,9 +25,9 @@
    2. Go to TestEfSchemaCompare
    3. Set Package manager->Package Source to All, or <your local source>
    4. Use the following package manager command in target 
-      Install-Package EfSchemaCompare.EF6.<1.0.0> -Project <projectname>
+      Install-Package EfSchemaCompare.EF6 -Project <projectname>
       or
-      Update-Package GenericServices
+      Update-Package EfSchemaCompare.EF6
    
    To test via staging
    ===================
@@ -38,7 +38,7 @@
    ==================
    Quickest way is via command line as it pushes both the package and the symboles
    Nuget SetApiKey <key>
-   Nuget Push GenericServices.1.0.<ver>.nupkg
+   Nuget Push EfSchemaCompare.EF6.1.0.<ver>.nupkg
    
    -->
   <metadata>
@@ -52,12 +52,12 @@
     <iconUrl>https://raw.githubusercontent.com/JonPSmith/EfSchemaCompare/master/Ef6Compare/NuGet/EfSchemaCompareNuGetIcon128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      EfSchemaCompare.EF6 allows you to compare Entity Framework's database modal with an actual SQL database. 
-      Useful if you are managing the database and its migrations yourself and want to ensure that the SQL is in step with EF.
+      EfSchemaCompare.EF6 allows you to compare Entity Framework's database modal with an actual SQL database.
+Useful if you are managing the database and its migrations yourself and want to ensure that the SQL is in step with EF.
     </description>
     <releaseNotes>First public release.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>EntityFramework EF EF6</tags>
+    <tags>EntityFramework EF EF6 Migrations</tags>
     <dependencies>
       <dependency id="GenericLibsBase" version="1.0.1" />
       <dependency id="Newtonsoft.Json" version="8.0.3" />
