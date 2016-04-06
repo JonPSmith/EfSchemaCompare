@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: TestEf6RelationshipsDb.cs
-// Date Created: 2016/01/30
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -31,7 +34,7 @@ namespace Ef6TestDbContext
         public DbSet<DataManyChildren> DataManyChildrens { get; set; }
         public DbSet<DataSingleton> DataSingletons { get; set; }
         public DbSet<DataCompKey> DataCompKeys { get; set; }
-        
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

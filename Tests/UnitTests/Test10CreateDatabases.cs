@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: Test10CreateDatabases.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -15,12 +18,10 @@ using Ef6TestDbContext;
 using NUnit.Framework;
 using Tests.Helpers;
 
-
 namespace Tests.UnitTests
 {
     public class Test10CreateDatabases
     {
-
         [Test]
         public void Test01CheckDatabaseString()
         {
@@ -94,6 +95,5 @@ namespace Tests.UnitTests
             ex.Message.ShouldEqual(
                 "You attempted to wipe the main database that your DbContext points to. To do this you must set the second parameter to this method to true.");
         }
-
     }
 }

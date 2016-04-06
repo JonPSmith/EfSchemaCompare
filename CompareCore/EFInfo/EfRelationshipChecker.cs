@@ -2,15 +2,17 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: EfRelationshipChecker.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using CompareCore.SqlInfo;
 using CompareCore.Utils;
 using GenericLibsBase;
@@ -20,11 +22,11 @@ namespace CompareCore.EFInfo
 {
     public class EfRelationshipChecker
     {
-        private readonly Dictionary<Type, EfTableInfo> _efInfosDict;
-        private readonly Dictionary<string, SqlTableInfo> _sqlInfoDict;
         private readonly SqlAllInfo _allSqlInfo;
-        private readonly Dictionary<string, SqlTableInfo> _potentialManyToManyTablesDict;
+        private readonly Dictionary<Type, EfTableInfo> _efInfosDict;
         private readonly List<Tuple<string, List<string>>> _foreignKeysGroupByParentTableName;
+        private readonly Dictionary<string, SqlTableInfo> _potentialManyToManyTablesDict;
+        private readonly Dictionary<string, SqlTableInfo> _sqlInfoDict;
 
         public EfRelationshipChecker(IEnumerable<EfTableInfo> efInfos, 
             SqlAllInfo allSqlInfo,

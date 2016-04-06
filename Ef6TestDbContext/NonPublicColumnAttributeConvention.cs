@@ -1,5 +1,15 @@
-﻿// =====================================================
+﻿#region licence
+// =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
+// Filename: NonPublicColumnAttributeConvention.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
+// =====================================================
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +27,6 @@ namespace Ef6TestDbContext
     /// </summary>
     public sealed class NonPublicColumnAttributeConvention : Convention
     {
-
         public NonPublicColumnAttributeConvention()
         {
             Types().Having(NonPublicProperties)

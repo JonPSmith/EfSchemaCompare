@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: DataTop.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -16,7 +19,6 @@ namespace EfPocoClasses.Relationships
 {
     public class DataTop
     {
-
         public int DataTopId { get; set; }
 
         [MaxLength(25)]
@@ -46,6 +48,6 @@ namespace EfPocoClasses.Relationships
 
         public ICollection<DataManyChildren> ManyChildren { get; set; }
 
-        public ICollection<DataManyCompKey> ManyCompKeys { get; set; } 
+        public ICollection<DataManyCompKey> ManyCompKeys { get; set; }
     }
 }

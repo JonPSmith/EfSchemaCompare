@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: TypeConverter.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -14,33 +17,6 @@ namespace CompareCore.Utils
 {
     public static class TypeConverter
     {
-        //with thanks to jared.g - see http://stackoverflow.com/questions/1058322/anybody-got-a-c-sharp-function-that-maps-the-sql-datatype-of-a-column-to-its-clr
-
-        private class TypeLenMul
-        {
-            /// <summary>
-            /// This is the type that the sql type maps to
-            /// </summary>
-            public Type ClrType { get; private set; }
-
-            /// <summary>
-            /// If EF has a length of null then this is the default length
-            /// </summary>
-            public int DefaultLength { get; private set; }
-
-            /// <summary>
-            /// If true then the EF length needs to be multipled by 2 to get the sql length
-            /// </summary>
-            public bool MultiplyBy2 { get; private set; }
-
-            public TypeLenMul(Type clrType, int defaultLength, bool multiplyBy2)
-            {
-                ClrType = clrType;
-                DefaultLength = defaultLength;
-                MultiplyBy2 = multiplyBy2;
-            }
-        }
-
         /// <summary>
         /// The dictionary contains:
         /// a) The CLR type for the sql type
@@ -80,7 +56,7 @@ namespace CompareCore.Utils
             {"varbinary", new TypeLenMul( typeof (Byte[]), 8000, false)},
             {"varchar", new TypeLenMul( typeof (String), 8000, false)}
         };
-        
+
         public static Type SqlToClrType(this string sqlType, bool isNullable)
         {
             TypeLenMul dictValue = null;
@@ -132,6 +108,33 @@ namespace CompareCore.Utils
                 throw new TypeLoadException(string.Format("Can not load CLR Type from {0}", sqlType));
 
             return dictValue.MultiplyBy2;
+        }
+
+        //with thanks to jared.g - see http://stackoverflow.com/questions/1058322/anybody-got-a-c-sharp-function-that-maps-the-sql-datatype-of-a-column-to-its-clr
+
+        private class TypeLenMul
+        {
+            public TypeLenMul(Type clrType, int defaultLength, bool multiplyBy2)
+            {
+                ClrType = clrType;
+                DefaultLength = defaultLength;
+                MultiplyBy2 = multiplyBy2;
+            }
+
+            /// <summary>
+            /// This is the type that the sql type maps to
+            /// </summary>
+            public Type ClrType { get; private set; }
+
+            /// <summary>
+            /// If EF has a length of null then this is the default length
+            /// </summary>
+            public int DefaultLength { get; private set; }
+
+            /// <summary>
+            /// If true then the EF length needs to be multipled by 2 to get the sql length
+            /// </summary>
+            public bool MultiplyBy2 { get; private set; }
         }
     }
 }

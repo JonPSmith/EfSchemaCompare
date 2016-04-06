@@ -1,13 +1,15 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test25SqlTableInfoRelationships.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test24SqlTableInfoRelationships.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -19,10 +21,10 @@ namespace Tests.UnitTests
 {
     public class Test24SqlTableInfoRelationships
     {
+        private IList<SqlForeignKey> _sqlForeignKeys;
 
         private IList<SqlTableInfo> _sqlInfos;
-        private IList<SqlForeignKey> _sqlForeignKeys;
-                   
+
         [TestFixtureSetUp]
         public void FixtureSetup()
         {

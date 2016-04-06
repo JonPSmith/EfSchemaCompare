@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: EFColumnInfo.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -19,26 +22,6 @@ namespace CompareCore.EFInfo
 {
     public class EfColumnInfo
     {
-
-        public string SqlColumnName { get; private set; }
-
-        public string SqlTypeName { get; private set; }
-
-        public string ClrColumName { get; private set; }
-
-        public Type ClrColumnType { get; private set; }
-
-        public bool IsPrimaryKey { get; private set; }
-
-        public int PrimaryKeyOrder { get; private set; }
-
-        public bool IsNullable { get; private set; }
-
-        /// <summary>
-        /// This holds the maxlength in the sql format
-        /// </summary>
-        public int MaxLength { get; private set; }
-
         //used by json
         [JsonConstructor]
         public EfColumnInfo(string sqlColumnName, string sqlTypeName, string clrColumName, Type clrColumnType, bool isPrimaryKey, int primaryKeyOrder, bool isNullable, int maxLength)
@@ -75,6 +58,25 @@ namespace CompareCore.EFInfo
                 ? ((byte)precision).GetLengthFromPrecision()
                 : SqlTypeName.GetSqlMaxLengthFromEfMaxLength(maxLength);
         }
+
+        public string SqlColumnName { get; private set; }
+
+        public string SqlTypeName { get; private set; }
+
+        public string ClrColumName { get; private set; }
+
+        public Type ClrColumnType { get; private set; }
+
+        public bool IsPrimaryKey { get; private set; }
+
+        public int PrimaryKeyOrder { get; private set; }
+
+        public bool IsNullable { get; private set; }
+
+        /// <summary>
+        /// This holds the maxlength in the sql format
+        /// </summary>
+        public int MaxLength { get; private set; }
 
         public override string ToString()
         {

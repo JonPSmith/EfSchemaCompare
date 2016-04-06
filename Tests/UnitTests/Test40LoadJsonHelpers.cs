@@ -2,12 +2,14 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: Test40LoadJsonHelpers.cs
-// Date Created: 2015/12/03
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using CompareCore.EFInfo;

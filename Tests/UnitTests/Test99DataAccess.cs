@@ -2,15 +2,18 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: Test99DataAccess.cs
-// Date Created: 2015/11/04
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
 using System.Collections.ObjectModel;
+using Ef6TestDbContext;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Ef6TestDbContext;
 
 namespace Tests.UnitTests
 {
@@ -42,6 +45,6 @@ namespace Tests.UnitTests
                 //VERIFY
             }
 
-        } 
+        }
     }
 }

@@ -1,28 +1,29 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test30EfTableInfo.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test34EfTableInfoRelationships.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.InternalEf6;
+using Ef6TestDbContext;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Ef6TestDbContext;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
     public class Test34EfTableInfoRelationships
     {
-
         private IList<EfTableInfo> _efInfos;
 
         [TestFixtureSetUp]

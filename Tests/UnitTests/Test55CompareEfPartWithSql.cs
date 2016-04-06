@@ -1,24 +1,26 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test60CompareSqlAndSql.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test55CompareEfPartWithSql.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
 using Ef6Compare;
-using EfPocoClasses.Relationships;
-using NUnit.Framework;
 using Ef6TestDbContext;
+using EfPocoClasses.Relationships;
 using GenericLibsBase;
+using NUnit.Framework;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
     public class Test55CompareEfPartWithSql
     {
-
         //------------------------------------------------------
         //test each sub-DbContext on its own
 
@@ -202,6 +204,5 @@ namespace Tests.UnitTests
                 status.GetAllErrors().ShouldEqual("Missing Table: The SQL database does not contain a table called [dbo].[DataPublicPrivate]. Needed by EF class DataPublicPrivate.");
             }
         }
-
     }
 }

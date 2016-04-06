@@ -1,9 +1,14 @@
-﻿// =====================================================
+﻿#region licence
+// =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: Ef6CompareParts.cs
-// Date Created: 2016/01/30
-// © Copyright Selective Analytics 2016. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
+#endregion
 
 using System;
 using System.Collections.Generic;
@@ -20,18 +25,18 @@ namespace Ef6Compare.InternalEf6
     internal class Ef6CompareParts
     {
         private readonly string _sqlTableNamesToIgnore;
-        private string _sqlDbRefString;
 
         private SqlAllInfo _allSqlInfo;
-        private Dictionary<string, SqlTableInfo> _sqlInfoDict;
         private EfCompare _comparer;
-
-        public bool CompareStartCalled {  get { return _allSqlInfo != null; } }
+        private string _sqlDbRefString;
+        private Dictionary<string, SqlTableInfo> _sqlInfoDict;
 
         public Ef6CompareParts(string sqlTableNamesToIgnore)
         {
             _sqlTableNamesToIgnore = sqlTableNamesToIgnore;
         }
+
+        public bool CompareStartCalled {  get { return _allSqlInfo != null; } }
 
 
         public void CompareStart(string sqlDbRefString, string sqlConnectionString)

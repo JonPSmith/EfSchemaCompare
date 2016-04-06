@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: TimerToConsole.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -15,11 +18,10 @@ namespace Tests.Helpers
 {
     class TimerToConsole : IDisposable
     {
-
-        private readonly Stopwatch _timer;
-
         private readonly string _message;
         private readonly int _numTimes;
+
+        private readonly Stopwatch _timer;
 
         public TimerToConsole(string message, int numTimes = 0)
         {

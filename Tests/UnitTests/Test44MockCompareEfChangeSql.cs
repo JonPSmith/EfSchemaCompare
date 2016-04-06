@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: Test44MockCompareEfChangeSql.cs
-// Date Created: 2015/12/03
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -289,25 +292,26 @@ namespace Tests.UnitTests
             status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
         }
 
-        //-------------------------------------------
-        //Indexes
-
-        //!!NOT IMPLEMENTED YET
-
-        //[Test]
-        //public void Test30CompareMockDataChangeIndexTableNameOk()
-        //{
-        //    //SETUP
-        //    var comparer = new EfCompare("SqlRefString","");
-        //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
-        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "TableName");
-
-        //    //EXECUTE
-        //    var status = comparer.CompareEfWithSql(efData, sqlData);
+        //    status.GetAllErrors().ShouldEqual("Missing Index: The 'RefUnitTest' SQL database has an index [dbo].[DataChild].DataTopId: (not primary key, not clustered, not unique), which is missing in the 'ToBeCheckUnitTest' database.", status.GetAllErrors());
+        //    status.ShouldBeValid(false);
 
         //    //VERIFY
-        //    status.ShouldBeValid(false);
-        //    status.GetAllErrors().ShouldEqual("Missing Index: The 'RefUnitTest' SQL database has an index [dbo].[DataChild].DataTopId: (not primary key, not clustered, not unique), which is missing in the 'ToBeCheckUnitTest' database.", status.GetAllErrors());
+        //    var status = comparer.CompareEfWithSql(efData, sqlData);
+
+        //    //EXECUTE
+        //    var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "BadName", "Indexes", 0, "TableName");
+        //    var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+        //    var comparer = new EfCompare("SqlRefString","");
+        //    //SETUP
+        //{
+        //public void Test30CompareMockDataChangeIndexTableNameOk()
+
+        //[Test]
+
+        //!!NOT IMPLEMENTED YET
+        //Indexes
+
+        //-------------------------------------------
         //    string.Join(",", status.Warnings).ShouldEqual("Warning: The 'ToBeCheckUnitTest' database has an index [dbo].[BadName].DataTopId: (not primary key, not clustered, not unique), which the 'RefUnitTest' database did not have.", string.Join(",", status.Warnings));
         //}
 

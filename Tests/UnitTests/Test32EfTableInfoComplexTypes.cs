@@ -1,29 +1,30 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test30EfTableInfo.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test32EfTableInfoComplexTypes.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.InternalEf6;
-using EfPocoClasses.Relationships;
-using NUnit.Framework;
 using Ef6TestDbContext;
 using EfPocoClasses.ComplexTypes;
+using EfPocoClasses.Relationships;
+using NUnit.Framework;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
     public class Test32EfTableInfoComplexTypes
     {
-
         private ICollection<EfTableInfo> _efInfos;
 
         [TestFixtureSetUp]
@@ -75,6 +76,5 @@ namespace Tests.UnitTests
             efInfo.ShouldNotEqualNull();
             efInfo.RelationshipCols.Count().ShouldEqual(0);
         }
-
     }
 }

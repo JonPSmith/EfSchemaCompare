@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: Test15SqlCommands.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -17,7 +20,6 @@ namespace Tests.UnitTests
 {
     public class Test15SqlCommands
     {
-
         [Test]
         public void Test01SqlTableAndColumnDataOk()
         {
@@ -68,7 +70,6 @@ namespace Tests.UnitTests
 
             //VERIFY
             result.Count.ShouldBeGreaterThan(8);
-        }  
-    
+        }
     }
 }

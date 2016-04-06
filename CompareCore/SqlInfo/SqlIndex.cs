@@ -1,9 +1,12 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: SqlIndexe.cs
-// Date Created: 2015/12/02
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: SqlIndex.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -18,8 +21,8 @@ namespace CompareCore.SqlInfo
 {
     public class SqlIndex
     {
-        public string SchemaName { get; private set; } 
-        public string TableName	 { get; private set; } 
+        public string SchemaName { get; private set; }
+        public string TableName	 { get; private set; }
         public string ColumnName { get; private set; }
         public string IndexName { get; private set; }
         public bool IsPrimaryIndex { get; private set; }

@@ -2,13 +2,15 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: FromToRelationship.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
 using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
 
 [assembly: InternalsVisibleTo("Tests")]
 
@@ -19,11 +21,6 @@ namespace CompareCore.EFInfo
 
     public class FromToRelationship
     {
-        public EfRelationshipTypes FromMultiplicity { get; private set; }
-        public bool FromIsCascadeDelete { get; private set; }
-        public EfRelationshipTypes ToMultiplicity { get; private set; }
-        public bool ToIsCascadeDelete { get; private set; }
-
         public FromToRelationship(EfRelationshipTypes fromMultiplicity, bool fromIsCascadeDelete, EfRelationshipTypes toMultiplicity, bool toIsCascadeDelete)
         {
             FromMultiplicity = fromMultiplicity;
@@ -31,6 +28,11 @@ namespace CompareCore.EFInfo
             ToMultiplicity = toMultiplicity;
             ToIsCascadeDelete = toIsCascadeDelete;
         }
+
+        public EfRelationshipTypes FromMultiplicity { get; private set; }
+        public bool FromIsCascadeDelete { get; private set; }
+        public EfRelationshipTypes ToMultiplicity { get; private set; }
+        public bool ToIsCascadeDelete { get; private set; }
 
         public override string ToString()
         {

@@ -1,5 +1,16 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿#region licence
+// =====================================================
+// EfSchemeCompare Project - project to compare EF schema to SQL schema
+// Filename: AssemblyInfo.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
+// =====================================================
+#endregion
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 

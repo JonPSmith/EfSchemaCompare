@@ -2,11 +2,13 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: DataIntDouble.cs
-// Date Created: 2015/12/01
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
-
 namespace EfPocoClasses.DataTypes
 {
     public class DataIntDouble
@@ -24,6 +26,5 @@ namespace EfPocoClasses.DataTypes
         public double DataDouble { get; set; }
         public decimal DataDecimalSmallPrecision { get; set; }
         public decimal DataDecimalNormal { get; set; }
-
     }
 }

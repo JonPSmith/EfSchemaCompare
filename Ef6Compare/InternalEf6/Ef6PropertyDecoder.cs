@@ -1,9 +1,12 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: EF6PropertyDecoder.cs
-// Date Created: 2015/11/17
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Ef6PropertyDecoder.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -12,16 +15,15 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
-using System.Reflection;
 using CompareCore.EFInfo;
 
 namespace Ef6Compare.InternalEf6
 {
     internal class Ef6PropertyDecoder
     {
+        private readonly Func<string, Type> _getClrTypeFromFullName;
         private readonly EntitySetMapping _mapping;
         private readonly EntitySet _tableEntitySet;
-        private readonly Func<string, Type> _getClrTypeFromFullName;
 
         public Ef6PropertyDecoder(EntitySetMapping mapping, EntitySet tableEntitySet, Func<string,Type> getClrTypeFromFullName)
         {

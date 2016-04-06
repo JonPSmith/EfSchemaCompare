@@ -1,9 +1,12 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test25SqlTableInfoRelationships.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test20SqlTableInfoDataTypes.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -20,9 +23,8 @@ namespace Tests.UnitTests
 {
     public class Test20SqlTableInfoDataTypes
     {
-
         private ICollection<SqlTableInfo> _sqlInfos;
-                   
+
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
@@ -155,7 +157,5 @@ namespace Tests.UnitTests
             list[i++].ToString().ShouldEqual("ColumnName: NormalEnum, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("ColumnName: LongEnum, SqlTypeName: bigint, IsPrimaryKey: False, IsNullable: False, MaxLength: 8");
         }
-
- 
     }
 }

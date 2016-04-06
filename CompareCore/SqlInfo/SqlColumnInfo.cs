@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: SqlColumnInfo.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -15,18 +18,6 @@ namespace CompareCore.SqlInfo
 {
     public class SqlColumnInfo
     {
-        public string ColumnName { get; private set; }
-
-        public string SqlTypeName { get; private set; }
-
-        public bool IsPrimaryKey { get; private set; }
-
-        public int PrimaryKeyOrder { get; private set; }
-
-        public bool IsNullable { get; private set; }
-
-        public int MaxLength { get; private set; }
-
         internal SqlColumnInfo()
         {
         }
@@ -43,6 +34,18 @@ namespace CompareCore.SqlInfo
             IsNullable = isNullable;
             MaxLength = maxLength;
         }
+
+        public string ColumnName { get; private set; }
+
+        public string SqlTypeName { get; private set; }
+
+        public bool IsPrimaryKey { get; private set; }
+
+        public int PrimaryKeyOrder { get; private set; }
+
+        public bool IsNullable { get; private set; }
+
+        public int MaxLength { get; private set; }
 
         public override string ToString()
         {

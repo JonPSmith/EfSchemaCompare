@@ -1,25 +1,27 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test60CompareSqlAndSql.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test50CompareEfFullWithSql.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
 using System;
 using CompareCore;
 using Ef6Compare;
+using Ef6TestDbContext;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Ef6TestDbContext;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
     public class Test50CompareEfFullWithSql
     {
-
         [Test]
         public void Test02CompareEfWithSqlTOk()
         {
@@ -53,7 +55,7 @@ namespace Tests.UnitTests
                 status.Warnings.Count.ShouldEqual(0, string.Join("\n", status.Warnings));
             }
         }
-    
+
 
         //----------------------------------------------------------------
         //errors

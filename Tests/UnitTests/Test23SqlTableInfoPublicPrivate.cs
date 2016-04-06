@@ -1,13 +1,15 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test25SqlTableInfoRelationships.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test23SqlTableInfoPublicPrivate.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -19,9 +21,8 @@ namespace Tests.UnitTests
 {
     public class Test23SqlTableInfoPublicPrivate
     {
-
         private ICollection<SqlTableInfo> _sqlInfos;
-                   
+
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
@@ -59,6 +60,5 @@ namespace Tests.UnitTests
             list[i++].ToString().ShouldEqual("ColumnName: ProtectedInternalPrivateSetInt, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("ColumnName: PrivateInt, SqlTypeName: int, IsPrimaryKey: False, IsNullable: False, MaxLength: 4");
             }
-
-        }
+    }
     }

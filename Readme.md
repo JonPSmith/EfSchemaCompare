@@ -8,14 +8,6 @@ schema contains. This is useful if you want to:
 1. Take over the creation, definition or migration of the database.
 2. You want to build a EF model that works with an existing database.
 
-# NOTE: This project is NOT for general release
-
-1. It needs some more examples to show people how it works, especially if it is only
-distributed as a NuGet package.
-2. It is not a public domain project! I am reserving the licence on the code for now.
-3. It has a few limitations. see [Current Limitations](#Current-limitations) section.
-
-
 ## Why I built this project?
 I was working on an e-commerce web site and was thinking through the problems of applying database migrations
 to a production site. My concern was that EF's built-in

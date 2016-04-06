@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: SqlAllInfo.cs
-// Date Created: 2015/11/02
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -17,12 +20,6 @@ namespace CompareCore.SqlInfo
 {
     public class SqlAllInfo
     {
-        public IList<SqlTableInfo> TableInfos { get; private set; } 
-
-        public IList<SqlForeignKey> ForeignKeys { get; private set; }
-
-        public IList<SqlIndex> Indexes { get; private set; }
-
         internal SqlAllInfo() { }
 
         private SqlAllInfo(IList<SqlTableInfo> tableInfos, IList<SqlForeignKey> foreignKeys, IList<SqlIndex> indexes)
@@ -31,6 +28,12 @@ namespace CompareCore.SqlInfo
             ForeignKeys = foreignKeys;
             Indexes = indexes;
         }
+
+        public IList<SqlTableInfo> TableInfos { get; private set; }
+
+        public IList<SqlForeignKey> ForeignKeys { get; private set; }
+
+        public IList<SqlIndex> Indexes { get; private set; }
 
         public static SqlAllInfo SqlAllInfoFactory(string connection)
         {

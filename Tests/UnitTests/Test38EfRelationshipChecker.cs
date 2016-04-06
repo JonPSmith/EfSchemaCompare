@@ -1,9 +1,12 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test34EfTableInfoRelationships.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test38EfRelationshipChecker.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -13,19 +16,19 @@ using System.Reflection;
 using CompareCore.EFInfo;
 using CompareCore.SqlInfo;
 using Ef6Compare.InternalEf6;
+using Ef6TestDbContext;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Ef6TestDbContext;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
     public class Test38EfRelationshipChecker
     {
+        private EfRelationshipChecker _checker;
 
         private IList<EfTableInfo> _efInfos;
-        private EfRelationshipChecker _checker;
-            
+
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
@@ -189,8 +192,5 @@ namespace Tests.UnitTests
             status.ShouldBeValid();
             status.Result.ShouldEqual("[dbo].[DataManyCompKeyDataTop]");
         }
-
-
-
     }
 }

@@ -2,8 +2,11 @@
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: SqlCompare.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -19,9 +22,9 @@ namespace CompareCore
     public class SqlCompare
     {
         private readonly string _refDatabaseName;
-        private readonly string _toBeCheckDatabaseName;
-        private readonly IList<string> _tablesToIgnore;
         private readonly bool _showMismatchedIndexsAsErrors;
+        private readonly IList<string> _tablesToIgnore;
+        private readonly string _toBeCheckDatabaseName;
 
         public SqlCompare(string refDatabaseName, string toBeCheckDatabaseName, string sqlTableNamesToIgnore, bool showMismatchedIndexsAsErrors)
         {

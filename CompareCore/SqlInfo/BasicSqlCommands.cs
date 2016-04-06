@@ -1,9 +1,12 @@
 ﻿#region licence
 // =====================================================
-// Label Project - Application to allow labels to be created and sold online
+// EfSchemeCompare Project - project to compare EF schema to SQL schema
 // Filename: BasicSqlCommands.cs
-// Date Created: 2015/10/29
-// © Copyright Selective Analytics 2015. All rights reserved
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
@@ -64,6 +67,5 @@ namespace CompareCore.SqlInfo
                 }
             }
         }
-
     }
 }

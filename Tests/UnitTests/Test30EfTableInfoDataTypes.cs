@@ -1,29 +1,30 @@
 ﻿#region licence
 // =====================================================
 // EfSchemeCompare Project - project to compare EF schema to SQL schema
-// Filename: Test30EfTableInfo.cs
-// Date Created: 2015/10/31
-// © Copyright Selective Analytics 2015. All rights reserved
+// Filename: Test30EfTableInfoDataTypes.cs
+// Date Created: 2016/04/06
+// 
+// Under the MIT License (MIT)
+// 
+// Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CompareCore.EFInfo;
 using Ef6Compare.InternalEf6;
+using Ef6TestDbContext;
 using EfPocoClasses.DataTypes;
 using EfPocoClasses.Relationships;
 using NUnit.Framework;
-using Ef6TestDbContext;
 using Tests.Helpers;
 
 namespace Tests.UnitTests
 {
     public class Test30EfTableInfoDataTypes
     {
-
         private ICollection<EfTableInfo> _efInfos;
 
         [TestFixtureSetUp]
@@ -166,7 +167,5 @@ namespace Tests.UnitTests
             list[i++].ToString().ShouldEqual("SqlColumnName: NormalEnum, SqlTypeName: int, ClrColumName: NormalEnum, ClrColumnType: EfPocoClasses.DataTypes.NormalEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
             list[i++].ToString().ShouldEqual("SqlColumnName: LongEnum, SqlTypeName: bigint, ClrColumName: LongEnum, ClrColumnType: EfPocoClasses.DataTypes.LongEnum, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 8");
         }
-
-
     }
 }
