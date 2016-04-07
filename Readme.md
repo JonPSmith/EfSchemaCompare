@@ -198,7 +198,7 @@ status.Combine(comparer.CompareEfPartFinalChecks());
 #### Limitations on CompareEfParts
 
 The only limitation is that the standard calls shown above assume that there is no overlap 
-of the classes/tables that each DbContext references, e.g. DbPart1 and DbPart2 cannot 
+of the classes/tables that each DbContext references, e.g. DbContext1 and DbContext2 cannot 
 both have an EF data class called MyClass. This is because one reference to a class by one
 DbContext removes it from the list of available tables, so the second reference will fail.
 
