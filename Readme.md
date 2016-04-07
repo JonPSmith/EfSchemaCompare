@@ -173,7 +173,7 @@ This works in three stages:
 2. **Compare**: call `CompareEfPartWithDb(db)` (or other variants) for each DbContext
 3. **Finalise**: call `CompareEfPartFinalChecks()` to do a final check for unused tables.
 
-Below is an example where two DbContexts, DbPart1 and DbPart2, cover the same database.
+Below is an example where two DbContexts, DbContext1 and DbContext2, cover the same database.
 In this example I combine all the errors so I can check them at the end, but you can
 check each one as you go if you like.
 
