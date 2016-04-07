@@ -33,7 +33,9 @@ on my own blog site which covers the same area, but with a bit more detail.
 # Current limitations
 
 1. CompareSqlToSql does not check on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
-2. CompareSqlToSql does not check the [default contraint](http://www.w3schools.com/sql/sql_default.asp) on columns. 
+*Not hard to add, but I don't need it at the moment. If you want it then happy for you to do a PR*.
+2. CompareSqlToSql does not check the [default contraint](http://www.w3schools.com/sql/sql_default.asp) on columns.
+*Again, not hard to add but I haven't had a problem with this, although one of the testers has. Again, PR if you need it.*
 3. Minor point, but EF 6 create two indexes on one end of a ZeroOrOne to Many relationships.
 Currently I just report on what indexes EF has, but I'm not sure having both a clustered and non-clustered
 index on the same column is necessary. *Let me know if I'm wrong on that!*
@@ -87,16 +89,16 @@ the `Warnings` property, which is a `IReadOnlyList<string>`
 Warnings are differences between the two databases which EfSchemaCompare believes should not
 cause problems to EF. Typically they are:
 - Extra tables in SQL that EF does not refer to - these are normally safe.
-- Columns in a SQL table that EF does not refer to (in some cases these can cause problems).
+- Columns in a SQL table that EF does not refer to (in some cases these can cause problems, especially on create/update).
 - The size of a string (varchar, nvarchar) or other type with a length is at max in SQL but not at max in EF.
 *This can happen when you have a `[MaxLength(nn)]` setting on an EF column, but the size is over the 
 point where SQL makes it max length.*
-- When doing a SQL-to- SQL compare then tndexes in the second, **database to be checked**,
+- When doing a SQL-to- SQL compare then indexes in the second, **database to be checked**,
 but not in the **reference database**.
 
 Later you will also see that
 you can relegate differences in Indexes from errors to warnings, as EF adds lots of Indexes.
-(see [`CompareSqlSql` ctor](#CompareSqlSql-ctor))
+(see [`CompareSqlSql` ctor](#2-comparesqlsql))
 
 However, if you want check for an **exact** match between two databases you should check that
 `.IsValid` is true and `.HasWarnings` is false.
