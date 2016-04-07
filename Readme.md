@@ -182,14 +182,14 @@ check each one as you go if you like.
 var comparer = new CompareEfSql();
 ISuccessOrErrors status;
 
-using (var db = new DbPart1())
+using (var db = new DbContext1())
 {
     comparer.CompareEfPartStart(db);
-    status = comparer.CompareEfPartWithDb<DataTop>(db);
+    status = comparer.CompareEfPartWithDb(db);
 }
-using (var db = new DbPart1())
+using (var db = new DbContext2())
 {
-    status.Combine(comparer.CompareEfPartWithDb<DataTop>(db));
+    status.Combine(comparer.CompareEfPartWithDb(db));
 }
 status.Combine(comparer.CompareEfPartFinalChecks());
 //Now check the errors and warnings
