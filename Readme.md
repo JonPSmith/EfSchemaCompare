@@ -8,6 +8,10 @@ schema contains. This is useful if you want to:
 1. Take over the creation, definition or migration of the database.
 2. You want to build a EF model that works with an existing database.
 
+You can read a quick introduction to EfSchemaCompare
+[here](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-4-release-of-efschemacompare/)
+while this file contains the full documentation of all the methods and settings.
+
 **EfSchemaCompare is an open-source project 
 [(MIT licence)](https://github.com/JonPSmith/EfSchemaCompare/blob/master/licence.txt)
 and is available on NuGet as
@@ -21,6 +25,8 @@ approach is fine for development and some projects, but in a production environm
 where an error during a database migration could cost you some serious down time,
 I needed a better approach.
 
+You can see how I used EfSchemaCompare in my own application
+[in this article](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-4-release-of-efschemacompare/).
 I wrote a long article called
 ['Deploying an Entity Framework Database into Production'](https://www.simple-talk.com/dotnet/.net-framework/deploying-an-entity-framework-database-into-production/)
 where I describe why and how I build SchemaCompareDb. This is a good article to read to get an overview
@@ -33,9 +39,11 @@ on my own blog site which covers the same area, but with a bit more detail.
 # Current limitations
 
 1. CompareSqlToSql does not check on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
-*Not hard to add, but I don't need it at the moment. If you want it then happy for you to do a PR*.
+*Not hard to add, but I don't need it at the moment. 
+If you want it then happy for you to do a Pull Request and add it yourself.*
 2. CompareSqlToSql does not check the [default contraint](http://www.w3schools.com/sql/sql_default.asp) on columns.
-*Again, not hard to add but I haven't had a problem with this, although one of the testers has. Again, PR if you need it.*
+*Again, not hard to add but I haven't had a problem with this, although one of the testers has. 
+Again, Pull request if you want to add that.*
 3. Minor point, but EF 6 create two indexes on one end of a ZeroOrOne to Many relationships.
 Currently I just report on what indexes EF has, but I'm not sure having both a clustered and non-clustered
 index on the same column is necessary. *Let me know if I'm wrong on that!*
