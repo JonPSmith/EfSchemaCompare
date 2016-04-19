@@ -65,10 +65,15 @@ There are three main ways of comparing EF and databases:
 2. **CompareEfGeneratedSqlToSql**: Compare a database created by EF against an actual SQL database.
 3. **CompareSqlToSql**: Compare one SQL database against another SQL database.
 
-I use all three: The first gives the best error messages but cannot check all possible combinations (in EF6 anyway).
-The second covers 100% of the EF differences, but the errors are more SQL-centric so sometimes hard to understand.
+I use all three (see 
+[this article for examples](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-4-release-of-efschemacompare/)):
+The first gives the best error messages but cannot check all possible combinations (in EF6 anyway).
+The second covers 100% of the EF differences, but the errors are more SQL-centric so sometimes harder
+to relate to the EF code.
 The last one, CompareSqlToSql, is really quick and useful to check that all of your databases are at
 the same level.
+
+
 
 ## The difference between Errors and Warnings
 
