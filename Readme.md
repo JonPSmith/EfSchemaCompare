@@ -1,20 +1,22 @@
 # EfSchemaCompare
 
-**EfSchemaCompare** is useful if you want to either:
+**EfSchemaCompare** is useful if you using Microsoft's 
+[Entity Framework](https://msdn.microsoft.com/en-gb/data/ef.aspx) (EF) and want to either:
 
 1. Take over the creation, definition or migration of the database.
 2. You want to build a EF model that works with an existing database.
 
 If you are already doing this, or want to move away from EF's 
 [own database mirgrations](https://msdn.microsoft.com/en-gb/data/jj591621) 
-then you will find the SchemaCompareDb package useful.
+then you will find the SchemaCompareDb package useful for checking everything is OK.
 
-It provides a set of tests that you can employ in your own Unit Tests to check
-that your changes to the database reflects what Microsoft's
-[Entity Framework](https://msdn.microsoft.com/en-gb/data/ef.aspx) (EF)
-thinks the database should look like. It can check both your development database,
-**and more importantly your production database**, and give you useful error messages on any 
-mismatch.
+**EfSchemaCompare** provides a way to check EF's internal metadata againts an actual SQL database. 
+The idea is you include these tests in your Unit Tests so that you get error messages when EF and
+your development database, **and more importantly your production databases**, are out of step.
+
+If you include a Unit Test of your production database using **EfSchemaCompare** 
+before deploying a new software update it could save you from potentially nasty 
+problem of forgetting to update your production database.
 
 
 ### Read an article about EfSchemaCompare [here](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-4-release-of-efschemacompare/).
@@ -110,7 +112,7 @@ However, if you want check for an **exact** match between two databases you shou
 The `CompareEfSql` class is used to compare EF's DbContext(s) againts a SQL database. 
 This catches 90% of issues and gives good, EF centric, error messages. It is slower than
 the `CompareSqlSql`, especially when calling the `CompareEfGeneratedSqlToSql` version, but
-the detail of this errors are worth having.
+the errors they produce provide superior feedback to where the mismatch is.
 
 `CompareEfSql` can work with a single DbContext that covers the whole of the database, or multiple
 DbContexts that cover different parts of the database.
