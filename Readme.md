@@ -1,21 +1,30 @@
 # EfSchemaCompare
 
-The SchemaCompareDb package is designed to compare what Microsoft's
-[Entity Framework](https://msdn.microsoft.com/en-gb/data/ef.aspx) (EF)
-thinks the database should look like against what an actual Microsoft SQL Server database
-schema contains. This is useful if you want to:
+**EfSchemaCompare** is useful if you want to either:
 
 1. Take over the creation, definition or migration of the database.
 2. You want to build a EF model that works with an existing database.
 
-You can read a quick introduction to EfSchemaCompare
-[here](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-4-release-of-efschemacompare/)
-while this file contains the full documentation of all the methods and settings.
+If you are already doing this, or want to move away from EF's 
+[own database mirgrations](https://msdn.microsoft.com/en-gb/data/jj591621) 
+then you will find the SchemaCompareDb package useful.
 
-**EfSchemaCompare is an open-source project 
-[(MIT licence)](https://github.com/JonPSmith/EfSchemaCompare/blob/master/licence.txt)
+It provides a set of tests that you can employ in your own Unit Tests to check
+that your changes to the database reflects what Microsoft's
+[Entity Framework](https://msdn.microsoft.com/en-gb/data/ef.aspx) (EF)
+thinks the database should look like. It can check both your development database,
+**and more importantly your production database**, and give you useful error messages on any 
+mismatch.
+
+
+### Read an article about EfSchemaCompare [here](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-4-release-of-efschemacompare/).
+
+The rest of this Readme file contains documentation of all the methods and settings.
+
+**EfSchemaCompare** is an open-source project 
+[(MIT licence)](https://github.com/JonPSmith/EfSchemaCompare/blob/master/licence.txt),  
 and is available on NuGet as
-[EfSchemaCompare.EF6](https://www.nuget.org/packages/EfSchemaCompare.EF6/)**
+**[EfSchemaCompare.EF6](https://www.nuget.org/packages/EfSchemaCompare.EF6/)**
 
 ## Why I built this project?
 I was working on an e-commerce web site and was thinking through the problems of applying database migrations
@@ -36,27 +45,6 @@ I have also have started a series on
 [database migrations](http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-1-applying-the-updates/)
 on my own blog site which covers the same area, but with a bit more detail.
 
-# Current limitations
-
-1. CompareSqlToSql does not check on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
-*Not hard to add, but I don't need it at the moment. 
-If you want it then happy for you to do a Pull Request and add it yourself.*
-2. CompareSqlToSql does not check the [default contraint](http://www.w3schools.com/sql/sql_default.asp) on columns.
-*Again, not hard to add but I haven't had a problem with this, although one of the testers has. 
-Again, Pull request if you want to add that.*
-3. Minor point, but EF 6 create two indexes on one end of a ZeroOrOne to Many relationships.
-Currently I just report on what indexes EF has, but I'm not sure having both a clustered and non-clustered
-index on the same column is necessary. *Let me know if I'm wrong on that!*
-5. SchemaCompareDb does not support the complex type-to-table mappings options.
-I found it is very difficult (impossible!) in EF6 to find that information in the EF model data.
-The list of complex type-to-table mappings NOT supported are:
-  * [table-per-type (TPT) inheritance](https://msdn.microsoft.com/en-us/data/jj618293) mapping.
-  * [table-per-hierarchy (TPH) inheritance](https://msdn.microsoft.com/en-us/data/jj618292) mapping.
-  * [Map an Entity to Multiple Tables](https://msdn.microsoft.com/en-us/data/jj715646).
-  * [Map Multiple Entities to One Table](https://msdn.microsoft.com/en-us/data/jj715645).
-4. Currently no support for [Entity Framework Core](https://github.com/aspnet/EntityFramework/wiki),
-previously known as EF7.
-
 # How to use SchemaCompareDb
 
 There are three main ways of comparing EF and databases:
@@ -72,8 +60,6 @@ The second covers 100% of the EF differences, but the errors are more SQL-centri
 to relate to the EF code.
 The last one, CompareSqlToSql, is really quick and useful to check that all of your databases are at
 the same level.
-
-
 
 ## The difference between Errors and Warnings
 
@@ -106,7 +92,7 @@ cause problems to EF. Typically they are:
 - The size of a string (varchar, nvarchar) or other type with a length is at max in SQL but not at max in EF.
 *This can happen when you have a `[MaxLength(nn)]` setting on an EF column, but the size is over the 
 point where SQL makes it max length.*
-- When doing a SQL-to- SQL compare then indexes in the second, **database to be checked**,
+- When doing a SQL-to-SQL compare then indexes in the second, **database to be checked**,
 but not in the **reference database**.
 
 Later you will also see that
@@ -319,4 +305,25 @@ I personally add the appSetting to my config file as that way I know it is done.
 
 Note: See this [useful documentation](http://www.entityframeworktutorial.net/code-first/turn-off-database-initialization-in-code-first.aspx)
 for more on null database Initializers.
+
+# Current limitations
+
+1. CompareSqlToSql does not check on [Stored Procedures](https://msdn.microsoft.com/en-us/data/jj593489) at all.
+*Not hard to add, but I don't need it at the moment. 
+If you want it then happy for you to do a Pull Request and add it yourself.*
+2. CompareSqlToSql does not check the [default contraint](http://www.w3schools.com/sql/sql_default.asp) on columns.
+*Again, not hard to add but I haven't had a problem with this, although one of the testers has. 
+Again, Pull request if you want to add that.*
+3. Minor point, but EF 6 create two indexes on one end of a ZeroOrOne to Many relationships.
+Currently I just report on what indexes EF has, but I'm not sure having both a clustered and non-clustered
+index on the same column is necessary. *Let me know if I'm wrong on that!*
+5. SchemaCompareDb does not support the complex type-to-table mappings options.
+I found it is very difficult (impossible!) in EF6 to find that information in the EF model data.
+The list of complex type-to-table mappings NOT supported are:
+  * [table-per-type (TPT) inheritance](https://msdn.microsoft.com/en-us/data/jj618293) mapping.
+  * [table-per-hierarchy (TPH) inheritance](https://msdn.microsoft.com/en-us/data/jj618292) mapping.
+  * [Map an Entity to Multiple Tables](https://msdn.microsoft.com/en-us/data/jj715646).
+  * [Map Multiple Entities to One Table](https://msdn.microsoft.com/en-us/data/jj715645).
+4. Currently no support for [Entity Framework Core](https://github.com/aspnet/EntityFramework/wiki),
+previously known as EF7.
 
