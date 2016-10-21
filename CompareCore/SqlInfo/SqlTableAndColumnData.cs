@@ -31,12 +31,13 @@ namespace CompareCore.SqlInfo
 
         public Int16 MaxLength { get; private set; }
 
+        public bool IsComputed { get; private set; }
+
         public override string ToString()
         {
-            return string.Format("[{0}].[{1}].{2}, Type: {3}, IsNullable: {4}, MaxLength: {5}", 
-                TableName, SchemaName, ColumnName, SqlTypeName, IsNullable, MaxLength);
+            return string.Format("[{0}].[{1}].{2}, Type: {3}, IsNullable: {4}, MaxLength: {5}, IsComputed: {6}", 
+                TableName, SchemaName, ColumnName, SqlTypeName, IsNullable, MaxLength, IsComputed);
         }
-
 
         public static IList<SqlTableAndColumnData> GetSqlTablesAndColumns(string connectionString)
         {
@@ -49,7 +50,8 @@ SCHEMA_NAME(t.schema_id) AS SchemaName,
 c.name AS ColumnName,
 types.name AS SqlTypeName,
 c.is_nullable AS IsNullable,
-c.max_length AS MaxLength
+c.max_length AS MaxLength,
+c.is_computed AS IsComputed
 FROM sys.tables AS t
 INNER JOIN sys.columns c ON t.OBJECT_ID = c.OBJECT_ID
 INNER JOIN sys.types types ON c.system_type_id = types.system_type_id 
@@ -75,7 +77,7 @@ ORDER BY SchemaName, TableName";
                         row.SqlTypeName = reader.GetString(i++);
                         row.IsNullable = reader.GetBoolean(i++); // reader[i++] as bool? ?? false;
                         row.MaxLength = reader.GetInt16(i++);
-
+                        row.IsComputed = reader.GetBoolean(i++);
                         result.Add(row);
                     }
                 }
