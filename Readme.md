@@ -7,7 +7,7 @@
 2. You want to build a EF model that works with an existing database.
 
 If you are already doing this, or want to move away from EF's 
-[own database mirgrations](https://msdn.microsoft.com/en-gb/data/jj591621) 
+[own database migrations](https://msdn.microsoft.com/en-gb/data/jj591621) 
 then you will find the SchemaCompareDb package useful for checking everything is OK.
 
 **EfSchemaCompare** provides a way to check EF's internal metadata againts an actual SQL database. 
