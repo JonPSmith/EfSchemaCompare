@@ -62,6 +62,16 @@
                 IsNullable: false,
                 MaxLength: 4,
             },
+            {
+                SqlColumnName: "MyUnicodeString",
+                SqlTypeName: "nvarchar",
+                ClrColumName: "MyUnicodeString",
+                ClrColumnType: "System.String",
+                IsPrimaryKey: false,
+                PrimaryKeyOrder: 0,
+                IsNullable: true,
+                MaxLength: 40,
+            },
         ],
         RelationshipCols: [
             {

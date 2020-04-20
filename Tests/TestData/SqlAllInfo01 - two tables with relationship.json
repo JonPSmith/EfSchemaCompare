@@ -50,6 +50,14 @@
                     IsNullable: false,
                     MaxLength: 4,
                 },
+                {
+                    ColumnName: "MyUnicodeString",
+                    SqlTypeName: "nvarchar",
+                    IsPrimaryKey: false,
+                    PrimaryKeyOrder: 0,
+                    IsNullable: true,
+                    MaxLength: 40,
+                },
             ]
         },
         {

@@ -145,7 +145,7 @@ namespace CompareCore
                status.AddSingleError(
                     "MaxLength: The  SQL {0}  column {1}.{2}, type {3}, length does not match EF. SQL length = {4}, EF length = {5}.",
                     _sqlDbRefString, combinedName, clrCol.SqlColumnName, clrCol.ClrColumnType,
-                    sqlCol.MaxLength, 
+                    sqlCol.SqlTypeName.EfLengthIdHalfThis() ? sqlCol.MaxLength / 2 : sqlCol.MaxLength,
                     sqlCol.SqlTypeName.EfLengthIdHalfThis() ? clrCol.MaxLength / 2 : clrCol.MaxLength);
             }
 

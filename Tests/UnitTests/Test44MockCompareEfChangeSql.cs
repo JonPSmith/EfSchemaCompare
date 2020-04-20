@@ -207,6 +207,24 @@ namespace Tests.UnitTests
             status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
         }
 
+        [Test]
+        public void Test17CompareMockDataChangeMaxLengthNvarcharOk()
+        {
+            //SETUP
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "20", "TableInfos", 1, "ColumnInfos", 3, "MaxLength");
+            var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
+
+            //EXECUTE
+            var status = comparer.CompareEfWithSql(efData, sqlData);
+
+            //VERIFY
+            status.ShouldBeValid(false);
+            status.GetAllErrors().ShouldEqual("MaxLength: The  SQL SqlRefString  column [dbo].[DataChild].MyUnicodeString, type System.String, length does not match EF. SQL length = 10, EF length = 20.", status.GetAllErrors());
+            status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
+        }
+
+
         //--------------------------------------------------
         //foreign key errors
 

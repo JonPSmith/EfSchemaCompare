@@ -50,7 +50,7 @@ namespace Tests.UnitTests
             //VERIFY
             sqlData.TableInfos.Count.ShouldEqual(5);
             sqlData.TableInfos[0].ToString().ShouldEqual("Name: dbo.DataTop, Columns: 2");
-            sqlData.TableInfos[1].ToString().ShouldEqual("Name: dbo.DataChild, Columns: 3");
+            sqlData.TableInfos[1].ToString().ShouldEqual("Name: dbo.DataChild, Columns: 4");
             sqlData.TableInfos[2].ToString().ShouldEqual("Name: dbo.AnotherTable, Columns: 2");
             sqlData.TableInfos[3].ToString().ShouldEqual("Name: dbo.DataTopToAnotherTable, Columns: 2");
             sqlData.TableInfos[4].ToString().ShouldEqual("Name: dbo.DataSingleton, Columns: 2");
@@ -127,7 +127,7 @@ namespace Tests.UnitTests
             //VERIFY
             efData.Count.ShouldEqual(4);
             efData[0].ToString().ShouldEqual("Name: dbo.DataTop, NormalCols: 2, Relationships: 0");
-            efData[1].ToString().ShouldEqual("Name: dbo.DataChild, NormalCols: 3, Relationships: 1");
+            efData[1].ToString().ShouldEqual("Name: dbo.DataChild, NormalCols: 4, Relationships: 1");
             efData[2].ToString().ShouldEqual("Name: dbo.AnotherTable, NormalCols: 2, Relationships: 1");
             efData[3].ToString().ShouldEqual("Name: dbo.DataSingleton, NormalCols: 2, Relationships: 1");
         }
@@ -167,10 +167,11 @@ namespace Tests.UnitTests
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
 
             //VERIFY
-            efData[1].NormalCols.Count.ShouldEqual(3);
+            efData[1].NormalCols.Count.ShouldEqual(4);
             efData[1].NormalCols[0].ToString().ShouldEqual("SqlColumnName: DataChildId, SqlTypeName: int, ClrColumName: DataChildId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
             efData[1].NormalCols[1].ToString().ShouldEqual("SqlColumnName: MyString, SqlTypeName: varchar, ClrColumName: MyString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 25");
             efData[1].NormalCols[2].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
+            efData[1].NormalCols[3].ToString().ShouldEqual("SqlColumnName: MyUnicodeString, SqlTypeName: nvarchar, ClrColumName: MyUnicodeString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 40");
         }
 
         [Test]
