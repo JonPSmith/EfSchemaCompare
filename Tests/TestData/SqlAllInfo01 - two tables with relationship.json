@@ -51,6 +51,72 @@
                     MaxLength: 4,
                 },
             ]
+        },
+        {
+            SchemaName: "dbo",
+            TableName: "AnotherTable",
+            ColumnInfos: [
+                {
+                    ColumnName: "AnotherTableId",
+                    SqlTypeName: "int",
+                    IsPrimaryKey: true,
+                    PrimaryKeyOrder: 1,
+                    IsNullable: false,
+                    MaxLength: 4,
+                },
+                {
+                    ColumnName: "MyString",
+                    SqlTypeName: "varchar",
+                    IsPrimaryKey: false,
+                    PrimaryKeyOrder: 0,
+                    IsNullable: true,
+                    MaxLength: 25,
+                }
+            ]
+        },
+        {
+            SchemaName: "dbo",
+            TableName: "DataTopToAnotherTable",
+            ColumnInfos: [
+                {
+                    ColumnName: "DataTopId",
+                    SqlTypeName: "int",
+                    IsPrimaryKey: true,
+                    PrimaryKeyOrder: 0,
+                    IsNullable: false,
+                    MaxLength: 4,
+                },
+                {
+                    ColumnName: "AnotherTableId",
+                    SqlTypeName: "int",
+                    IsPrimaryKey: true,
+                    PrimaryKeyOrder: 1,
+                    IsNullable: false,
+                    MaxLength: 4,
+                }
+            ]
+        },
+        {
+            SchemaName: "dbo",
+            TableName: "DataSingleton",
+            ColumnInfos: [
+                {
+                    ColumnName: "DataTopId",
+                    SqlTypeName: "int",
+                    IsPrimaryKey: true,
+                    PrimaryKeyOrder: 1,
+                    IsNullable: false,
+                    MaxLength: 4,
+                },
+                {
+                    ColumnName: "MyDateTime",
+                    SqlTypeName: "datetime",
+                    IsPrimaryKey: false,
+                    PrimaryKeyOrder: 0,
+                    IsNullable: false,
+                    MaxLength: 8,
+                }
+            ]
         }
     ],
     ForeignKeys: [
@@ -62,7 +128,34 @@
             ReferencedTableName: "DataTop",
             ReferencedColName: "DataTopId",
             DeleteAction: "CASCADE",
-        }
+        },
+        {
+            ConstraintName: "FK_dbo.DataTop_DataTopId_dbo.DataTopToAnotherTable_DataTopId",
+            SchemaName: "dbo",
+            ParentTableName: "DataTopToAnotherTable",
+            ParentColName: "DataTopId",
+            ReferencedTableName: "DataTop",
+            ReferencedColName: "DataTopId",
+            DeleteAction: "CASCADE",
+        },
+        {
+            ConstraintName: "FK_dbo.AnotherTable_AnotherTableId_dbo.DataTopToAnotherTable_AnotherTableId",
+            SchemaName: "dbo",
+            ParentTableName: "DataTopToAnotherTable",
+            ParentColName: "AnotherTableId",
+            ReferencedTableName: "AnotherTable",
+            ReferencedColName: "AnotherTableId",
+            DeleteAction: "CASCADE",
+        },
+        {
+            ConstraintName: "FK_dbo.DataSingleton_dbo.DataTop_DataTopId",
+            SchemaName: "dbo",
+            ParentTableName: "DataSingleton",
+            ParentColName: "DataTopId",
+            ReferencedTableName: "DataTop",
+            ReferencedColName: "DataTopId",
+            DeleteAction: "NO_ACTION",
+        },
     ],
     //Note: order of indexes is important. Primary keys should go at end of 
     Indexes: [
@@ -86,15 +179,25 @@
             IsUnique: true,
             IsIdentity: true
         },
-                {
+        {
             SchemaName: "dbo",
             TableName: "DataTop",
             ColumnName: "DataTopId",
-            IndexName: "PK_dbo.DataChild",
+            IndexName: "PK_dbo.DataTop",
             IsPrimaryIndex: true,
             Clustered: true,
             IsUnique: true,
             IsIdentity: true
         },
+        {
+            SchemaName: "dbo",
+            TableName: "AnotherTable",
+            ColumnName: "AnotherTableId",
+            IndexName: "PK_dbo.AnotherTable",
+            IsPrimaryIndex: true,
+            Clustered: true,
+            IsUnique: true,
+            IsIdentity: true
+        },        
     ]
 }

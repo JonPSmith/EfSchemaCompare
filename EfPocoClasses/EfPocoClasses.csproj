@@ -51,6 +51,7 @@
     <Compile Include="DataTypes\DataStringByte.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicPrivate\DataPublicPrivate.cs" />
+    <Compile Include="Relationships\AnotherTable.cs" />
     <Compile Include="Relationships\DataChild.cs" />
     <Compile Include="Relationships\DataCompKey.cs" />
     <Compile Include="Relationships\DataManyChildren.cs" />
