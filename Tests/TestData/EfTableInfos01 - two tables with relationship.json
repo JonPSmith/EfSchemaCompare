@@ -62,6 +62,16 @@
                 IsNullable: false,
                 MaxLength: 4,
             },
+            {
+                SqlColumnName: "MyUnicodeString",
+                SqlTypeName: "nvarchar",
+                ClrColumName: "MyUnicodeString",
+                ClrColumnType: "System.String",
+                IsPrimaryKey: false,
+                PrimaryKeyOrder: 0,
+                IsNullable: true,
+                MaxLength: 40,
+            },
         ],
         RelationshipCols: [
             {
@@ -72,6 +82,84 @@
                     FromIsCascadeDelete: false,
                     ToMultiplicity: "One",
                     ToIsCascadeDelete:  true
+                }
+            }
+        ]
+    },
+    {
+        SchemaName: "dbo",
+        TableName: "AnotherTable",
+        ClrClassType: "EfPocoClasses.Relationships.AnotherTable",
+        NormalCols: [
+            {
+                SqlColumnName: "AnotherTableId",
+                SqlTypeName: "int",
+                ClrColumName: "AnotherTableId",
+                ClrColumnType: "System.Int32",
+                IsPrimaryKey: true,
+                PrimaryKeyOrder: 1,
+                IsNullable: false,
+                MaxLength: 4,
+            },
+            {
+                SqlColumnName: "MyString",
+                SqlTypeName: "varchar",
+                ClrColumName: "MyString",
+                ClrColumnType: "System.String",
+                IsPrimaryKey: false,
+                PrimaryKeyOrder: 0,
+                IsNullable: true,
+                MaxLength: 25,
+            }
+        ],
+        RelationshipCols: [
+            {
+                ClrColumnName: "DataTops",
+                ClrColumnType: "System.Collections.Generic.List`1[[EfPocoClasses.Relationships.DataTop, EfPocoClasses]]",
+                FromToRelationships: {
+                    FromMultiplicity: "Many",
+                    FromIsCascadeDelete: true,
+                    ToMultiplicity: "Many",
+                    ToIsCascadeDelete:  true
+                }
+            }
+        ]
+    },
+    {
+        SchemaName: "dbo",
+        TableName: "DataSingleton",
+        ClrClassType: "EfPocoClasses.Relationships.DataSingleton",
+        NormalCols: [
+            {
+                SqlColumnName: "DataTopId",
+                SqlTypeName: "int",
+                ClrColumName: "DataTopId",
+                ClrColumnType: "System.Int32",
+                IsPrimaryKey: true,
+                PrimaryKeyOrder: 1,
+                IsNullable: false,
+                MaxLength: 4,
+            },
+            {
+                SqlColumnName: "MyDateTime",
+                SqlTypeName: "datetime",
+                ClrColumName: "MyDateTime",
+                ClrColumnType: "System.DateTime",
+                IsPrimaryKey: false,
+                PrimaryKeyOrder: 0,
+                IsNullable: false,
+                MaxLength: 8,
+            }
+        ],
+        RelationshipCols: [
+            {
+                ClrColumnName: "Parent",
+                ClrColumnType: "EfPocoClasses.Relationships.DataTop",
+                FromToRelationships: {
+                    FromMultiplicity: "ZeroOrOne",
+                    FromIsCascadeDelete: false,
+                    ToMultiplicity: "One",
+                    ToIsCascadeDelete:  false
                 }
             }
         ]

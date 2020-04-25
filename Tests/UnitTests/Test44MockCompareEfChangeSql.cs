@@ -55,6 +55,7 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Missing Table: The SQL SqlRefString does not contain a table called [dbo].[DataTop]. Needed by EF class DataTop.\n" +
+            "Missing SQL Table: Could not find the SQL table called [dbo].[DataTop].\n" +
             "Missing SQL Table: Could not find the SQL table called [dbo].[DataTop].", status.GetAllErrors());
             status.HasWarnings.ShouldEqual(false);
             sqlInfoDict.Keys.Count.ShouldEqual(1);
@@ -78,7 +79,8 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Missing Column: The SQL SqlRefString table [dbo].[DataTop] does not contain a column called DataTopId. Needed by EF class DataTop.\n"+
-                "Missing Foreign Key: EF has a Many-to-One relationship between DataChild.Parent and DataTop but we don't find that in SQL.", status.GetAllErrors());
+                "Missing Foreign Key: EF has a Many-to-One relationship between DataChild.Parent and DataTop but we don't find that in SQL.\n" +
+                "Missing Foreign Key: EF has a ZeroOrOne-to-One relationship between DataSingleton.Parent and DataTop but we don't find that in SQL.", status.GetAllErrors());
             string.Join(",", status.Warnings).ShouldEqual("Warning: SQL SqlRefString table [dbo].[DataTop] has a column called BadColName (.NET type System.Int32) that EF does not access.", string.Join(",", status.Warnings));
         }
 
@@ -113,7 +115,8 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Primary Key: The SQL SqlRefString  column [dbo].[DataTop].DataTopId primary key settings don't match. SQL says it is NOT a key, EF says it is a key.\n"+
-                "Missing Foreign Key: EF has a Many-to-One relationship between DataChild.Parent and DataTop but we don't find that in SQL.", status.GetAllErrors());
+                "Missing Foreign Key: EF has a Many-to-One relationship between DataChild.Parent and DataTop but we don't find that in SQL.\n" +
+                "Missing Foreign Key: EF has a ZeroOrOne-to-One relationship between DataSingleton.Parent and DataTop but we don't find that in SQL.", status.GetAllErrors());
             status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
         }
 
@@ -199,9 +202,28 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Missing Column: The SQL SqlRefString table [dbo].[DataTop] does not contain a column called DataTopId. Needed by EF class DataTop.\n"+
-                "Missing Foreign Key: EF has a Many-to-One relationship between DataChild.Parent and DataTop but we don't find that in SQL.", status.GetAllErrors());
+                "Missing Foreign Key: EF has a Many-to-One relationship between DataChild.Parent and DataTop but we don't find that in SQL.\n" +
+                "Missing Foreign Key: EF has a ZeroOrOne-to-One relationship between DataSingleton.Parent and DataTop but we don't find that in SQL.", status.GetAllErrors());
             status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
         }
+
+        [Test]
+        public void Test17CompareMockDataChangeMaxLengthNvarcharOk()
+        {
+            //SETUP
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "20", "TableInfos", 1, "ColumnInfos", 3, "MaxLength");
+            var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
+
+            //EXECUTE
+            var status = comparer.CompareEfWithSql(efData, sqlData);
+
+            //VERIFY
+            status.ShouldBeValid(false);
+            status.GetAllErrors().ShouldEqual("MaxLength: The  SQL SqlRefString  column [dbo].[DataChild].MyUnicodeString, type System.String, length does not match EF. SQL length = 10, EF length = 20.", status.GetAllErrors());
+            status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
+        }
+
 
         //--------------------------------------------------
         //foreign key errors
@@ -288,10 +310,58 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid(false);
-            status.GetAllErrors().ShouldEqual("Cascade Delete: The Many-to-One relationship between DataChild.Parent and DataTop has different cascase delete value. SQL foreign key say BadName, EF setting is CASCADE.", status.GetAllErrors());
+            status.GetAllErrors().ShouldEqual("Cascade Delete: The Many-to-One relationship between DataChild.Parent and DataTop has different cascade delete value. SQL foreign key say BadName, EF setting is CASCADE.", status.GetAllErrors());
             status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
         }
 
+        [Test]
+        public void Test25CompareMockDataChangeForeignKeyCascadeOk()
+        {
+            //SETUP
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NO_ACTION", "ForeignKeys", 1, "DeleteAction");
+            var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
+
+            //EXECUTE
+            var status = comparer.CompareEfWithSql(efData, sqlData);
+
+            //VERIFY
+            status.ShouldBeValid(false);
+            status.GetAllErrors().ShouldEqual("Cascade Delete: The Many-to-Many relationship between AnotherTable.DataTops and DataTop has a foreign key FK_dbo.DataTop_DataTopId_dbo.DataTopToAnotherTable_DataTopId that is not CASCADE DELETE.  All linking table foreign keys should have CASCADE DELETE.", status.GetAllErrors());
+            status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
+        }
+        [Test]
+        public void Test26CompareMockDataChangeForeignKeyCascadeOk()
+        {
+            //SETUP
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NO_ACTION", "ForeignKeys", 2, "DeleteAction");
+            var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
+
+            //EXECUTE
+            var status = comparer.CompareEfWithSql(efData, sqlData);
+
+            //VERIFY
+            status.ShouldBeValid(false);
+            status.GetAllErrors().ShouldEqual("Cascade Delete: The Many-to-Many relationship between AnotherTable.DataTops and DataTop has a foreign key FK_dbo.AnotherTable_AnotherTableId_dbo.DataTopToAnotherTable_AnotherTableId that is not CASCADE DELETE.  All linking table foreign keys should have CASCADE DELETE.", status.GetAllErrors());
+            status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
+        }
+        [Test]
+        public void Test27CompareMockDataChangeForeignKeyCascadeOk()
+        {
+            //SETUP
+            var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
+            var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "CASCADE", "ForeignKeys", 3, "DeleteAction");
+            var comparer = new EfCompare("SqlRefString", sqlData.TableInfos.ToDictionary(x => x.CombinedName));
+
+            //EXECUTE
+            var status = comparer.CompareEfWithSql(efData, sqlData);
+
+            //VERIFY
+            status.ShouldBeValid(false);
+            status.GetAllErrors().ShouldEqual("Cascade Delete: The ZeroOrOne-to-One relationship between DataSingleton.Parent and DataTop has different cascade delete value. SQL foreign key say CASCADE, EF setting is NO_ACTION.", status.GetAllErrors());
+            status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
+        }
         //    status.GetAllErrors().ShouldEqual("Missing Index: The 'RefUnitTest' SQL database has an index [dbo].[DataChild].DataTopId: (not primary key, not clustered, not unique), which is missing in the 'ToBeCheckUnitTest' database.", status.GetAllErrors());
         //    status.ShouldBeValid(false);
 

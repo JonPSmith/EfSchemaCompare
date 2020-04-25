@@ -34,9 +34,9 @@ namespace Tests.UnitTests
             var sqlData = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
 
             //VERIFY
-            sqlData.TableInfos.Count.ShouldEqual(2);
-            sqlData.ForeignKeys.Count.ShouldEqual(1);
-            sqlData.Indexes.Count.ShouldEqual(3);
+            sqlData.TableInfos.Count.ShouldEqual(5);
+            sqlData.ForeignKeys.Count.ShouldEqual(4);
+            sqlData.Indexes.Count.ShouldEqual(4);
         }
 
         [Test]
@@ -48,9 +48,12 @@ namespace Tests.UnitTests
             var sqlData = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
 
             //VERIFY
-            sqlData.TableInfos.Count.ShouldEqual(2);
+            sqlData.TableInfos.Count.ShouldEqual(5);
             sqlData.TableInfos[0].ToString().ShouldEqual("Name: dbo.DataTop, Columns: 2");
-            sqlData.TableInfos[1].ToString().ShouldEqual("Name: dbo.DataChild, Columns: 3");
+            sqlData.TableInfos[1].ToString().ShouldEqual("Name: dbo.DataChild, Columns: 4");
+            sqlData.TableInfos[2].ToString().ShouldEqual("Name: dbo.AnotherTable, Columns: 2");
+            sqlData.TableInfos[3].ToString().ShouldEqual("Name: dbo.DataTopToAnotherTable, Columns: 2");
+            sqlData.TableInfos[4].ToString().ShouldEqual("Name: dbo.DataSingleton, Columns: 2");
         }
 
         [Test]
@@ -62,7 +65,7 @@ namespace Tests.UnitTests
             var sqlData = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
 
             //VERIFY
-            sqlData.TableInfos.Count.ShouldEqual(2);
+            sqlData.TableInfos.Count.ShouldEqual(5);
             sqlData.TableInfos[0].TableName.ShouldEqual("DataTop");
             sqlData.TableInfos[0].ColumnInfos[0].ToString().ShouldEqual("ColumnName: DataTopId, SqlTypeName: int, IsPrimaryKey: True, IsNullable: False, MaxLength: 4");
             sqlData.TableInfos[0].ColumnInfos[1].ToString().ShouldEqual("ColumnName: MyBool, SqlTypeName: bit, IsPrimaryKey: False, IsNullable: False, MaxLength: 1");
@@ -77,7 +80,7 @@ namespace Tests.UnitTests
             var sqlData = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
 
             //VERIFY
-            sqlData.ForeignKeys.Count.ShouldEqual(1);
+            sqlData.ForeignKeys.Count.ShouldEqual(4);
             sqlData.ForeignKeys[0].ToString().ShouldEqual("Parent: DataChild.DataTopId, Referenced: DataTop.DataTopId");
         }
 
@@ -90,10 +93,11 @@ namespace Tests.UnitTests
             var sqlData = LoadJsonHelpers.DeserializeData<SqlAllInfo>("SqlAllInfo01*.json");
 
             //VERIFY
-            sqlData.Indexes.Count.ShouldEqual(3);
+            sqlData.Indexes.Count.ShouldEqual(4);
             sqlData.Indexes[0].ToString().ShouldEqual("[dbo].[DataChild].DataTopId: (not primary key, not clustered, not unique)");
             sqlData.Indexes[1].ToString().ShouldEqual("[dbo].[DataChild].DataChildId: (primary key, clustered, unique)");
             sqlData.Indexes[2].ToString().ShouldEqual("[dbo].[DataTop].DataTopId: (primary key, clustered, unique)");
+            sqlData.Indexes[3].ToString().ShouldEqual("[dbo].[AnotherTable].AnotherTableId: (primary key, clustered, unique)");
         }
 
 
@@ -121,9 +125,11 @@ namespace Tests.UnitTests
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
 
             //VERIFY
-            efData.Count.ShouldEqual(2);
+            efData.Count.ShouldEqual(4);
             efData[0].ToString().ShouldEqual("Name: dbo.DataTop, NormalCols: 2, Relationships: 0");
-            efData[1].ToString().ShouldEqual("Name: dbo.DataChild, NormalCols: 3, Relationships: 1");
+            efData[1].ToString().ShouldEqual("Name: dbo.DataChild, NormalCols: 4, Relationships: 1");
+            efData[2].ToString().ShouldEqual("Name: dbo.AnotherTable, NormalCols: 2, Relationships: 1");
+            efData[3].ToString().ShouldEqual("Name: dbo.DataSingleton, NormalCols: 2, Relationships: 1");
         }
 
         [Test]
@@ -161,10 +167,11 @@ namespace Tests.UnitTests
             var efData = LoadJsonHelpers.DeserializeData<List<EfTableInfo>>("EfTableInfos01*.json");
 
             //VERIFY
-            efData[1].NormalCols.Count.ShouldEqual(3);
+            efData[1].NormalCols.Count.ShouldEqual(4);
             efData[1].NormalCols[0].ToString().ShouldEqual("SqlColumnName: DataChildId, SqlTypeName: int, ClrColumName: DataChildId, ClrColumnType: System.Int32, IsPrimaryKey: True, PrimaryKeyOrder: 1, IsNullable: False, MaxLength: 4");
             efData[1].NormalCols[1].ToString().ShouldEqual("SqlColumnName: MyString, SqlTypeName: varchar, ClrColumName: MyString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 25");
             efData[1].NormalCols[2].ToString().ShouldEqual("SqlColumnName: DataTopId, SqlTypeName: int, ClrColumName: DataTopId, ClrColumnType: System.Int32, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: False, MaxLength: 4");
+            efData[1].NormalCols[3].ToString().ShouldEqual("SqlColumnName: MyUnicodeString, SqlTypeName: nvarchar, ClrColumName: MyUnicodeString, ClrColumnType: System.String, IsPrimaryKey: False, PrimaryKeyOrder: 0, IsNullable: True, MaxLength: 40");
         }
 
         [Test]
@@ -192,9 +199,12 @@ namespace Tests.UnitTests
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", "NewDataName", "TableInfos", 0, "TableName");
 
             //VERIFY
-            sqlData.TableInfos.Count.ShouldEqual(2);
+            sqlData.TableInfos.Count.ShouldEqual(5);
             sqlData.TableInfos[0].TableName.ShouldEqual("NewDataName");
             sqlData.TableInfos[1].TableName.ShouldEqual("DataChild");
+            sqlData.TableInfos[2].TableName.ShouldEqual("AnotherTable");
+            sqlData.TableInfos[3].TableName.ShouldEqual("DataTopToAnotherTable");
+            sqlData.TableInfos[4].TableName.ShouldEqual("DataSingleton");
         }
 
         [Test]
@@ -206,9 +216,12 @@ namespace Tests.UnitTests
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleAlteration<SqlAllInfo>("SqlAllInfo01*.json", false, "TableInfos", 0, "ColumnInfos", 0, "IsPrimaryKey");
 
             //VERIFY
-            sqlData.TableInfos.Count.ShouldEqual(2);
+            sqlData.TableInfos.Count.ShouldEqual(5);
             sqlData.TableInfos[0].TableName.ShouldEqual("DataTop");
             sqlData.TableInfos[1].TableName.ShouldEqual("DataChild");
+            sqlData.TableInfos[2].TableName.ShouldEqual("AnotherTable");
+            sqlData.TableInfos[3].TableName.ShouldEqual("DataTopToAnotherTable");
+            sqlData.TableInfos[4].TableName.ShouldEqual("DataSingleton");
         }
 
         [Test]
@@ -220,7 +233,7 @@ namespace Tests.UnitTests
             var sqlData = LoadJsonHelpers.DeserializeObjectWithSingleRemoval<SqlAllInfo>("SqlAllInfo01*.json", "Indexes", 1);
 
             //VERIFY
-            sqlData.Indexes.Count.ShouldEqual(2);
+            sqlData.Indexes.Count.ShouldEqual(3);
         }
     }
 }

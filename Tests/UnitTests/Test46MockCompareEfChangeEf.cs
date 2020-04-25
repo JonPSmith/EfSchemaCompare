@@ -55,9 +55,11 @@ namespace Tests.UnitTests
             //VERIFY
             status.ShouldBeValid(false);
             status.GetAllErrors().ShouldEqual("Missing Table: The SQL SqlRefString does not contain a table called [dbo].[NewTableName]. Needed by EF class DataTop.\n" +
+            "Missing SQL Table: Could not find the SQL table called [dbo].[NewTableName].\n" +
+            "Missing Link Table: EF has a Many-to-Many relationship between AnotherTable.DataTops and NewTableName but we could not find a linking table with the right foreign keys.\n" +
             "Missing SQL Table: Could not find the SQL table called [dbo].[NewTableName].", status.GetAllErrors());
             status.HasWarnings.ShouldEqual(false);
-            sqlInfoDict.Keys.Count.ShouldEqual(1);
+            sqlInfoDict.Keys.Count.ShouldEqual(2);
             sqlInfoDict.ContainsKey("[dbo].[DataTop]").ShouldEqual(true);
         }
 
@@ -77,7 +79,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid(false);
-            status.GetAllErrors().ShouldEqual("Missing Column: The SQL SqlRefString table [dbo].[DataTop] does not contain a column called BadName. Needed by EF class DataTop.", status.GetAllErrors());
+            status.GetAllErrors().ShouldEqual("Missing Column: The SQL SqlRefString table [dbo].[DataTop] does not contain a column called BadName. Needed by EF class DataTop.\n" +
+            "Missing Link Table: EF has a Many-to-Many relationship between AnotherTable.DataTops and DataTop but we could not find a linking table with the right foreign keys.", status.GetAllErrors());
             string.Join(",", status.Warnings).ShouldEqual("Warning: SQL SqlRefString table [dbo].[DataTop] has a column called DataTopId (.NET type System.Int32) that EF does not access.", string.Join(",", status.Warnings));
         }
 
@@ -111,7 +114,8 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid(false);
-            status.GetAllErrors().ShouldEqual("Primary Key: The SQL SqlRefString  column [dbo].[DataTop].DataTopId primary key settings don't match. SQL says it is a key, EF says it is NOT a key.", status.GetAllErrors());
+            status.GetAllErrors().ShouldEqual("Primary Key: The SQL SqlRefString  column [dbo].[DataTop].DataTopId primary key settings don't match. SQL says it is a key, EF says it is NOT a key.\n" +
+            "Missing Link Table: EF has a Many-to-Many relationship between AnotherTable.DataTops and DataTop but we could not find a linking table with the right foreign keys.", status.GetAllErrors());
             status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
         }
 

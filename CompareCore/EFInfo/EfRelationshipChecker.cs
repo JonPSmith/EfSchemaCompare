@@ -87,8 +87,8 @@ namespace CompareCore.EFInfo
                             .Where(foreignKey => !foreignKey.IsCascade))
                         {
                             status.AddSingleError(
-                                "Cascade Delete: The {0} relationship between {1}.{2} and {3} has a foreign key {4} that is not CASCASE DELETE." +
-                                "  All linking table foreign keys should have CASCASE DELETE.",
+                                "Cascade Delete: The {0} relationship between {1}.{2} and {3} has a foreign key {4} that is not CASCADE DELETE." +
+                                "  All linking table foreign keys should have CASCADE DELETE.",
                                 relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName,
                                 toEfTable.TableName, foreignKey.ConstraintName);
                         }
@@ -109,11 +109,11 @@ namespace CompareCore.EFInfo
                             relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTableStatus.Result.TableName);
                     else
                     {
-                        //Look at cascase deletes
+                        //Look at cascade deletes
                         foreach (var foreignKey in foreignKeys.Where(foreignKey => relEfCol.FromToRelationships.ToIsCascadeDelete != foreignKey.IsCascade))
                         {
                             status.AddSingleError(
-                                "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascase delete value." +
+                                "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascade delete value." +
                                 " SQL foreign key say {4}, EF setting is {5}.",
                                 relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTableStatus.Result.TableName,
                                 foreignKey.DeleteAction,
@@ -143,10 +143,10 @@ namespace CompareCore.EFInfo
                             relEfCol.ClrColumnName);
                     else
                     {
-                        //Look at cascase deletes
+                        //Look at cascade deletes
                         foreach (var foreignKey in foreignKeys.Where(foreignKey => relEfCol.FromToRelationships.FromIsCascadeDelete != foreignKey.IsCascade))
                             status.AddSingleError(
-                            "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascase delete value." +
+                            "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascade delete value." +
                             " SQL foreign key say {4}, EF setting is {5}.",
                             relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, toSqlTable.TableName,
                             foreignKey.DeleteAction,
@@ -173,9 +173,9 @@ namespace CompareCore.EFInfo
                             relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, sqlTableEnd1Status.Result.TableName);
                     else if (foreignKey1 != null && relEfCol.FromToRelationships.FromIsCascadeDelete != foreignKey1.IsCascade)
                     {
-                        //Look at cascase deletes
+                        //Look at cascade deletes
                         status.AddSingleError(
-                            "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascase delete value."+
+                            "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascade delete value."+
                             " SQL foreign key say {4}, EF setting is {5}.",
                             relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, sqlTableEnd1Status.Result.TableName,
                             foreignKey1.DeleteAction ,
@@ -183,12 +183,12 @@ namespace CompareCore.EFInfo
                     }
                     else if (foreignKey2 != null && relEfCol.FromToRelationships.ToIsCascadeDelete != foreignKey2.IsCascade)
                     {
-                        //Look at cascase deletes
+                        //Look at cascade deletes
                         status.AddSingleError(
-                            "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascase delete value." +
+                            "Cascade Delete: The {0} relationship between {1}.{2} and {3} has different cascade delete value." +
                             " SQL foreign key say {4}, EF setting is {5}.",
                             relEfCol.FromToRelationships, tableInfo.TableName, relEfCol.ClrColumnName, sqlTableEnd1Status.Result.TableName,
-                            foreignKey1.DeleteAction,
+                            foreignKey2.DeleteAction,
                             relEfCol.FromToRelationships.ToIsCascadeDelete ? "CASCADE" : "NO_ACTION");
                     }
                 }
