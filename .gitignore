@@ -188,3 +188,4 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 *.nupkg
+/.vs/EfSchemaCompare/v15/Server/sqlite3

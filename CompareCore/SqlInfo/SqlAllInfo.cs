@@ -40,13 +40,15 @@ namespace CompareCore.SqlInfo
             var allTablesAndCol = SqlTableAndColumnData.GetSqlTablesAndColumns(connection);
             var allForeignKeys = SqlForeignKey.GetForeignKeys(connection);
 
-            var tableInfos = from tableGroup in allTablesAndCol.GroupBy(x => x.TableName)
+            var tableInfos = from tableGroup in allTablesAndCol.GroupBy(x => $"{x.SchemaName}{x.TableName}")
                 let schemaName = tableGroup.First().SchemaName
-                let primaryKey = SqlPrimaryKey.GetPrimaryKeysNames(connection, tableGroup.Key)
+                let tableName = tableGroup.First().TableName
+                let primaryKey = SqlPrimaryKey.GetPrimaryKeysNames(connection, tableName, schemaName)
                 select (new SqlTableInfo(schemaName,
-                    tableGroup.Key, tableGroup.Select(y => new SqlColumnInfo(y.ColumnName, y.SqlTypeName,
+                    tableName, tableGroup.Select(y => new SqlColumnInfo(y.ColumnName, y.SqlTypeName,
                         primaryKey.SingleOrDefault(z => z.ColumnName == y.ColumnName),
                         y.IsNullable, y.MaxLength)).ToList()));
+
 
             var allIndexes = SqlIndex.GetAllIndexes(connection);
 

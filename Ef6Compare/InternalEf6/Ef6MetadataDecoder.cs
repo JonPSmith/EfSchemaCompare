@@ -116,13 +116,22 @@ namespace Ef6SchemaCompare.InternalEf6
         {
             // NOTE: EF can access non-public properties if the developer sets up EF that way, so we need to search both public and non public
             // See NonPublicColumnAttributeConvention in Ef6TestDbContext project for an example of that
-            var foundProperty = classToScan.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .SingleOrDefault(x => x.Name == propertyName);
-            if (foundProperty == null)
+            var foundProperties = classToScan.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(x => x.Name == propertyName).ToList();
+            if (foundProperties == null)
                 throw new InvalidOperationException(string.Format("Failed to find property called {0} in class {1}.",
                     propertyName, classToScan.Name));
+            if (foundProperties.Count() == 1)
+            {
+                return foundProperties.First();
+            }
+            else
+            {
+                // should we check if it is the first field?
+                return foundProperties.First();
+            }
 
-            return foundProperty;
+            // return foundProperty;
         }
 
         //--------------------------------------------------------------------------

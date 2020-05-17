@@ -29,7 +29,7 @@ namespace CompareCore.SqlInfo
         public Int16 KeyOrder { get; private set; }
         public string PrimaryKeyConstraintName { get; private set; }
 
-        public static IList<SqlPrimaryKey> GetPrimaryKeysNames(string connectionString, string tableName)
+        public static IList<SqlPrimaryKey> GetPrimaryKeysNames(string connectionString, string tableName, string schema)
         {
             var result = new Collection<SqlPrimaryKey>();
             using (var sqlcon = new SqlConnection(connectionString))
@@ -37,12 +37,19 @@ namespace CompareCore.SqlInfo
                 var command = sqlcon.CreateCommand();
 
                 //see https://msdn.microsoft.com/en-us/library/ms190196.aspx
-                command.CommandText = @"sp_pkeys @TableName";
-                var param = new SqlParameter();
-                param.ParameterName = "@TableName";
-                param.Value = tableName;
+                command.CommandText = @"sp_pkeys @TableName, @table_owner";
+                var param = new SqlParameter
+                {
+                    ParameterName = "@TableName",
+                    Value = tableName
+                };
                 command.Parameters.Add(param);
-
+                param = new SqlParameter
+                {
+                    ParameterName = "@table_owner",
+                    Value = schema
+                };
+                command.Parameters.Add(param);
                 sqlcon.Open();
                 using (var reader = command.ExecuteReader())
                 {
