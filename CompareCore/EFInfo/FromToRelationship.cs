@@ -10,6 +10,7 @@
 // =====================================================
 #endregion
 
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Tests")]
@@ -21,18 +22,28 @@ namespace CompareCore.EFInfo
 
     public class FromToRelationship
     {
-        public FromToRelationship(EfRelationshipTypes fromMultiplicity, bool fromIsCascadeDelete, EfRelationshipTypes toMultiplicity, bool toIsCascadeDelete)
+        public FromToRelationship(
+            EfRelationshipTypes fromMultiplicity,
+            bool fromIsCascadeDelete,
+            EfRelationshipTypes toMultiplicity,
+            bool toIsCascadeDelete,
+            IEnumerable<string> fromColumns,
+            IEnumerable<string> toColumns)
         {
             FromMultiplicity = fromMultiplicity;
             FromIsCascadeDelete = fromIsCascadeDelete;
             ToMultiplicity = toMultiplicity;
             ToIsCascadeDelete = toIsCascadeDelete;
+            FromColumns = fromColumns;
+            ToColumns = toColumns;
         }
 
         public EfRelationshipTypes FromMultiplicity { get; private set; }
         public bool FromIsCascadeDelete { get; private set; }
         public EfRelationshipTypes ToMultiplicity { get; private set; }
         public bool ToIsCascadeDelete { get; private set; }
+        public IEnumerable<string> FromColumns { get; }
+        public IEnumerable<string> ToColumns { get; }
 
         public override string ToString()
         {

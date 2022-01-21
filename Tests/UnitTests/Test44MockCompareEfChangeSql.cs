@@ -310,7 +310,7 @@ namespace Tests.UnitTests
 
             //VERIFY
             status.ShouldBeValid(false);
-            status.GetAllErrors().ShouldEqual("Cascade Delete: The Many-to-One relationship between DataChild.Parent and DataTop has different cascade delete value. SQL foreign key say BadName, EF setting is CASCADE.", status.GetAllErrors());
+            status.GetAllErrors().ShouldEqual("Cascade Delete: The Many-to-One relationship between DataChild.Parent and DataTop with constraint name FK_dbo.DataChild_dbo.DataTop_DataTopId has different cascade delete value. SQL foreign key say BadName, EF setting is CASCADE.", status.GetAllErrors());
             status.HasWarnings.ShouldEqual(false, string.Join(",", status.Warnings));
         }
 
