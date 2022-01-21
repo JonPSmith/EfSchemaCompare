@@ -12,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
@@ -81,9 +80,9 @@ namespace Ef6SchemaCompare.InternalEf6
                 var columnInfos = propDecoder.DecodeTableProperties(entitySet, clrClassType, primaryKeys);
 
                 var relationshipInfos = (from navProperty in entitySet.ElementType.NavigationProperties
+                                         let association = metadata.GetItems<AssociationType>(DataSpace.SSpace).SingleOrDefault(a => a.Name == navProperty.RelationshipType.Name)
                                          let clrProperty = GetPublicAndPrivatePropertyByName(clrClassType, navProperty.Name)
-                                         let relationship = ConvertMetadataToFromToMultpicity(navProperty.FromEndMember, navProperty.ToEndMember)
-                                         let columnArr = clrProperty.GetCustomAttribute<ColumnAttribute>()
+                                         let relationship = ConvertMetadataToFromToMultpicity(navProperty, association)
                                          select new EfRelationshipInfo(relationship, clrProperty.Name, clrProperty.PropertyType)).ToList();
 
                 result.Add(new EfTableInfo(tableName, tableSchema, clrClassType, columnInfos, relationshipInfos));
@@ -131,16 +130,23 @@ namespace Ef6SchemaCompare.InternalEf6
         /// <summary>
         /// We convert the EF6 metadata RelationshipMultiplicity to an local copy to insulate against changes in the metadata format
         /// </summary>
-        /// <param name="fromRelationship"></param>
-        /// <param name="toRelationship"></param>
+        /// <param name="navProperty">The navigation property.</param>
+        /// <param name="association">The association.</param>
         /// <returns></returns>
-        private static FromToRelationship ConvertMetadataToFromToMultpicity(RelationshipEndMember fromRelationship, RelationshipEndMember toRelationship)
+        private static FromToRelationship ConvertMetadataToFromToMultpicity(NavigationProperty navProperty, AssociationType association)
         {
+            RelationshipEndMember fromRelationship = navProperty.FromEndMember;
+            RelationshipEndMember toRelationship = navProperty.ToEndMember;
+
             var efFromType = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), fromRelationship.RelationshipMultiplicity.ToString());
             var fromCascade = fromRelationship.DeleteBehavior == OperationAction.Cascade;
             var efToType = (EfRelationshipTypes)Enum.Parse(typeof(EfRelationshipTypes), toRelationship.RelationshipMultiplicity.ToString());
             var toCascade = toRelationship.DeleteBehavior == OperationAction.Cascade;
-            return new FromToRelationship(efFromType, fromCascade, efToType, toCascade);
+
+            var toColumns = association?.ReferentialConstraints.SelectMany(rc => rc.ToProperties).Select(x => x.Name);
+            var fromColumns = association?.ReferentialConstraints.SelectMany(rc => rc.FromProperties).Select(x => x.Name);
+
+            return new FromToRelationship(efFromType, fromCascade, efToType, toCascade, fromColumns, toColumns);
         }
     }
 }
