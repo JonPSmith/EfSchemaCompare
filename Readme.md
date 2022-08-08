@@ -89,7 +89,7 @@ the `Warnings` property, which is a `IReadOnlyList<string>`
 
 Warnings are differences between the two databases which EfSchemaCompare believes should not
 cause problems to EF. Typically they are:
-- Extra tables in SQL that EF does not refer to - these are normally safe.
+- Extra tables in [SQL](https://www.scaler.com/topics/sql/) that EF does not refer to - these are normally safe.
 - Columns in a SQL table that EF does not refer to (in some cases these can cause problems, especially on create/update).
 - The size of a string (varchar, nvarchar) or other type with a length is at max in SQL but not at max in EF.
 *This can happen when you have a `[MaxLength(nn)]` setting on an EF column, but the size is over the 
